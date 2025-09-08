@@ -1,7 +1,19 @@
 {
-  "name": "tahitian-tutor-web",
-  "version": "0.1.0",
-  "private": true,
+  "name": "tahitispeak",
+  "version": "1.0.0",
+  "description": "Interactive French-Tahitian language learning platform with immersive lessons, cultural insights, and progress tracking",
+  "keywords": ["tahitian", "french", "language-learning", "polynesia", "education", "nextjs", "react"],
+  "author": "TahitiSpeak Team",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/TahitiSpeak#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/TahitiSpeak.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/TahitiSpeak/issues"
+  },
+  "private": false,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

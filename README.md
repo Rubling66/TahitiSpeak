@@ -1,6 +1,6 @@
-# Tahitian Tutor Web Application
+# TahitiSpeak 🌺
 
-A comprehensive web application for learning Tahitian language with French translations, featuring offline support, internationalization, and a complete testing suite.
+An interactive French-Tahitian language learning platform that bridges cultures through immersive lessons, cultural insights, and comprehensive progress tracking. Experience the beauty of Polynesian language and culture in a modern, engaging web application.
 
 ## Features
 
@@ -34,8 +34,8 @@ A comprehensive web application for learning Tahitian language with French trans
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/tahitian-tutor-web.git
-cd tahitian-tutor-web
+git clone https://github.com/yourusername/TahitiSpeak.git
+cd TahitiSpeak
 ```
 
 2. Install dependencies:
@@ -144,7 +144,7 @@ Create a `.env.local` file with the following variables:
 
 ```env
 # Application
-NEXT_PUBLIC_APP_NAME="Tahitian Tutor"
+NEXT_PUBLIC_APP_NAME="TahitiSpeak"
 NEXT_PUBLIC_APP_VERSION="1.0.0"
 
 # Authentication
