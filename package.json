@@ -9,6 +9,10 @@
   "homepage": "https://github.com/Rubling66/TahitiSpeak",
   "author": "Rubling66",
   "keywords": ["tahitian", "language-learning", "education", "nextjs", "react"],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rubling66/TahitiSpeak/issues"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
