@@ -279,7 +279,7 @@ jobs:
           fi
 
       - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-js@v1
+        uses: tj-actions/coverage-badge-js@v2
         with:
           output: coverage-badge.svg
 
