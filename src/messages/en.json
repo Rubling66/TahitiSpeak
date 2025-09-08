@@ -1,0 +1,278 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "welcome": "Welcome",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "help": "Help",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications"
+  },
+  "navigation": {
+    "home": "Home",
+    "courses": "Courses",
+    "lessons": "Lessons",
+    "progress": "Progress",
+    "profile": "Profile",
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back to Tahitian Tutor",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "emailRequired": "Email is required",
+        "passwordRequired": "Password is required",
+        "invalidEmail": "Please enter a valid email address"
+      }
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start your Tahitian learning journey",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agreeTerms": "I agree to the Terms of Service and Privacy Policy",
+      "createAccount": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "errors": {
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "passwordRequired": "Password is required",
+        "passwordTooShort": "Password must be at least 8 characters",
+        "passwordMismatch": "Passwords do not match",
+        "invalidEmail": "Please enter a valid email address",
+        "termsRequired": "You must agree to the terms and conditions"
+      }
+    },
+    "logout": {
+      "confirm": "Are you sure you want to logout?",
+      "success": "You have been logged out successfully"
+    }
+  },
+  "courses": {
+    "title": "Courses",
+    "subtitle": "Explore our Tahitian language courses",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "status": {
+      "notStarted": "Not Started",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    },
+    "actions": {
+      "start": "Start Course",
+      "continue": "Continue",
+      "review": "Review",
+      "enroll": "Enroll"
+    },
+    "details": {
+      "lessons": "Lessons",
+      "duration": "Duration",
+      "level": "Level",
+      "instructor": "Instructor",
+      "description": "Description",
+      "whatYouWillLearn": "What you'll learn",
+      "prerequisites": "Prerequisites"
+    },
+    "progress": {
+      "completed": "Completed",
+      "remaining": "Remaining",
+      "percentage": "{percentage}% complete"
+    }
+  },
+  "lessons": {
+    "title": "Lesson",
+    "navigation": {
+      "previous": "Previous Lesson",
+      "next": "Next Lesson",
+      "backToCourse": "Back to Course"
+    },
+    "content": {
+      "vocabulary": "Vocabulary",
+      "grammar": "Grammar",
+      "pronunciation": "Pronunciation",
+      "exercises": "Exercises",
+      "audio": "Audio",
+      "video": "Video",
+      "transcript": "Transcript"
+    },
+    "actions": {
+      "markComplete": "Mark as Complete",
+      "takeNotes": "Take Notes",
+      "practice": "Practice",
+      "repeat": "Repeat"
+    },
+    "status": {
+      "completed": "Lesson Completed!",
+      "inProgress": "Lesson in Progress",
+      "locked": "Lesson Locked"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "tabs": {
+      "general": "General",
+      "preferences": "Preferences",
+      "security": "Security",
+      "achievements": "Achievements"
+    },
+    "general": {
+      "personalInfo": "Personal Information",
+      "name": "Name",
+      "email": "Email",
+      "bio": "Bio",
+      "location": "Location",
+      "joinedDate": "Joined",
+      "updateProfile": "Update Profile"
+    },
+    "preferences": {
+      "language": "Interface Language",
+      "learningLanguage": "Learning Language",
+      "notifications": "Notifications",
+      "emailNotifications": "Email Notifications",
+      "pushNotifications": "Push Notifications",
+      "theme": "Theme",
+      "timezone": "Timezone"
+    },
+    "security": {
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "twoFactor": "Two-Factor Authentication",
+      "enable2FA": "Enable 2FA",
+      "disable2FA": "Disable 2FA"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "streak": "Learning Streak",
+      "coursesCompleted": "Courses Completed",
+      "lessonsCompleted": "Lessons Completed",
+      "totalStudyTime": "Total Study Time",
+      "badges": "Badges"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "navigation": {
+      "dashboard": "Dashboard",
+      "users": "User Management",
+      "courses": "Course Management",
+      "content": "Content Management",
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "dashboard": {
+      "overview": "Overview",
+      "totalUsers": "Total Users",
+      "activeCourses": "Active Courses",
+      "completionRate": "Completion Rate",
+      "recentActivity": "Recent Activity"
+    },
+    "users": {
+      "title": "User Management",
+      "createUser": "Create User",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User",
+      "userDetails": "User Details",
+      "role": "Role",
+      "status": "Status",
+      "lastActive": "Last Active",
+      "actions": "Actions"
+    },
+    "courses": {
+      "title": "Course Management",
+      "createCourse": "Create Course",
+      "editCourse": "Edit Course",
+      "deleteCourse": "Delete Course",
+      "publishCourse": "Publish Course",
+      "unpublishCourse": "Unpublish Course",
+      "courseDetails": "Course Details",
+      "enrollments": "Enrollments"
+    }
+  },
+  "errors": {
+    "general": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to access this resource.",
+    "forbidden": "Access denied.",
+    "notFound": "The requested resource was not found.",
+    "validation": "Please check your input and try again.",
+    "sessionExpired": "Your session has expired. Please log in again."
+  },
+  "success": {
+    "profileUpdated": "Profile updated successfully",
+    "passwordChanged": "Password changed successfully",
+    "courseCompleted": "Congratulations! You've completed the course",
+    "lessonCompleted": "Lesson completed successfully",
+    "settingsSaved": "Settings saved successfully"
+  },
+  "tahitian": {
+    "greetings": {
+      "hello": "Ia ora na",
+      "goodbye": "Nana",
+      "goodMorning": "Ia ora na i te matahiti nei",
+      "goodEvening": "Ia ora na i te ahiahi nei",
+      "welcome": "Maeva",
+      "thankYou": "Mauruuru",
+      "please": "Taime",
+      "excuse": "Aroha"
+    },
+    "basics": {
+      "yes": "E",
+      "no": "Aita",
+      "maybe": "Eiaha",
+      "good": "Maitai",
+      "bad": "Ino",
+      "big": "Rahi",
+      "small": "Iti",
+      "beautiful": "Nehenehe",
+      "ugly": "Ino"
+    }
+  }
+}

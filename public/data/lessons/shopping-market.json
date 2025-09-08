@@ -1,0 +1,224 @@
+{
+  "id": "shopping-market",
+  "slug": "shopping-market",
+  "level": "intermediate",
+  "title": {
+    "fr": "Shopping et Marché",
+    "ty": "Te Fa'atau ma te Mahana",
+    "en": "Shopping and Market"
+  },
+  "summary": {
+    "fr": "Apprenez à faire vos courses et négocier au marché en tahitien",
+    "ty": "E hi'o e fa'atau ma te taui i te mahana",
+    "en": "Learn to shop and bargain at the market in Tahitian"
+  },
+  "durationMin": 25,
+  "heroMediaId": "shopping-market-hero",
+  "isPublished": true,
+  "tags": ["shopping", "market", "intermediate", "daily-life"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Demander des prix et négocier",
+            "ty": "E ui i te mau tau ma te taui",
+            "en": "Ask for prices and negotiate"
+          },
+          {
+            "fr": "Acheter des produits locaux au marché",
+            "ty": "E fa'atau i te mau mea fenua i te mahana",
+            "en": "Buy local products at the market"
+          },
+          {
+            "fr": "Utiliser les expressions de politesse commerciale",
+            "ty": "E fa'aohipa i te mau parau fa'anahonaho fa'atau",
+            "en": "Use polite commercial expressions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "fa'atau",
+            "french": "acheter",
+            "english": "to buy",
+            "pronunciation": "fah-ah-tah-oo",
+            "audioId": "audio-faatau"
+          },
+          {
+            "tahitian": "mahana",
+            "french": "marché",
+            "english": "market",
+            "pronunciation": "mah-hah-nah",
+            "audioId": "audio-mahana-market"
+          },
+          {
+            "tahitian": "tau",
+            "french": "prix",
+            "english": "price",
+            "pronunciation": "tah-oo",
+            "audioId": "audio-tau"
+          },
+          {
+            "tahitian": "moni",
+            "french": "argent",
+            "english": "money",
+            "pronunciation": "moh-nee",
+            "audioId": "audio-moni"
+          },
+          {
+            "tahitian": "rave",
+            "french": "légume",
+            "english": "vegetable",
+            "pronunciation": "rah-veh",
+            "audioId": "audio-rave"
+          },
+          {
+            "tahitian": "huero",
+            "french": "fruit",
+            "english": "fruit",
+            "pronunciation": "hoo-eh-roh",
+            "audioId": "audio-huero"
+          },
+          {
+            "tahitian": "parau fa'atau",
+            "french": "négocier",
+            "english": "to bargain",
+            "pronunciation": "pah-rah-oo fah-ah-tah-oo",
+            "audioId": "audio-parau-faatau"
+          },
+          {
+            "tahitian": "rave rahi",
+            "french": "beaucoup",
+            "english": "a lot/much",
+            "pronunciation": "rah-veh rah-hee",
+            "audioId": "audio-rave-rahi"
+          },
+          {
+            "tahitian": "iti",
+            "french": "peu/petit",
+            "english": "little/small",
+            "pronunciation": "ee-tee",
+            "audioId": "audio-iti"
+          },
+          {
+            "tahitian": "maita'i",
+            "french": "bon/bien",
+            "english": "good",
+            "pronunciation": "mah-ee-tah-ee",
+            "audioId": "audio-maitai"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "market-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation au marché",
+              "ty": "E ha'api'i i teie parau i te mahana",
+              "en": "Practice this market conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Client",
+                "text": "E hia te tau o teie huero?",
+                "translation": "Combien coûte ce fruit ? / How much does this fruit cost?"
+              },
+              {
+                "speaker": "Vendeur",
+                "text": "E piti hanere francs",
+                "translation": "Deux cents francs / Two hundred francs"
+              },
+              {
+                "speaker": "Client",
+                "text": "E nehenehe e fa'aiti ai?",
+                "translation": "Pouvez-vous baisser le prix ? / Can you lower the price?"
+              }
+            ]
+          },
+          {
+            "type": "price-calculation",
+            "instruction": {
+              "fr": "Calculez le total de vos achats",
+              "ty": "E tatau i te tau atoa o ta 'oe fa'atau",
+              "en": "Calculate the total of your purchases"
+            },
+            "items": [
+              { "product": "Mangue", "price": 150, "quantity": 3 },
+              { "product": "Taro", "price": 200, "quantity": 2 },
+              { "product": "Niu", "price": 100, "quantity": 1 }
+            ],
+            "total": 950
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Le marché de Papeete est le cœur commercial de Tahiti. Les vendeurs, souvent des mamans polynésiennes, proposent des produits locaux frais. La négociation fait partie de la culture, mais elle doit se faire avec respect et sourire. Les prix sont généralement en francs CFP (XPF).",
+          "ty": "Te mahana o Papeete te pupu fa'atau o Tahiti. Te mau taata fa'atau, e rahi te mau mama porinētia, e fa'atau nei i te mau mea fenua mata. Te parau fa'atau e 'ā i te haapiira'a, e e rave ia e te fa'anahonaho ma te ataata. Te mau tau e rahi ai i te francs CFP (XPF).",
+          "en": "Papeete market is the commercial heart of Tahiti. Vendors, often Polynesian mothers, offer fresh local products. Bargaining is part of the culture, but it should be done with respect and a smile. Prices are generally in CFP francs (XPF)."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous savez maintenant faire vos courses en tahitien. N'oubliez pas d'être poli et de sourire lors de vos négociations au marché !",
+          "ty": "Ua 'oe 'ite teie nei e fa'atau tahiti. 'Aua e pohe e fa'anahonaho ma te ataata i to parau fa'atau i te mahana !",
+          "en": "You now know how to shop in Tahitian. Don't forget to be polite and smile during your market negotiations!"
+        },
+        "keyPoints": [
+          "Bargaining is cultural but should be respectful",
+          "Local markets offer the freshest products",
+          "Prices are in CFP francs (XPF)"
+        ]
+      }
+    }
+  ]
+}

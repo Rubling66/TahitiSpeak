@@ -1,0 +1,115 @@
+{
+  "id": "clothing-accessories",
+  "slug": "clothing-accessories",
+  "title": {
+    "fr": "Vêtements et Accessoires",
+    "tah": "Te Aahu me te Mau Mea Hoohana",
+    "en": "Clothing and Accessories"
+  },
+  "summary": "Discover traditional and modern clothing vocabulary in Tahitian. Learn about cultural dress and everyday attire.",
+  "level": "Beginner",
+  "durationMin": 25,
+  "tags": ["vocabulary", "clothing", "culture", "fashion"],
+  "sections": [
+    {
+      "id": "objectives",
+      "kind": "Objectives",
+      "title": {
+        "fr": "Objectifs",
+        "tah": "Te Faanahora'a",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          "Learn clothing and accessory vocabulary in Tahitian",
+          "Understand traditional Polynesian dress",
+          "Practice describing what people wear"
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "kind": "Vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "tah": "Te Parau",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "id": "shirt",
+            "tahitian": "aahu",
+            "french": "chemise",
+            "english": "shirt",
+            "pronunciation": "ah-ah-hoo",
+            "audioUrl": "/audio/clothing/aahu.mp3"
+          },
+          {
+            "id": "dress",
+            "tahitian": "ropu",
+            "french": "robe",
+            "english": "dress",
+            "pronunciation": "ro-poo",
+            "audioUrl": "/audio/clothing/ropu.mp3"
+          },
+          {
+            "id": "hat",
+            "tahitian": "pouo",
+            "french": "chapeau",
+            "english": "hat",
+            "pronunciation": "po-oo-oh",
+            "audioUrl": "/audio/clothing/pouo.mp3"
+          },
+          {
+            "id": "shoes",
+            "tahitian": "tamau vae",
+            "french": "chaussures",
+            "english": "shoes",
+            "pronunciation": "tah-mah-oo vah-eh",
+            "audioUrl": "/audio/clothing/tamau-vae.mp3"
+          },
+          {
+            "id": "pareo",
+            "tahitian": "pareu",
+            "french": "paréo",
+            "english": "sarong",
+            "pronunciation": "pah-reh-oo",
+            "audioUrl": "/audio/clothing/pareu.mp3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "kind": "Culture",
+      "title": {
+        "fr": "Culture",
+        "tah": "Te Haapiiraa Tupuna",
+        "en": "Culture"
+      },
+      "content": {
+        "text": "Traditional Tahitian clothing includes the pareu, a versatile wrap-around garment worn by both men and women. Modern Tahitians blend traditional and contemporary styles, often incorporating bright tropical patterns and natural materials."
+      }
+    },
+    {
+      "id": "practice",
+      "kind": "Practice",
+      "title": {
+        "fr": "Pratique",
+        "tah": "Te Haapiiraa",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "multiple-choice",
+            "question": "What is the Tahitian word for 'paréo'?",
+            "options": ["pareu", "aahu", "ropu", "pouo"],
+            "correct": "pareu"
+          }
+        ]
+      }
+    }
+  ]
+}

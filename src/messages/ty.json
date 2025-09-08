@@ -1,0 +1,278 @@
+{
+  "common": {
+    "loading": "E rave nei...",
+    "error": "Hape",
+    "success": "Maitai",
+    "cancel": "Haapao",
+    "save": "Tuu",
+    "delete": "Rave",
+    "edit": "Taui",
+    "create": "Haamau",
+    "update": "Faahou",
+    "submit": "Hooi",
+    "close": "Pupuni",
+    "back": "Tapea",
+    "next": "Amui",
+    "previous": "Mua",
+    "search": "Uiui",
+    "filter": "Taairi",
+    "sort": "Faanahonaho",
+    "yes": "E",
+    "no": "Aita",
+    "confirm": "Faatia",
+    "welcome": "Maeva",
+    "logout": "Tamaa",
+    "login": "Uru",
+    "register": "Ineine",
+    "profile": "Hoho'a",
+    "settings": "Faanahonaho",
+    "dashboard": "Papa faaite",
+    "home": "Fare",
+    "about": "No te",
+    "contact": "Feia",
+    "help": "Tauturu",
+    "language": "Reo",
+    "theme": "Huru",
+    "notifications": "Faaite"
+  },
+  "navigation": {
+    "home": "Fare",
+    "courses": "Haapiraa",
+    "lessons": "Parau",
+    "progress": "Taere",
+    "profile": "Hoho'a",
+    "admin": "Faanahonaho",
+    "dashboard": "Papa faaite",
+    "users": "Taata",
+    "analytics": "Taamaraa",
+    "settings": "Faanahonaho"
+  },
+  "auth": {
+    "login": {
+      "title": "Uru mai",
+      "subtitle": "Maeva i Tahitian Tutor",
+      "email": "Rata uira",
+      "password": "Upu huna",
+      "rememberMe": "Hopea vau",
+      "forgotPassword": "Pohe te upu huna?",
+      "signIn": "Uru mai",
+      "noAccount": "Aita to oe compte?",
+      "signUp": "Ineine",
+      "errors": {
+        "invalidCredentials": "Rata uira e upu huna hape",
+        "emailRequired": "E hinaaro te rata uira",
+        "passwordRequired": "E hinaaro te upu huna",
+        "invalidEmail": "Faaite mai i te rata uira maitai"
+      }
+    },
+    "register": {
+      "title": "Haamau i te compte",
+      "subtitle": "Timata to taere haapiraa reo Tahiti",
+      "name": "Ioa atoa",
+      "email": "Rata uira",
+      "password": "Upu huna",
+      "confirmPassword": "Faatia i te upu huna",
+      "agreeTerms": "Ua faaite vau i te Ture e te Faanahonaho Faamuiraa",
+      "createAccount": "Haamau i te compte",
+      "hasAccount": "Ua iai to oe compte?",
+      "signIn": "Uru mai",
+      "errors": {
+        "nameRequired": "E hinaaro te ioa",
+        "emailRequired": "E hinaaro te rata uira",
+        "passwordRequired": "E hinaaro te upu huna",
+        "passwordTooShort": "E hinaaro te upu huna e 8 mata'i",
+        "passwordMismatch": "Aita e rite te mau upu huna",
+        "invalidEmail": "Faaite mai i te rata uira maitai",
+        "termsRequired": "E hinaaro oe e faaite i te mau ture"
+      }
+    },
+    "logout": {
+      "confirm": "E mea mau anei oe e tamaa?",
+      "success": "Ua tamaa oe maitai"
+    }
+  },
+  "courses": {
+    "title": "Haapiraa",
+    "subtitle": "Taamaitai i ta matou mau haapiraa reo Tahiti",
+    "levels": {
+      "beginner": "Timata",
+      "intermediate": "Amu",
+      "advanced": "Maitai roa"
+    },
+    "status": {
+      "notStarted": "Aita i timata",
+      "inProgress": "E rave nei",
+      "completed": "Hopea"
+    },
+    "actions": {
+      "start": "Timata i te haapiraa",
+      "continue": "Haere",
+      "review": "Taamaitai hou",
+      "enroll": "Ineine"
+    },
+    "details": {
+      "lessons": "Parau",
+      "duration": "Roa",
+      "level": "Rahiraa",
+      "instructor": "Haapii",
+      "description": "Faanahonaho",
+      "whatYouWillLearn": "Te mea e haapii ai oe",
+      "prerequisites": "Mau mea mua"
+    },
+    "progress": {
+      "completed": "Hopea",
+      "remaining": "Toe",
+      "percentage": "{percentage}% hopea"
+    }
+  },
+  "lessons": {
+    "title": "Parau",
+    "navigation": {
+      "previous": "Parau mua",
+      "next": "Parau amui",
+      "backToCourse": "Tapea i te haapiraa"
+    },
+    "content": {
+      "vocabulary": "Mau upu",
+      "grammar": "Faanahonaho reo",
+      "pronunciation": "Faanahonaho",
+      "exercises": "Mau rave",
+      "audio": "Reo",
+      "video": "Ata",
+      "transcript": "Parau"
+    },
+    "actions": {
+      "markComplete": "Faaite hopea",
+      "takeNotes": "Tuu parau",
+      "practice": "Haapii",
+      "repeat": "Faahou"
+    },
+    "status": {
+      "completed": "Parau hopea!",
+      "inProgress": "Parau e rave nei",
+      "locked": "Parau pupuni"
+    }
+  },
+  "profile": {
+    "title": "Hoho'a",
+    "tabs": {
+      "general": "Atoa",
+      "preferences": "Hinaaro",
+      "security": "Paruru",
+      "achievements": "Mau rave maitai"
+    },
+    "general": {
+      "personalInfo": "Faanahonaho taata",
+      "name": "Ioa",
+      "email": "Rata uira",
+      "bio": "Parau no te taata",
+      "location": "Fenua",
+      "joinedDate": "Mahana ineine",
+      "updateProfile": "Faahou i te hoho'a"
+    },
+    "preferences": {
+      "language": "Reo faanahonaho",
+      "learningLanguage": "Reo haapii",
+      "notifications": "Faaite",
+      "emailNotifications": "Faaite rata uira",
+      "pushNotifications": "Faaite tuu",
+      "theme": "Huru",
+      "timezone": "Taime fenua"
+    },
+    "security": {
+      "changePassword": "Taui i te upu huna",
+      "currentPassword": "Upu huna nei",
+      "newPassword": "Upu huna api",
+      "confirmPassword": "Faatia i te upu huna api",
+      "twoFactor": "Faaite piti",
+      "enable2FA": "Faaora 2FA",
+      "disable2FA": "Haapao 2FA"
+    },
+    "achievements": {
+      "title": "Mau rave maitai",
+      "streak": "Taere haapii",
+      "coursesCompleted": "Haapiraa hopea",
+      "lessonsCompleted": "Parau hopea",
+      "totalStudyTime": "Taime haapii atoa",
+      "badges": "Mau faaite"
+    }
+  },
+  "admin": {
+    "title": "Papa faaite faanahonaho",
+    "navigation": {
+      "dashboard": "Papa faaite",
+      "users": "Faanahonaho taata",
+      "courses": "Faanahonaho haapiraa",
+      "content": "Faanahonaho parau",
+      "analytics": "Taamaraa",
+      "settings": "Faanahonaho"
+    },
+    "dashboard": {
+      "overview": "Taamaitairaa",
+      "totalUsers": "Taata atoa",
+      "activeCourses": "Haapiraa ora",
+      "completionRate": "Rahiraa hopea",
+      "recentActivity": "Rave api"
+    },
+    "users": {
+      "title": "Faanahonaho taata",
+      "createUser": "Haamau taata",
+      "editUser": "Taui taata",
+      "deleteUser": "Rave taata",
+      "userDetails": "Faanahonaho taata",
+      "role": "Huru",
+      "status": "Huru",
+      "lastActive": "Rave hope",
+      "actions": "Mau rave"
+    },
+    "courses": {
+      "title": "Faanahonaho haapiraa",
+      "createCourse": "Haamau haapiraa",
+      "editCourse": "Taui haapiraa",
+      "deleteCourse": "Rave haapiraa",
+      "publishCourse": "Faaite haapiraa",
+      "unpublishCourse": "Huna haapiraa",
+      "courseDetails": "Faanahonaho haapiraa",
+      "enrollments": "Ineine"
+    }
+  },
+  "errors": {
+    "general": "Ua hape. Faahou mai.",
+    "network": "Hape feia. Taamaitai i to feia.",
+    "unauthorized": "Aita oe e faaroo i teie mea.",
+    "forbidden": "Riaria te uru.",
+    "notFound": "Aita i ite i te mea hinaaro.",
+    "validation": "Taamaitai i to parau e faahou mai.",
+    "sessionExpired": "Ua pau to taime. Uru hou mai."
+  },
+  "success": {
+    "profileUpdated": "Hoho'a faahou maitai",
+    "passwordChanged": "Upu huna taui maitai",
+    "courseCompleted": "Maitai! Ua hopea to haapiraa",
+    "lessonCompleted": "Parau hopea maitai",
+    "settingsSaved": "Faanahonaho tuu maitai"
+  },
+  "tahitian": {
+    "greetings": {
+      "hello": "Ia ora na",
+      "goodbye": "Nana",
+      "goodMorning": "Ia ora na i te matahiti nei",
+      "goodEvening": "Ia ora na i te ahiahi nei",
+      "welcome": "Maeva",
+      "thankYou": "Mauruuru",
+      "please": "Taime",
+      "excuse": "Aroha"
+    },
+    "basics": {
+      "yes": "E",
+      "no": "Aita",
+      "maybe": "Eiaha",
+      "good": "Maitai",
+      "bad": "Ino",
+      "big": "Rahi",
+      "small": "Iti",
+      "beautiful": "Nehenehe",
+      "ugly": "Ino"
+    }
+  }
+}

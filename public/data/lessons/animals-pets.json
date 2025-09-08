@@ -1,0 +1,118 @@
+{
+  "id": "animals-pets",
+  "slug": "animals-pets",
+  "title": {
+    "fr": "Animaux et Animaux de Compagnie",
+    "tah": "Te Mau Holoholona me te Mau Holoholona Hoa",
+    "en": "Animals and Pets"
+  },
+  "summary": "Learn about animals and pets in Tahitian culture. Discover local wildlife and common household companions.",
+  "level": "Beginner",
+  "durationMin": 22,
+  "tags": ["vocabulary", "animals", "pets", "nature"],
+  "sections": [
+    {
+      "id": "objectives",
+      "kind": "Objectives",
+      "title": {
+        "fr": "Objectifs",
+        "tah": "Te Faanahora'a",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          "Learn animal vocabulary in Tahitian",
+          "Understand the role of animals in Polynesian culture",
+          "Practice describing pets and wildlife"
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "kind": "Vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "tah": "Te Parau",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "id": "dog",
+            "tahitian": "uri",
+            "french": "chien",
+            "english": "dog",
+            "pronunciation": "oo-ree",
+            "audioUrl": "/audio/animals/uri.mp3"
+          },
+          {
+            "id": "cat",
+            "tahitian": "puaa",
+            "french": "chat",
+            "english": "cat",
+            "pronunciation": "poo-ah-ah",
+            "audioUrl": "/audio/animals/puaa.mp3"
+          },
+          {
+            "id": "fish",
+            "tahitian": "eia",
+            "french": "poisson",
+            "english": "fish",
+            "pronunciation": "eh-ee-ah",
+            "audioUrl": "/audio/animals/eia.mp3"
+          },
+          {
+            "id": "bird",
+            "tahitian": "manu",
+            "french": "oiseau",
+            "english": "bird",
+            "pronunciation": "mah-noo",
+            "audioUrl": "/audio/animals/manu.mp3"
+          },
+          {
+            "id": "turtle",
+            "tahitian": "honu",
+            "french": "tortue",
+            "english": "turtle",
+            "pronunciation": "ho-noo",
+            "audioUrl": "/audio/animals/honu.mp3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "kind": "Culture",
+      "title": {
+        "fr": "Culture",
+        "tah": "Te Haapiiraa Tupuna",
+        "en": "Culture"
+      },
+      "content": {
+        "text": "In Polynesian culture, many animals hold special significance. The turtle (honu) is considered sacred and represents longevity and wisdom. Fish are central to island life, both as food and in traditional stories. Dogs were among the first domesticated animals brought by Polynesian settlers."
+      }
+    },
+    {
+      "id": "practice",
+      "kind": "Practice",
+      "title": {
+        "fr": "Pratique",
+        "tah": "Te Haapiiraa",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "matching",
+            "question": "Match the animals with their Tahitian names",
+            "pairs": [
+              {"tahitian": "uri", "french": "chien"},
+              {"tahitian": "eia", "french": "poisson"},
+              {"tahitian": "honu", "french": "tortue"}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "id": "weather-seasons",
+  "slug": "weather-seasons",
+  "level": "beginner",
+  "title": {
+    "fr": "Météo et Saisons",
+    "ty": "Te Taime ma te Mau Tau",
+    "en": "Weather and Seasons"
+  },
+  "summary": {
+    "fr": "Apprenez à parler du temps qu'il fait en tahitien",
+    "ty": "E hi'o e parau i te taime atoa",
+    "en": "Learn to talk about weather in Tahitian"
+  },
+  "durationMin": 20,
+  "heroMediaId": "weather-seasons-hero",
+  "isPublished": true,
+  "tags": ["weather", "seasons", "beginner", "nature"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Décrire les conditions météorologiques",
+            "ty": "E fa'a'ite i te huru o te taime",
+            "en": "Describe weather conditions"
+          },
+          {
+            "fr": "Comprendre les saisons tropicales",
+            "ty": "E mārama i te mau tau tropique",
+            "en": "Understand tropical seasons"
+          },
+          {
+            "fr": "Utiliser le vocabulaire météorologique au quotidien",
+            "ty": "E fa'aohipa i te mau 'upu taime i te mahana atoa",
+            "en": "Use weather vocabulary in daily life"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "mahana",
+            "french": "soleil/jour ensoleillé",
+            "english": "sun/sunny day",
+            "pronunciation": "mah-hah-nah",
+            "audioId": "audio-mahana"
+          },
+          {
+            "tahitian": "ua",
+            "french": "pluie",
+            "english": "rain",
+            "pronunciation": "oo-ah",
+            "audioId": "audio-ua"
+          },
+          {
+            "tahitian": "matai",
+            "french": "vent",
+            "english": "wind",
+            "pronunciation": "mah-tah-ee",
+            "audioId": "audio-matai"
+          },
+          {
+            "tahitian": "ao",
+            "french": "nuage",
+            "english": "cloud",
+            "pronunciation": "ah-oh",
+            "audioId": "audio-ao"
+          },
+          {
+            "tahitian": "vevela",
+            "french": "chaud",
+            "english": "hot",
+            "pronunciation": "veh-veh-lah",
+            "audioId": "audio-vevela"
+          },
+          {
+            "tahitian": "anuanu",
+            "french": "froid",
+            "english": "cold",
+            "pronunciation": "ah-noo-ah-noo",
+            "audioId": "audio-anuanu"
+          },
+          {
+            "tahitian": "tau ua",
+            "french": "saison des pluies",
+            "english": "rainy season",
+            "pronunciation": "tah-oo oo-ah",
+            "audioId": "audio-tau-ua"
+          },
+          {
+            "tahitian": "tau parahi",
+            "french": "saison sèche",
+            "english": "dry season",
+            "pronunciation": "tah-oo pah-rah-hee",
+            "audioId": "audio-tau-parahi"
+          },
+          {
+            "tahitian": "uira",
+            "french": "éclair",
+            "english": "lightning",
+            "pronunciation": "oo-ee-rah",
+            "audioId": "audio-uira"
+          },
+          {
+            "tahitian": "patiri",
+            "french": "tonnerre",
+            "english": "thunder",
+            "pronunciation": "pah-tee-ree",
+            "audioId": "audio-patiri"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "weather-description",
+            "instruction": {
+              "fr": "Décrivez le temps qu'il fait",
+              "ty": "E fa'a'ite i te huru o te taime",
+              "en": "Describe the weather"
+            },
+            "scenarios": [
+              {
+                "image": "sunny-beach.jpg",
+                "answer": "Te mahana maita'i",
+                "translation": "Il fait beau / It's sunny"
+              },
+              {
+                "image": "rainy-day.jpg",
+                "answer": "Te ua nei",
+                "translation": "Il pleut / It's raining"
+              }
+            ]
+          },
+          {
+            "type": "season-matching",
+            "instruction": {
+              "fr": "Associez les activités aux saisons",
+              "ty": "E fa'ari'i te mau hana e te mau tau",
+              "en": "Match activities to seasons"
+            },
+            "pairs": [
+              { "activity": "Surf", "season": "tau parahi" },
+              { "activity": "Rester à l'intérieur", "season": "tau ua" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Tahiti a un climat tropical avec deux saisons principales : la saison chaude et humide (novembre à avril) appelée 'tau ua', et la saison fraîche et sèche (mai à octobre) appelée 'tau parahi'. Les alizés apportent une brise rafraîchissante toute l'année.",
+          "ty": "Tahiti e tau tropique, e piti te mau tau rahi : te tau vevela e vai (novema a epereli) e i'oa 'tau ua', e te tau anuanu e parahi (me a 'otopa) e i'oa 'tau parahi'. Te mau matai e fa'amaohia te fenua i te matahiti atoa.",
+          "en": "Tahiti has a tropical climate with two main seasons: the hot and humid season (November to April) called 'tau ua', and the cool and dry season (May to October) called 'tau parahi'. Trade winds bring refreshing breezes year-round."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant parler du temps qu'il fait en tahitien. Utilisez ces expressions pour commencer vos conversations !",
+          "ty": "E nehenehe teie nei ia 'oe e parau i te taime tahiti. E fa'aohipa i teie mau parau no te hōho'a i ta 'oe mau parau !",
+          "en": "You can now talk about weather in Tahitian. Use these expressions to start your conversations!"
+        },
+        "keyPoints": [
+          "Tahiti has two main seasons: wet and dry",
+          "Weather vocabulary is essential for daily conversation",
+          "Trade winds are a constant feature of Tahitian weather"
+        ]
+      }
+    }
+  ]
+}

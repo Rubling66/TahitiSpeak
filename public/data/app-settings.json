@@ -1,0 +1,59 @@
+{
+  "defaultLanguage": "fr",
+  "supportedLanguages": ["fr", "tah", "en"],
+  "theme": {
+    "primary": "#FF6B35",
+    "secondary": "#4ECDC4",
+    "accent": "#45B7D1",
+    "background": "#FAFAFA",
+    "surface": "#FFFFFF",
+    "text": "#333333",
+    "textSecondary": "#666666",
+    "border": "#E0E0E0",
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "error": "#F44336",
+    "info": "#2196F3"
+  },
+  "audio": {
+    "autoPlay": false,
+    "defaultVolume": 0.8,
+    "playbackRate": 1.0,
+    "enableSubtitles": true
+  },
+  "accessibility": {
+    "highContrast": false,
+    "fontSize": "medium",
+    "reducedMotion": false,
+    "screenReaderOptimized": false
+  },
+  "learning": {
+    "showTranslations": true,
+    "showPhonetics": true,
+    "repeatAudio": true,
+    "exerciseTimeout": 30000,
+    "showHints": true,
+    "trackProgress": true
+  },
+  "offline": {
+    "enableCaching": true,
+    "cacheAudio": true,
+    "cacheImages": true,
+    "maxCacheSize": 104857600,
+    "syncOnConnection": true
+  },
+  "ui": {
+    "showProgressBar": true,
+    "animationsEnabled": true,
+    "compactMode": false,
+    "showLessonNumbers": true,
+    "enableKeyboardShortcuts": true
+  },
+  "privacy": {
+    "trackUsage": false,
+    "shareProgress": false,
+    "allowAnalytics": false
+  },
+  "version": "1.0.0",
+  "lastUpdated": 1704067200000
+}

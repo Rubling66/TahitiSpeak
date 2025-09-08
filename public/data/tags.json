@@ -1,0 +1,177 @@
+[
+  {
+    "id": 1,
+    "name": "greetings",
+    "displayName": "Salutations",
+    "color": "#FF6B35",
+    "description": "Basic greetings and polite expressions"
+  },
+  {
+    "id": 2,
+    "name": "basics",
+    "displayName": "Bases",
+    "color": "#4ECDC4",
+    "description": "Fundamental vocabulary and expressions"
+  },
+  {
+    "id": 3,
+    "name": "politeness",
+    "displayName": "Politesse",
+    "color": "#45B7D1",
+    "description": "Courtesy and polite expressions"
+  },
+  {
+    "id": 4,
+    "name": "social",
+    "displayName": "Social",
+    "color": "#96CEB4",
+    "description": "Social interactions and conversations"
+  },
+  {
+    "id": 5,
+    "name": "family",
+    "displayName": "Famille",
+    "color": "#FFEAA7",
+    "description": "Family members and relationships"
+  },
+  {
+    "id": 6,
+    "name": "numbers",
+    "displayName": "Nombres",
+    "color": "#DDA0DD",
+    "description": "Numbers and counting"
+  },
+  {
+    "id": 7,
+    "name": "colors",
+    "displayName": "Couleurs",
+    "color": "#FFB6C1",
+    "description": "Colors and visual descriptions"
+  },
+  {
+    "id": 8,
+    "name": "nature",
+    "displayName": "Nature",
+    "color": "#90EE90",
+    "description": "Natural elements and environment"
+  },
+  {
+    "id": 9,
+    "name": "food",
+    "displayName": "Nourriture",
+    "color": "#F4A460",
+    "description": "Food, drinks, and dining"
+  },
+  {
+    "id": 10,
+    "name": "time",
+    "displayName": "Temps",
+    "color": "#87CEEB",
+    "description": "Time expressions and calendar"
+  },
+  {
+    "id": 11,
+    "name": "weather",
+    "displayName": "Météo",
+    "color": "#B0C4DE",
+    "description": "Weather and seasons"
+  },
+  {
+    "id": 12,
+    "name": "body",
+    "displayName": "Corps",
+    "color": "#F0E68C",
+    "description": "Body parts and health"
+  },
+  {
+    "id": 13,
+    "name": "clothing",
+    "displayName": "Vêtements",
+    "color": "#DA70D6",
+    "description": "Clothing and accessories"
+  },
+  {
+    "id": 14,
+    "name": "house",
+    "displayName": "Maison",
+    "color": "#CD853F",
+    "description": "Home and household items"
+  },
+  {
+    "id": 15,
+    "name": "transportation",
+    "displayName": "Transport",
+    "color": "#20B2AA",
+    "description": "Transportation and travel"
+  },
+  {
+    "id": 16,
+    "name": "emotions",
+    "displayName": "Émotions",
+    "color": "#FF69B4",
+    "description": "Emotions and feelings"
+  },
+  {
+    "id": 17,
+    "name": "animals",
+    "displayName": "Animaux",
+    "color": "#32CD32",
+    "description": "Animals and pets"
+  },
+  {
+    "id": 18,
+    "name": "work",
+    "displayName": "Travail",
+    "color": "#4682B4",
+    "description": "Work and professions"
+  },
+  {
+    "id": 19,
+    "name": "shopping",
+    "displayName": "Achats",
+    "color": "#FF7F50",
+    "description": "Shopping and market"
+  },
+  {
+    "id": 20,
+    "name": "health",
+    "displayName": "Santé",
+    "color": "#98FB98",
+    "description": "Health and medical"
+  },
+  {
+    "id": 21,
+    "name": "sports",
+    "displayName": "Sports",
+    "color": "#FFA500",
+    "description": "Sports and activities"
+  },
+  {
+    "id": 22,
+    "name": "music",
+    "displayName": "Musique",
+    "color": "#9370DB",
+    "description": "Music and dance"
+  },
+  {
+    "id": 23,
+    "name": "culture",
+    "displayName": "Culture",
+    "color": "#D2691E",
+    "description": "Cultural traditions and customs"
+  },
+  {
+    "id": 24,
+    "name": "festivals",
+    "displayName": "Fêtes",
+    "color": "#FF1493",
+    "description": "Festivals and celebrations"
+  },
+  {
+    "id": 25,
+    "name": "environment",
+    "displayName": "Environnement",
+    "color": "#228B22",
+    "description": "Environment and conservation"
+  }
+]

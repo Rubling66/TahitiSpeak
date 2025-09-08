@@ -1,0 +1,223 @@
+{
+  "id": "health-medical",
+  "slug": "health-medical",
+  "level": "intermediate",
+  "title": {
+    "fr": "Santé et Médical",
+    "ty": "Te Ora ma te Ra'au",
+    "en": "Health and Medical"
+  },
+  "summary": {
+    "fr": "Apprenez le vocabulaire médical et de santé en tahitien",
+    "ty": "E hi'o i te mau 'upu ora ma te ra'au",
+    "en": "Learn health and medical vocabulary in Tahitian"
+  },
+  "durationMin": 30,
+  "heroMediaId": "health-medical-hero",
+  "isPublished": true,
+  "tags": ["health", "medical", "intermediate", "emergency"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Décrire des symptômes et problèmes de santé",
+            "ty": "E fa'a'ite i te mau mata'u ma te mau piha'ina ora",
+            "en": "Describe symptoms and health problems"
+          },
+          {
+            "fr": "Communiquer avec les professionnels de santé",
+            "ty": "E parau e te mau taote ma te mau taata ra'au",
+            "en": "Communicate with healthcare professionals"
+          },
+          {
+            "fr": "Comprendre la médecine traditionnelle polynésienne",
+            "ty": "E mārama i te ra'au tupuna porinētia",
+            "en": "Understand traditional Polynesian medicine"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "ora",
+            "french": "santé/vie",
+            "english": "health/life",
+            "pronunciation": "oh-rah",
+            "audioId": "audio-ora"
+          },
+          {
+            "tahitian": "ma'i",
+            "french": "maladie",
+            "english": "illness",
+            "pronunciation": "mah-ee",
+            "audioId": "audio-mai"
+          },
+          {
+            "tahitian": "taote",
+            "french": "docteur",
+            "english": "doctor",
+            "pronunciation": "tah-oh-teh",
+            "audioId": "audio-taote"
+          },
+          {
+            "tahitian": "ra'au",
+            "french": "médicament",
+            "english": "medicine",
+            "pronunciation": "rah-ah-oo",
+            "audioId": "audio-raau"
+          },
+          {
+            "tahitian": "'ā'ē",
+            "french": "douleur",
+            "english": "pain",
+            "pronunciation": "ah-eh",
+            "audioId": "audio-ae"
+          },
+          {
+            "tahitian": "fiu",
+            "french": "fièvre",
+            "english": "fever",
+            "pronunciation": "fee-oo",
+            "audioId": "audio-fiu"
+          },
+          {
+            "tahitian": "'ā'ē 'upo'o",
+            "french": "mal de tête",
+            "english": "headache",
+            "pronunciation": "ah-eh oo-poh-oh",
+            "audioId": "audio-ae-upoo"
+          },
+          {
+            "tahitian": "'ā'ē 'ōpū",
+            "french": "mal de ventre",
+            "english": "stomach ache",
+            "pronunciation": "ah-eh oh-poo",
+            "audioId": "audio-ae-opu"
+          },
+          {
+            "tahitian": "tahu'a ra'au",
+            "french": "guérisseur traditionnel",
+            "english": "traditional healer",
+            "pronunciation": "tah-hoo-ah rah-ah-oo",
+            "audioId": "audio-tahua-raau"
+          },
+          {
+            "tahitian": "fare ma'i",
+            "french": "hôpital",
+            "english": "hospital",
+            "pronunciation": "fah-reh mah-ee",
+            "audioId": "audio-fare-mai"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "medical-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation chez le médecin",
+              "ty": "E ha'api'i i teie parau i te taote",
+              "en": "Practice this conversation at the doctor's"
+            },
+            "dialogue": [
+              {
+                "speaker": "Taote",
+                "text": "E aha ta 'oe piha'ina?",
+                "translation": "Quel est votre problème ? / What is your problem?"
+              },
+              {
+                "speaker": "Ma'i",
+                "text": "Ua 'ā'ē to'u 'upo'o",
+                "translation": "J'ai mal à la tête / I have a headache"
+              },
+              {
+                "speaker": "Taote",
+                "text": "E hia mahana ua 'ā'ē ai?",
+                "translation": "Depuis combien de jours avez-vous mal ? / How many days have you had pain?"
+              }
+            ]
+          },
+          {
+            "type": "symptom-matching",
+            "instruction": {
+              "fr": "Associez les symptômes aux parties du corps",
+              "ty": "E fa'ari'i te mau mata'u e te mau 'āpī o te tino",
+              "en": "Match symptoms to body parts"
+            },
+            "pairs": [
+              { "symptom": "'ā'ē 'upo'o", "bodyPart": "'upo'o" },
+              { "symptom": "'ā'ē 'ōpū", "bodyPart": "'ōpū" },
+              { "symptom": "fiu", "bodyPart": "tino atoa" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La médecine traditionnelle polynésienne, pratiquée par les 'tahu'a ra'au', utilise des plantes médicinales locales et des techniques de massage. Cette approche holistique considère l'équilibre entre le corps, l'esprit et l'environnement. Aujourd'hui, elle coexiste avec la médecine moderne dans le système de santé polynésien.",
+          "ty": "Te ra'au tupuna porinētia, e rave nei e te mau tahu'a ra'au, e fa'aohipa nei i te mau rā'au ra'au fenua ma te mau huru romiromi. Teie huru holistic e mārama nei i te fa'atau'ē i te tino, te mana'o ma te taiao. I teie nei, e noho hia e te ra'au taime nei i roto i te pūpū ra'au porinētia.",
+          "en": "Traditional Polynesian medicine, practiced by 'tahu'a ra'au', uses local medicinal plants and massage techniques. This holistic approach considers the balance between body, mind, and environment. Today, it coexists with modern medicine in the Polynesian healthcare system."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant communiquer sur des questions de santé en tahitien. Ce vocabulaire peut être vital en cas d'urgence médicale.",
+          "ty": "E nehenehe teie nei ia 'oe e parau i te mau mea ora tahiti. Teie mau 'upu e mea rahi i te taime piha'ina ra'au.",
+          "en": "You can now communicate about health issues in Tahitian. This vocabulary can be vital in case of medical emergency."
+        },
+        "keyPoints": [
+          "Traditional and modern medicine coexist in Polynesia",
+          "'Tahu'a ra'au' are traditional healers",
+          "Health vocabulary is essential for emergencies"
+        ]
+      }
+    }
+  ]
+}

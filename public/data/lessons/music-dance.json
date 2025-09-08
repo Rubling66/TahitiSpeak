@@ -1,0 +1,236 @@
+{
+  "id": "music-dance",
+  "slug": "music-dance",
+  "level": "intermediate",
+  "title": {
+    "fr": "Musique et Danse",
+    "ty": "Te Himene ma te 'Ori",
+    "en": "Music and Dance"
+  },
+  "summary": {
+    "fr": "Explorez la musique et la danse traditionnelles polynésiennes",
+    "ty": "E 'ite i te himene ma te 'ori tupuna porinētia",
+    "en": "Explore traditional Polynesian music and dance"
+  },
+  "durationMin": 30,
+  "heroMediaId": "music-dance-hero",
+  "isPublished": true,
+  "tags": ["music", "dance", "culture", "traditional"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Apprendre le vocabulaire musical tahitien",
+            "ty": "E hi'o i te mau 'upu himene tahiti",
+            "en": "Learn Tahitian musical vocabulary"
+          },
+          {
+            "fr": "Comprendre les danses traditionnelles",
+            "ty": "E mārama i te mau 'ori tupuna",
+            "en": "Understand traditional dances"
+          },
+          {
+            "fr": "Apprécier l'importance culturelle de la musique",
+            "ty": "E māita'i i te rahi o te himene i te haapiira'a",
+            "en": "Appreciate the cultural importance of music"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "himene",
+            "french": "musique/chanson",
+            "english": "music/song",
+            "pronunciation": "hee-meh-neh",
+            "audioId": "audio-himene"
+          },
+          {
+            "tahitian": "'ori",
+            "french": "danse",
+            "english": "dance",
+            "pronunciation": "oh-ree",
+            "audioId": "audio-ori"
+          },
+          {
+            "tahitian": "tamure",
+            "french": "danse tahitienne rapide",
+            "english": "fast Tahitian dance",
+            "pronunciation": "tah-moo-reh",
+            "audioId": "audio-tamure"
+          },
+          {
+            "tahitian": "'ote'a",
+            "french": "danse guerrière",
+            "english": "warrior dance",
+            "pronunciation": "oh-teh-ah",
+            "audioId": "audio-otea"
+          },
+          {
+            "tahitian": "aparima",
+            "french": "danse des mains",
+            "english": "hand dance",
+            "pronunciation": "ah-pah-ree-mah",
+            "audioId": "audio-aparima"
+          },
+          {
+            "tahitian": "pahu",
+            "french": "tambour traditionnel",
+            "english": "traditional drum",
+            "pronunciation": "pah-hoo",
+            "audioId": "audio-pahu"
+          },
+          {
+            "tahitian": "to'ere",
+            "french": "tambour fendu",
+            "english": "slit drum",
+            "pronunciation": "toh-eh-reh",
+            "audioId": "audio-toere"
+          },
+          {
+            "tahitian": "vivo",
+            "french": "flûte nasale",
+            "english": "nose flute",
+            "pronunciation": "vee-voh",
+            "audioId": "audio-vivo"
+          },
+          {
+            "tahitian": "ukulele",
+            "french": "petite guitare",
+            "english": "small guitar",
+            "pronunciation": "oo-koo-leh-leh",
+            "audioId": "audio-ukulele"
+          },
+          {
+            "tahitian": "tarava",
+            "french": "chant polyphonique",
+            "english": "polyphonic singing",
+            "pronunciation": "tah-rah-vah",
+            "audioId": "audio-tarava"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "music-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation musicale",
+              "ty": "E ha'api'i i teie parau himene",
+              "en": "Practice this musical conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Hoa",
+                "text": "E nehenehe ta 'oe e 'ori?",
+                "translation": "Sais-tu danser ? / Can you dance?"
+              },
+              {
+                "speaker": "'Oe",
+                "text": "E, ua hi'o au i te tamure ma te aparima",
+                "translation": "Oui, j'ai appris le tamure et l'aparima / Yes, I learned tamure and aparima"
+              },
+              {
+                "speaker": "Hoa",
+                "text": "E aha te himene here roa ia 'oe?",
+                "translation": "Quelle est ta musique préférée ? / What is your favorite music?"
+              }
+            ]
+          },
+          {
+            "type": "instrument-matching",
+            "instruction": {
+              "fr": "Associez les instruments à leurs descriptions",
+              "ty": "E fa'atau i te mau taputapu himene ma to rātou fa'a'ite",
+              "en": "Match instruments with their descriptions"
+            },
+            "pairs": [
+              {
+                "instrument": "Pahu",
+                "description": "Large traditional drum made from coconut trunk",
+                "tahitian": "Te pahu rahi mai te pu niu"
+              },
+              {
+                "instrument": "To'ere",
+                "description": "Wooden slit drum with different tones",
+                "tahitian": "Te pahu rā'au e rahi ai te leo"
+              },
+              {
+                "instrument": "Vivo",
+                "description": "Traditional nose flute",
+                "tahitian": "Te pū ihu tupuna"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La musique et la danse sont au cœur de la culture polynésienne. Chaque danse raconte une histoire : l'ote'a exprime la force guerrière, le tamure célèbre la joie de vivre, et l'aparima raconte des légendes avec les mains. Les instruments traditionnels comme le pahu et le to'ere rythment les cérémonies. Le tarava, chant polyphonique unique, transmet les généalogies et les légendes. Ces arts vivants continuent d'évoluer tout en préservant leur essence spirituelle.",
+          "ty": "Te himene ma te 'ori o te pu'upu o te haapiira'a porinētia. Te 'ori atoa e parau nei i te pārau : te 'ote'a e fa'a'ite nei i te mana toa, te tamure e fa'anahonaho nei i te hauoli, e te aparima e parau nei i te mau pārau tupuna e te mau rima. Te mau taputapu himene tupuna e pehe ai te pahu ma te to'ere e fa'ataoto nei i te mau tahua. Te tarava, te himene leo maha, e ha'apa'o nei i te mau tupuna ma te mau pārau tupuna. Teie mau tū e fa'ahou tonu nei e fa'aora tonu hoi i to rātou varua.",
+          "en": "Music and dance are at the heart of Polynesian culture. Each dance tells a story: ote'a expresses warrior strength, tamure celebrates joy of life, and aparima tells legends with hands. Traditional instruments like pahu and to'ere rhythm ceremonies. Tarava, unique polyphonic singing, transmits genealogies and legends. These living arts continue to evolve while preserving their spiritual essence."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous connaissez maintenant les bases de la musique et de la danse polynésiennes. Ces arts vous connectent à l'âme de la culture tahitienne.",
+          "ty": "Ua 'ite nei 'oe i te mau pū o te himene ma te 'ori porinētia. Teie mau tū e fa'atau ia 'oe i te varua o te haapiira'a tahiti.",
+          "en": "You now know the basics of Polynesian music and dance. These arts connect you to the soul of Tahitian culture."
+        },
+        "keyPoints": [
+          "Each dance has specific cultural meaning and purpose",
+          "Traditional instruments create the rhythm of ceremonies",
+          "Music and dance preserve and transmit cultural knowledge",
+          "These arts continue to evolve while maintaining tradition"
+        ]
+      }
+    }
+  ]
+}

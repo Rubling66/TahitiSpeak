@@ -1,0 +1,219 @@
+{
+  "id": "colors-nature",
+  "slug": "colors-nature",
+  "level": "beginner",
+  "title": {
+    "fr": "Couleurs et Nature",
+    "ty": "Te Tae ma te Taiao",
+    "en": "Colors and Nature"
+  },
+  "summary": {
+    "fr": "Apprenez les couleurs et les éléments de la nature en tahitien",
+    "ty": "A hi'o i te tae ma te mau mea taiao",
+    "en": "Learn colors and nature elements in Tahitian"
+  },
+  "durationMin": 25,
+  "heroMediaId": "colors-nature-hero",
+  "isPublished": true,
+  "tags": ["colors", "nature", "beginner", "vocabulary"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Identifier les couleurs principales en tahitien",
+            "ty": "E 'ite i te mau tae rahi",
+            "en": "Identify main colors in Tahitian"
+          },
+          {
+            "fr": "Décrire les éléments naturels avec leurs couleurs",
+            "ty": "E fa'a'ite i te mau mea taiao e to ratou tae",
+            "en": "Describe natural elements with their colors"
+          },
+          {
+            "fr": "Utiliser les adjectifs de couleur correctement",
+            "ty": "E fa'aohipa maita'i i te mau 'upu tae",
+            "en": "Use color adjectives correctly"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "'ute'ute",
+            "french": "rouge",
+            "english": "red",
+            "pronunciation": "oo-teh oo-teh",
+            "audioId": "audio-ute-ute"
+          },
+          {
+            "tahitian": "ninamu",
+            "french": "jaune",
+            "english": "yellow",
+            "pronunciation": "nee-nah-moo",
+            "audioId": "audio-ninamu"
+          },
+          {
+            "tahitian": "mata",
+            "french": "vert",
+            "english": "green",
+            "pronunciation": "mah-tah",
+            "audioId": "audio-mata"
+          },
+          {
+            "tahitian": "moana",
+            "french": "bleu",
+            "english": "blue",
+            "pronunciation": "moh-ah-nah",
+            "audioId": "audio-moana"
+          },
+          {
+            "tahitian": "'enaena",
+            "french": "orange",
+            "english": "orange",
+            "pronunciation": "eh-nah-eh-nah",
+            "audioId": "audio-enaena"
+          },
+          {
+            "tahitian": "'ere'ere",
+            "french": "noir",
+            "english": "black",
+            "pronunciation": "eh-reh eh-reh",
+            "audioId": "audio-ere-ere"
+          },
+          {
+            "tahitian": "tea",
+            "french": "blanc",
+            "english": "white",
+            "pronunciation": "teh-ah",
+            "audioId": "audio-tea"
+          },
+          {
+            "tahitian": "motu",
+            "french": "île",
+            "english": "island",
+            "pronunciation": "moh-too",
+            "audioId": "audio-motu"
+          },
+          {
+            "tahitian": "maunga",
+            "french": "montagne",
+            "english": "mountain",
+            "pronunciation": "mah-oon-gah",
+            "audioId": "audio-maunga"
+          },
+          {
+            "tahitian": "vai",
+            "french": "eau",
+            "english": "water",
+            "pronunciation": "vah-ee",
+            "audioId": "audio-vai"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "matching",
+            "instruction": {
+              "fr": "Associez les couleurs tahitiennes avec leurs équivalents français",
+              "ty": "E fa'ari'i te mau tae tahiti e te mau tae farani",
+              "en": "Match Tahitian colors with their French equivalents"
+            },
+            "pairs": [
+              { "tahitian": "'ute'ute", "french": "rouge" },
+              { "tahitian": "ninamu", "french": "jaune" },
+              { "tahitian": "mata", "french": "vert" },
+              { "tahitian": "moana", "french": "bleu" }
+            ]
+          },
+          {
+            "type": "description",
+            "instruction": {
+              "fr": "Décrivez ces éléments naturels avec leur couleur",
+              "ty": "E fa'a'ite i teie mau mea taiao e to ratou tae",
+              "en": "Describe these natural elements with their color"
+            },
+            "items": [
+              {
+                "image": "ocean.jpg",
+                "answer": "Te moana moana",
+                "translation": "L'océan bleu / The blue ocean"
+              },
+              {
+                "image": "mountain.jpg",
+                "answer": "Te maunga mata",
+                "translation": "La montagne verte / The green mountain"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "En Polynésie française, les couleurs ont une signification culturelle profonde. Le bleu (moana) représente l'océan omniprésent, le vert (mata) symbolise la végétation luxuriante des îles, et le rouge ('ute'ute) est souvent associé aux fleurs tropicales comme l'hibiscus.",
+          "ty": "I Porinētia farāni, te mau tae e nehenehe roa to ratou ha'amanaora'a. Te moana e fa'a'ite nei i te moana rahi, te mata e fa'a'ite nei i te mau rā'au o te mau motu, e te 'ute'ute e pi'i hia nei i te mau tiare tropique e paha te pua.",
+          "en": "In French Polynesia, colors have deep cultural significance. Blue (moana) represents the omnipresent ocean, green (mata) symbolizes the lush vegetation of the islands, and red ('ute'ute) is often associated with tropical flowers like hibiscus."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous avez appris les couleurs principales et les éléments naturels en tahitien. Continuez à pratiquer en décrivant votre environnement avec ces nouveaux mots.",
+          "ty": "Ua 'oe hi'o i te mau tae rahi e te mau mea taiao. E fa'ahou i te ha'api'ira'a ma te fa'a'ite i to 'oe taiao e teie mau 'upu 'āpī.",
+          "en": "You have learned the main colors and natural elements in Tahitian. Continue practicing by describing your environment with these new words."
+        },
+        "keyPoints": [
+          "Colors in Tahitian often relate to nature",
+          "'moana' means both blue and ocean",
+          "Color adjectives follow the noun in Tahitian"
+        ]
+      }
+    }
+  ]
+}

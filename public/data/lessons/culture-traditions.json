@@ -1,0 +1,260 @@
+{
+  "id": "culture-traditions",
+  "slug": "culture-traditions",
+  "level": "intermediate",
+  "title": {
+    "fr": "Culture et Traditions",
+    "ty": "Te Haapiira'a ma te Mau Tu'una",
+    "en": "Culture and Traditions"
+  },
+  "summary": {
+    "fr": "Découvrez la riche culture et les traditions polynésiennes",
+    "ty": "E 'ite i te haapiira'a ma te mau tu'una porinētia",
+    "en": "Discover the rich Polynesian culture and traditions"
+  },
+  "durationMin": 35,
+  "heroMediaId": "culture-traditions-hero",
+  "isPublished": true,
+  "tags": ["culture", "traditions", "polynesian", "heritage"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Comprendre les traditions polynésiennes importantes",
+            "ty": "E mārama i te mau tu'una porinētia rahi",
+            "en": "Understand important Polynesian traditions"
+          },
+          {
+            "fr": "Apprendre le vocabulaire culturel tahitien",
+            "ty": "E hi'o i te mau 'upu haapiira'a tahiti",
+            "en": "Learn Tahitian cultural vocabulary"
+          },
+          {
+            "fr": "Respecter et apprécier l'héritage polynésien",
+            "ty": "E fa'aitoito ma e māita'i i te tahua porinētia",
+            "en": "Respect and appreciate Polynesian heritage"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "haapiira'a",
+            "french": "culture",
+            "english": "culture",
+            "pronunciation": "hah-ah-pee-ee-rah-ah",
+            "audioId": "audio-haapiiraa"
+          },
+          {
+            "tahitian": "tu'una",
+            "french": "tradition",
+            "english": "tradition",
+            "pronunciation": "too-oo-nah",
+            "audioId": "audio-tuuna"
+          },
+          {
+            "tahitian": "tahua",
+            "french": "héritage",
+            "english": "heritage",
+            "pronunciation": "tah-hoo-ah",
+            "audioId": "audio-tahua"
+          },
+          {
+            "tahitian": "tamure",
+            "french": "danse traditionnelle",
+            "english": "traditional dance",
+            "pronunciation": "tah-moo-reh",
+            "audioId": "audio-tamure"
+          },
+          {
+            "tahitian": "heiva",
+            "french": "festival culturel",
+            "english": "cultural festival",
+            "pronunciation": "heh-ee-vah",
+            "audioId": "audio-heiva"
+          },
+          {
+            "tahitian": "marae",
+            "french": "temple polynésien",
+            "english": "Polynesian temple",
+            "pronunciation": "mah-rah-eh",
+            "audioId": "audio-marae"
+          },
+          {
+            "tahitian": "tapa",
+            "french": "tissu traditionnel",
+            "english": "traditional cloth",
+            "pronunciation": "tah-pah",
+            "audioId": "audio-tapa"
+          },
+          {
+            "tahitian": "tatau",
+            "french": "tatouage",
+            "english": "tattoo",
+            "pronunciation": "tah-tah-oo",
+            "audioId": "audio-tatau"
+          },
+          {
+            "tahitian": "va'a",
+            "french": "pirogue",
+            "english": "outrigger canoe",
+            "pronunciation": "vah-ah",
+            "audioId": "audio-vaa"
+          },
+          {
+            "tahitian": "mana",
+            "french": "pouvoir spirituel",
+            "english": "spiritual power",
+            "pronunciation": "mah-nah",
+            "audioId": "audio-mana"
+          },
+          {
+            "tahitian": "tabu",
+            "french": "interdit/sacré",
+            "english": "forbidden/sacred",
+            "pronunciation": "tah-boo",
+            "audioId": "audio-tabu"
+          },
+          {
+            "tahitian": "rahui",
+            "french": "protection traditionnelle",
+            "english": "traditional protection",
+            "pronunciation": "rah-hoo-ee",
+            "audioId": "audio-rahui"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "cultural-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation culturelle",
+              "ty": "E ha'api'i i teie parau haapiira'a",
+              "en": "Practice this cultural conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Metua",
+                "text": "E aha te heiva rahi i Tahiti?",
+                "translation": "Quel est le grand festival à Tahiti ? / What is the big festival in Tahiti?"
+              },
+              {
+                "speaker": "Tamarii",
+                "text": "O te Heiva i Tahiti, te heiva rahi roa",
+                "translation": "C'est le Heiva i Tahiti, le plus grand festival / It's Heiva i Tahiti, the biggest festival"
+              },
+              {
+                "speaker": "Metua",
+                "text": "E nehenehe ta 'oe e tamure?",
+                "translation": "Sais-tu danser le tamure ? / Can you dance tamure?"
+              },
+              {
+                "speaker": "Tamarii",
+                "text": "E, ua hi'o au i te tamure ma te 'ote'a",
+                "translation": "Oui, j'ai appris le tamure et l'otea / Yes, I learned tamure and otea"
+              }
+            ]
+          },
+          {
+            "type": "tradition-matching",
+            "instruction": {
+              "fr": "Associez les traditions à leurs descriptions",
+              "ty": "E fa'atau i te mau tu'una ma to rātou fa'a'ite",
+              "en": "Match traditions with their descriptions"
+            },
+            "pairs": [
+              {
+                "tradition": "Marae",
+                "description": "Sacred temple for ceremonies",
+                "tahitian": "Fare tabu no te mau tahua"
+              },
+              {
+                "tradition": "Tatau",
+                "description": "Traditional body art with spiritual meaning",
+                "tahitian": "Te tā'iri tinito ma te mana"
+              },
+              {
+                "tradition": "Va'a",
+                "description": "Traditional sailing vessel",
+                "tahitian": "Te pahi tupuna"
+              },
+              {
+                "tradition": "Rahui",
+                "description": "Traditional resource protection",
+                "tahitian": "Te paruru tupuna"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La culture polynésienne est riche en traditions millénaires. Le concept de 'mana' (pouvoir spirituel) imprègne tous les aspects de la vie. Les marae étaient des centres spirituels et sociaux. Le tatau (tatouage) raconte l'histoire personnelle et familiale. La navigation traditionnelle en va'a témoigne de l'expertise maritime polynésienne. Le rahui protège les ressources naturelles selon les cycles lunaires. Ces traditions continuent de guider la vie moderne en Polynésie.",
+          "ty": "Te haapiira'a porinētia e rahi ai te mau tu'una matahiti ato'a. Te mana e rave nei i te mau mea atoa o te ora. Te mau marae o te mau 'āfata varua ma te feti'ara'a. Te tatau e parau nei i te pārau ta'ata ma te 'utuāfare. Te tere tupuna i te va'a e fa'a'ite nei i te mātau moana porinētia. Te rahui e paruru nei i te mau rauemi taiao e tia ai te mahina. Teie mau tu'una e fa'aora tonu nei i te ora taime nei i Porinētia.",
+          "en": "Polynesian culture is rich in ancient traditions. The concept of 'mana' (spiritual power) permeates all aspects of life. Marae were spiritual and social centers. Tatau (tattoo) tells personal and family history. Traditional navigation in va'a demonstrates Polynesian maritime expertise. Rahui protects natural resources according to lunar cycles. These traditions continue to guide modern life in Polynesia."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous comprenez maintenant les traditions polynésiennes fondamentales. Cette connaissance vous aidera à apprécier la richesse culturelle de Tahiti et de ses îles.",
+          "ty": "Ua mārama nei 'oe i te mau tu'una porinētia pū. Teie mātauraa e 'oa ia 'oe e māita'i ai i te rahi haapiira'a o Tahiti ma tōna mau motu.",
+          "en": "You now understand fundamental Polynesian traditions. This knowledge will help you appreciate the cultural richness of Tahiti and its islands."
+        },
+        "keyPoints": [
+          "Mana is the spiritual force that connects all things",
+          "Traditional practices continue to influence modern life",
+          "Respect for nature and ancestors guides Polynesian values",
+          "Cultural preservation is essential for future generations"
+        ]
+      }
+    }
+  ]
+}

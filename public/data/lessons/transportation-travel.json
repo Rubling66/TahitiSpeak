@@ -1,0 +1,223 @@
+{
+  "id": "transportation-travel",
+  "slug": "transportation-travel",
+  "level": "intermediate",
+  "title": {
+    "fr": "Transport et Voyage",
+    "ty": "Te Fa'arerere'a ma te Tere",
+    "en": "Transportation and Travel"
+  },
+  "summary": {
+    "fr": "Apprenez le vocabulaire du transport et du voyage en tahitien",
+    "ty": "E hi'o i te mau 'upu fa'arerere'a ma te tere",
+    "en": "Learn transportation and travel vocabulary in Tahitian"
+  },
+  "durationMin": 25,
+  "heroMediaId": "transportation-travel-hero",
+  "isPublished": true,
+  "tags": ["transportation", "travel", "intermediate", "vehicles"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Nommer les différents moyens de transport",
+            "ty": "E ta'a i te mau huru fa'arerere'a",
+            "en": "Name different means of transportation"
+          },
+          {
+            "fr": "Demander des directions et des informations de voyage",
+            "ty": "E ui i te mau 'ohipa ma te mau parau tere",
+            "en": "Ask for directions and travel information"
+          },
+          {
+            "fr": "Comprendre la culture du voyage en Polynésie",
+            "ty": "E mārama i te haapiira'a tere porinētia",
+            "en": "Understand Polynesian travel culture"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "pahi",
+            "french": "bateau",
+            "english": "boat/ship",
+            "pronunciation": "pah-hee",
+            "audioId": "audio-pahi"
+          },
+          {
+            "tahitian": "va'a",
+            "french": "pirogue",
+            "english": "canoe",
+            "pronunciation": "vah-ah",
+            "audioId": "audio-vaa"
+          },
+          {
+            "tahitian": "'ōfa'i",
+            "french": "voiture",
+            "english": "car",
+            "pronunciation": "oh-fah-ee",
+            "audioId": "audio-ofai"
+          },
+          {
+            "tahitian": "pereoo",
+            "french": "avion",
+            "english": "airplane",
+            "pronunciation": "peh-reh-oh-oh",
+            "audioId": "audio-pereoo"
+          },
+          {
+            "tahitian": "tere",
+            "french": "voyager",
+            "english": "to travel",
+            "pronunciation": "teh-reh",
+            "audioId": "audio-tere"
+          },
+          {
+            "tahitian": "'ara",
+            "french": "route/chemin",
+            "english": "road/path",
+            "pronunciation": "ah-rah",
+            "audioId": "audio-ara"
+          },
+          {
+            "tahitian": "mahana tere",
+            "french": "jour de voyage",
+            "english": "travel day",
+            "pronunciation": "mah-hah-nah teh-reh",
+            "audioId": "audio-mahana-tere"
+          },
+          {
+            "tahitian": "fare tere",
+            "french": "gare/station",
+            "english": "station",
+            "pronunciation": "fah-reh teh-reh",
+            "audioId": "audio-fare-tere"
+          },
+          {
+            "tahitian": "moni tere",
+            "french": "prix du voyage",
+            "english": "travel fare",
+            "pronunciation": "moh-nee teh-reh",
+            "audioId": "audio-moni-tere"
+          },
+          {
+            "tahitian": "fenua 'ē",
+            "french": "pays étranger",
+            "english": "foreign country",
+            "pronunciation": "feh-noo-ah eh",
+            "audioId": "audio-fenua-e"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "travel-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation de voyage",
+              "ty": "E ha'api'i i teie parau tere",
+              "en": "Practice this travel conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Tere",
+                "text": "E hia te moni tere i Moorea?",
+                "translation": "Combien coûte le voyage à Moorea ? / How much does the trip to Moorea cost?"
+              },
+              {
+                "speaker": "Taata tere",
+                "text": "E 1500 francs te moni",
+                "translation": "C'est 1500 francs / It's 1500 francs"
+              },
+              {
+                "speaker": "Tere",
+                "text": "E hia horo te tere?",
+                "translation": "Combien d'heures dure le voyage ? / How many hours is the journey?"
+              }
+            ]
+          },
+          {
+            "type": "transportation-matching",
+            "instruction": {
+              "fr": "Associez les moyens de transport aux situations",
+              "ty": "E fa'ari'i te mau huru fa'arerere'a e te mau ravea",
+              "en": "Match transportation methods to situations"
+            },
+            "pairs": [
+              { "transport": "va'a", "situation": "traditional fishing" },
+              { "transport": "pahi", "situation": "inter-island travel" },
+              { "transport": "pereoo", "situation": "international travel" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Le voyage en Polynésie française a une riche tradition maritime. Les va'a (pirogues) étaient les premiers moyens de transport entre les îles. Aujourd'hui, les ferries modernes et les avions connectent les îles, mais la navigation traditionnelle reste importante pour la culture et les festivals comme la Hawaiki Nui Va'a.",
+          "ty": "Te tere i Porinētia farāni e mea rahi tona haapiira'a moana. Te mau va'a, o te mau fa'arerere'a mua roa ia i rotopū i te mau motu. I teie nei, te mau pahi ma te mau pereoo e fa'ari'i nei i te mau motu, e te fa'arerere'a tupuna e mea rahi tonu no te haapiira'a ma te mau tamaraa e pehe ai te Hawaiki Nui Va'a.",
+          "en": "Travel in French Polynesia has a rich maritime tradition. Va'a (canoes) were the first means of transportation between islands. Today, modern ferries and planes connect the islands, but traditional navigation remains important for culture and festivals like the Hawaiki Nui Va'a."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant parler de transport et de voyage en tahitien. Ce vocabulaire vous aidera à naviguer en Polynésie française.",
+          "ty": "E nehenehe teie nei ia 'oe e parau i te fa'arerere'a ma te tere tahiti. Teie mau 'upu e 'oa ia 'oe e tere ai i Porinētia farāni.",
+          "en": "You can now talk about transportation and travel in Tahitian. This vocabulary will help you navigate French Polynesia."
+        },
+        "keyPoints": [
+          "Va'a (canoes) are central to Polynesian culture",
+          "Inter-island travel connects the archipelago",
+          "Traditional navigation skills are still valued"
+        ]
+      }
+    }
+  ]
+}

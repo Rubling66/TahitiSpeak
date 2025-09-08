@@ -1,0 +1,213 @@
+{
+  "id": 1,
+  "slug": "greetings-basics",
+  "level": "Beginner",
+  "title": {
+    "fr": "Salutations de base",
+    "tah": "Te faarava rahi",
+    "en": "Basic Greetings"
+  },
+  "summary": "Learn essential greetings and polite expressions in Tahitian French, including formal and informal ways to say hello, goodbye, and common courtesy phrases.",
+  "durationMin": 15,
+  "heroMediaId": 1,
+  "isPublished": true,
+  "tags": ["greetings", "basics", "politeness", "social"],
+  "version": 1,
+  "createdAt": 1704067200000,
+  "updatedAt": 1704067200000,
+  "sections": [
+    {
+      "kind": "Objectives",
+      "title": "Objectifs de la leçon",
+      "contentMd": "## Objectifs d'apprentissage\n\nÀ la fin de cette leçon, vous serez capable de :\n\n- Saluer quelqu'un en français tahitien\n- Utiliser les expressions de politesse courantes\n- Distinguer les salutations formelles et informelles\n- Dire au revoir de manière appropriée\n\n## Contexte culturel\n\nLes salutations en Polynésie française reflètent l'importance des relations sociales et du respect mutuel dans la culture tahitienne. L'usage du français mélangé avec des expressions tahitiennes est très courant dans la vie quotidienne.",
+      "sortOrder": 1
+    },
+    {
+      "kind": "Vocabulary",
+      "title": "Vocabulaire essentiel",
+      "vocab": [
+        {
+          "fr": "Bonjour",
+          "tah": "Ia ora na",
+          "en": "Hello/Good morning",
+          "ipaFr": "/bon.ˈʒuʁ/",
+          "ipaTah": "/i.a ˈo.ra na/",
+          "partOfSpeech": "interjection",
+          "note": "Salutation standard utilisée jusqu'à midi",
+          "audioMediaId": 101,
+          "isCore": true,
+          "sortOrder": 1
+        },
+        {
+          "fr": "Bonsoir",
+          "tah": "Ia ora na",
+          "en": "Good evening",
+          "ipaFr": "/bon.ˈswaʁ/",
+          "ipaTah": "/i.a ˈo.ra na/",
+          "partOfSpeech": "interjection",
+          "note": "Utilisé après 18h environ",
+          "audioMediaId": 102,
+          "isCore": true,
+          "sortOrder": 2
+        },
+        {
+          "fr": "Salut",
+          "tah": "Kaoha",
+          "en": "Hi/Bye (informal)",
+          "ipaFr": "/sa.ˈly/",
+          "ipaTah": "/ka.ˈo.ha/",
+          "partOfSpeech": "interjection",
+          "note": "Informel, utilisé entre amis",
+          "audioMediaId": 103,
+          "isCore": true,
+          "sortOrder": 3
+        },
+        {
+          "fr": "Au revoir",
+          "tah": "Nana",
+          "en": "Goodbye",
+          "ipaFr": "/o ʁə.ˈvwaʁ/",
+          "ipaTah": "/ˈna.na/",
+          "partOfSpeech": "interjection",
+          "note": "Salutation de départ standard",
+          "audioMediaId": 104,
+          "isCore": true,
+          "sortOrder": 4
+        },
+        {
+          "fr": "S'il vous plaît",
+          "tah": "Taime",
+          "en": "Please",
+          "ipaFr": "/sil vu ˈplɛ/",
+          "ipaTah": "/ˈtai.me/",
+          "partOfSpeech": "expression",
+          "note": "Formule de politesse pour demander",
+          "audioMediaId": 105,
+          "isCore": true,
+          "sortOrder": 5
+        },
+        {
+          "fr": "Merci",
+          "tah": "Mauruuru",
+          "en": "Thank you",
+          "ipaFr": "/mɛʁ.ˈsi/",
+          "ipaTah": "/mau.ˈru.u.ru/",
+          "partOfSpeech": "interjection",
+          "note": "Expression de gratitude",
+          "audioMediaId": 106,
+          "isCore": true,
+          "sortOrder": 6
+        },
+        {
+          "fr": "De rien",
+          "tah": "Aita pe'ape'a",
+          "en": "You're welcome",
+          "ipaFr": "/də ˈʁjɛ̃/",
+          "ipaTah": "/ˈai.ta pe.ˈa.pe.a/",
+          "partOfSpeech": "expression",
+          "note": "Réponse à 'merci'",
+          "audioMediaId": 107,
+          "isCore": true,
+          "sortOrder": 7
+        },
+        {
+          "fr": "Excusez-moi",
+          "tah": "Aroha",
+          "en": "Excuse me",
+          "ipaFr": "/ɛks.ky.ze ˈmwa/",
+          "ipaTah": "/a.ˈro.ha/",
+          "partOfSpeech": "expression",
+          "note": "Pour attirer l'attention ou s'excuser",
+          "audioMediaId": 108,
+          "isCore": true,
+          "sortOrder": 8
+        }
+      ],
+      "sortOrder": 2
+    },
+    {
+      "kind": "Practice",
+      "title": "Exercices pratiques",
+      "exercises": [
+        {
+          "type": "MCQ",
+          "prompt": "Comment dit-on 'Bonjour' en tahitien ?",
+          "data": {
+            "question": "Comment dit-on 'Bonjour' en tahitien ?",
+            "options": ["Ia ora na", "Nana", "Kaoha", "Mauruuru"],
+            "correctIndex": 0
+          },
+          "solution": {
+            "explanation": "'Ia ora na' est la salutation tahitienne standard qui correspond à 'Bonjour' en français."
+          },
+          "points": 10,
+          "sortOrder": 1
+        },
+        {
+          "type": "Match",
+          "prompt": "Associez les salutations françaises avec leurs équivalents tahitiens :",
+          "data": {
+            "pairs": [
+              {"left": "Merci", "right": "Mauruuru"},
+              {"left": "Au revoir", "right": "Nana"},
+              {"left": "Salut", "right": "Kaoha"},
+              {"left": "S'il vous plaît", "right": "Taime"}
+            ]
+          },
+          "solution": {
+            "explanation": "Ces associations reflètent les expressions de politesse courantes dans les deux langues."
+          },
+          "points": 20,
+          "sortOrder": 2
+        },
+        {
+          "type": "FillBlank",
+          "prompt": "Complétez le dialogue avec les bonnes salutations :",
+          "data": {
+            "text": "Marie : _____ Pierre ! Comment ça va ?\nPierre : Salut Marie ! Ça va bien, _____ ! Et toi ?\nMarie : Très bien aussi. Bon, je dois y aller. _____ !\nPierre : _____ Marie !",
+            "blanks": [
+              {"position": 8, "answer": "Salut", "alternatives": ["Bonjour", "Kaoha"]},
+              {"position": 65, "answer": "merci", "alternatives": ["mauruuru"]},
+              {"position": 125, "answer": "Au revoir", "alternatives": ["Nana"]},
+              {"position": 145, "answer": "Au revoir", "alternatives": ["Nana", "Salut"]}
+            ]
+          },
+          "solution": {
+            "explanation": "Ce dialogue montre l'usage naturel des salutations dans une conversation informelle."
+          },
+          "points": 15,
+          "sortOrder": 3
+        }
+      ],
+      "sortOrder": 3
+    },
+    {
+      "kind": "Culture",
+      "title": "Contexte culturel",
+      "contentMd": "## Les salutations en Polynésie française\n\n### Importance sociale\n\nEn Polynésie française, les salutations ne sont pas de simples formalités. Elles reflètent le respect mutuel et l'importance des relations sociales dans la culture tahitienne. Ne pas saluer quelqu'un que l'on connaît peut être perçu comme impoli.\n\n### Mélange linguistique\n\nDans la vie quotidienne, il est très courant d'entendre un mélange de français et de tahitien :\n- \"Ia ora na, ça va ?\" (mélange tahitien-français)\n- \"Bonjour, maita'i ?\" (français-tahitien pour \"bien ?\")\n\n### Gestes d'accompagnement\n\nLes salutations sont souvent accompagnées de gestes :\n- **Poignée de main** : courante dans les contextes formels\n- **Bise** : entre amis et famille (généralement 2 bises)\n- **Accolade** : entre proches\n\n### Contexte temporel\n\n- **Matin** : \"Ia ora na\" ou \"Bonjour\"\n- **Après-midi** : \"Ia ora na\" reste approprié\n- **Soir** : \"Bonsoir\" en français, \"Ia ora na\" en tahitien\n\n### Respect des aînés\n\nLa culture polynésienne accorde une grande importance au respect des aînés. Les salutations envers les personnes âgées sont particulièrement importantes et doivent être chaleureuses et respectueuses.",
+      "sortOrder": 4
+    },
+    {
+      "kind": "Review",
+      "title": "Révision",
+      "contentMd": "## Récapitulatif de la leçon\n\n### Points clés à retenir\n\n1. **Salutations de base** :\n   - Bonjour = Ia ora na\n   - Au revoir = Nana\n   - Salut = Kaoha (informel)\n\n2. **Politesse** :\n   - Merci = Mauruuru\n   - S'il vous plaît = Taime\n   - De rien = Aita pe'ape'a\n\n3. **Usage culturel** :\n   - Les salutations sont importantes socialement\n   - Le mélange français-tahitien est courant\n   - Respect particulier envers les aînés\n\n### Prochaines étapes\n\nDans la prochaine leçon, nous apprendrons :\n- Les présentations personnelles\n- Comment demander et donner son nom\n- Les expressions pour faire connaissance\n\n### Conseils pour la pratique\n\n- Utilisez ces salutations dans vos interactions quotidiennes\n- Écoutez les locaux pour entendre les variations\n- N'hésitez pas à mélanger français et tahitien comme le font les habitants",
+      "exercises": [
+        {
+          "type": "Pronunciation",
+          "prompt": "Répétez après l'audio : 'Ia ora na, mauruuru roa !'",
+          "data": {
+            "target": "Ia ora na, mauruuru roa !",
+            "threshold": 0.7,
+            "audioUrl": "/audio/greetings/ia-ora-na-mauruuru-roa.mp3"
+          },
+          "solution": {
+            "explanation": "Cette phrase signifie 'Bonjour, merci beaucoup !' et combine deux expressions essentielles."
+          },
+          "points": 10,
+          "sortOrder": 1
+        }
+      ],
+      "sortOrder": 5
+    }
+  ]
+}

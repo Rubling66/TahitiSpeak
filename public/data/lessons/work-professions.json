@@ -1,0 +1,220 @@
+{
+  "id": "work-professions",
+  "slug": "work-professions",
+  "level": "intermediate",
+  "title": {
+    "fr": "Travail et Professions",
+    "ty": "Te Hana ma te Mau Tuhaa",
+    "en": "Work and Professions"
+  },
+  "summary": {
+    "fr": "Découvrez les métiers et le vocabulaire professionnel en tahitien",
+    "ty": "E hi'o i te mau hana ma te mau 'upu hana",
+    "en": "Discover jobs and professional vocabulary in Tahitian"
+  },
+  "durationMin": 30,
+  "heroMediaId": "work-professions-hero",
+  "isPublished": true,
+  "tags": ["work", "professions", "intermediate", "society"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Apprendre les noms des professions courantes",
+            "ty": "E hi'o i te mau i'oa hana rahi",
+            "en": "Learn names of common professions"
+          },
+          {
+            "fr": "Parler de son travail et ses activités",
+            "ty": "E parau i to hana ma to mau hana",
+            "en": "Talk about your work and activities"
+          },
+          {
+            "fr": "Comprendre le monde du travail polynésien",
+            "ty": "E mārama i te ao hana porinētia",
+            "en": "Understand the Polynesian work world"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "hana",
+            "french": "travail",
+            "english": "work",
+            "pronunciation": "hah-nah",
+            "audioId": "audio-hana"
+          },
+          {
+            "tahitian": "taote",
+            "french": "docteur",
+            "english": "doctor",
+            "pronunciation": "tah-oh-teh",
+            "audioId": "audio-taote"
+          },
+          {
+            "tahitian": "farii",
+            "french": "enseignant",
+            "english": "teacher",
+            "pronunciation": "fah-ree-ee",
+            "audioId": "audio-farii"
+          },
+          {
+            "tahitian": "tauihaa i'a",
+            "french": "pêcheur",
+            "english": "fisherman",
+            "pronunciation": "tah-oo-ee-hah-ah ee-ah",
+            "audioId": "audio-tauihaa-ia"
+          },
+          {
+            "tahitian": "tahu'a",
+            "french": "artisan/expert",
+            "english": "craftsman/expert",
+            "pronunciation": "tah-hoo-ah",
+            "audioId": "audio-tahua"
+          },
+          {
+            "tahitian": "tamarii hana",
+            "french": "employé",
+            "english": "employee",
+            "pronunciation": "tah-mah-ree-ee hah-nah",
+            "audioId": "audio-tamarii-hana"
+          },
+          {
+            "tahitian": "fare hana",
+            "french": "bureau",
+            "english": "office",
+            "pronunciation": "fah-reh hah-nah",
+            "audioId": "audio-fare-hana"
+          },
+          {
+            "tahitian": "tauihaa fenua",
+            "french": "agriculteur",
+            "english": "farmer",
+            "pronunciation": "tah-oo-ee-hah-ah feh-noo-ah",
+            "audioId": "audio-tauihaa-fenua"
+          },
+          {
+            "tahitian": "tahu'a va'a",
+            "french": "constructeur de pirogue",
+            "english": "canoe builder",
+            "pronunciation": "tah-hoo-ah vah-ah",
+            "audioId": "audio-tahua-vaa"
+          },
+          {
+            "tahitian": "himene",
+            "french": "musicien/chanteur",
+            "english": "musician/singer",
+            "pronunciation": "hee-meh-neh",
+            "audioId": "audio-himene"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "profession-matching",
+            "instruction": {
+              "fr": "Associez les professions aux outils de travail",
+              "ty": "E fa'ari'i te mau hana e te mau taputapu hana",
+              "en": "Match professions to work tools"
+            },
+            "pairs": [
+              { "profession": "tauihaa i'a", "tool": "matau" },
+              { "profession": "taote", "tool": "ra'au" },
+              { "profession": "tahu'a va'a", "tool": "to'i" }
+            ]
+          },
+          {
+            "type": "dialogue",
+            "instruction": {
+              "fr": "Complétez ce dialogue sur le travail",
+              "ty": "E fa'aoti i teie parau no te hana",
+              "en": "Complete this dialogue about work"
+            },
+            "conversation": [
+              {
+                "speaker": "A",
+                "text": "E aha to hana?",
+                "translation": "Quel est votre travail ? / What is your job?"
+              },
+              {
+                "speaker": "B",
+                "text": "He _____ vau",
+                "options": ["taote", "farii", "tauihaa i'a"],
+                "correct": "farii",
+                "translation": "Je suis enseignant / I am a teacher"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "En Polynésie française, les métiers traditionnels comme la pêche, l'agriculture et l'artisanat coexistent avec les professions modernes. Le concept de 'tahu'a' désigne une personne experte dans son domaine, qu'il s'agisse de construction de pirogues, de tatouage traditionnel ou de médecine traditionnelle.",
+          "ty": "I Porinētia farāni, te mau hana tupuna e paha te tauihaa i'a, te tauihaa fenua ma te tahu'a e noho hia e te mau hana taime nei. Te mana'o 'tahu'a' e fa'a'ite nei i te taata mātau i tana tuhaa, e paha te hana va'a, te tatau tupuna, te ra'au tupuna rānei.",
+          "en": "In French Polynesia, traditional jobs like fishing, agriculture, and craftsmanship coexist with modern professions. The concept of 'tahu'a' refers to a person who is expert in their field, whether it's canoe building, traditional tattooing, or traditional medicine."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous connaissez maintenant les principales professions en tahitien. Pratiquez en parlant de votre travail et en posant des questions sur celui des autres.",
+          "ty": "Ua 'oe 'ite teie nei i te mau hana rahi tahiti. E ha'api'i ma te parau i to hana e te ui atu i te hana o te mau taata 'ē.",
+          "en": "You now know the main professions in Tahitian. Practice by talking about your work and asking others about theirs."
+        },
+        "keyPoints": [
+          "'Tahu'a' indicates expertise and mastery",
+          "Traditional and modern professions coexist",
+          "Work vocabulary helps in social interactions"
+        ]
+      }
+    }
+  ]
+}

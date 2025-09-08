@@ -1,0 +1,235 @@
+{
+  "id": "time-calendar",
+  "slug": "time-calendar",
+  "level": "beginner",
+  "title": {
+    "fr": "Temps et Calendrier",
+    "ty": "Te Taime ma te Tahua",
+    "en": "Time and Calendar"
+  },
+  "summary": {
+    "fr": "Apprenez à exprimer le temps et les dates en tahitien",
+    "ty": "E hi'o e parau i te taime ma te mau mahana",
+    "en": "Learn to express time and dates in Tahitian"
+  },
+  "durationMin": 25,
+  "heroMediaId": "time-calendar-hero",
+  "isPublished": true,
+  "tags": ["time", "calendar", "beginner", "daily-life"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Dire l'heure en tahitien",
+            "ty": "E parau i te taime tahiti",
+            "en": "Tell time in Tahitian"
+          },
+          {
+            "fr": "Nommer les jours de la semaine et les mois",
+            "ty": "E ta'iri i te mau mahana ma te mau ava'e",
+            "en": "Name days of the week and months"
+          },
+          {
+            "fr": "Exprimer des moments de la journée",
+            "ty": "E fa'a'ite i te mau taime o te mahana",
+            "en": "Express times of day"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "taime",
+            "french": "temps/heure",
+            "english": "time",
+            "pronunciation": "tah-ee-meh",
+            "audioId": "audio-taime"
+          },
+          {
+            "tahitian": "mahana",
+            "french": "jour",
+            "english": "day",
+            "pronunciation": "mah-hah-nah",
+            "audioId": "audio-mahana"
+          },
+          {
+            "tahitian": "po",
+            "french": "nuit",
+            "english": "night",
+            "pronunciation": "poh",
+            "audioId": "audio-po"
+          },
+          {
+            "tahitian": "ananahi",
+            "french": "demain",
+            "english": "tomorrow",
+            "pronunciation": "ah-nah-nah-hee",
+            "audioId": "audio-ananahi"
+          },
+          {
+            "tahitian": "inanahi",
+            "french": "hier",
+            "english": "yesterday",
+            "pronunciation": "ee-nah-nah-hee",
+            "audioId": "audio-inanahi"
+          },
+          {
+            "tahitian": "teie nei",
+            "french": "maintenant",
+            "english": "now",
+            "pronunciation": "teh-ee-eh neh-ee",
+            "audioId": "audio-teie-nei"
+          },
+          {
+            "tahitian": "monite",
+            "french": "lundi",
+            "english": "Monday",
+            "pronunciation": "moh-nee-teh",
+            "audioId": "audio-monite"
+          },
+          {
+            "tahitian": "mahana piti",
+            "french": "mardi",
+            "english": "Tuesday",
+            "pronunciation": "mah-hah-nah pee-tee",
+            "audioId": "audio-mahana-piti"
+          },
+          {
+            "tahitian": "mahana toru",
+            "french": "mercredi",
+            "english": "Wednesday",
+            "pronunciation": "mah-hah-nah toh-roo",
+            "audioId": "audio-mahana-toru"
+          },
+          {
+            "tahitian": "mahana maha",
+            "french": "jeudi",
+            "english": "Thursday",
+            "pronunciation": "mah-hah-nah mah-hah",
+            "audioId": "audio-mahana-maha"
+          },
+          {
+            "tahitian": "mahana pae",
+            "french": "vendredi",
+            "english": "Friday",
+            "pronunciation": "mah-hah-nah pah-eh",
+            "audioId": "audio-mahana-pae"
+          },
+          {
+            "tahitian": "mahana maa",
+            "french": "samedi",
+            "english": "Saturday",
+            "pronunciation": "mah-hah-nah mah-ah",
+            "audioId": "audio-mahana-maa"
+          },
+          {
+            "tahitian": "tapati",
+            "french": "dimanche",
+            "english": "Sunday",
+            "pronunciation": "tah-pah-tee",
+            "audioId": "audio-tapati"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "sequence",
+            "instruction": {
+              "fr": "Mettez les jours de la semaine dans l'ordre",
+              "ty": "E fa'atupu i te mau mahana o te hebedoma",
+              "en": "Put the days of the week in order"
+            },
+            "items": ["monite", "mahana piti", "mahana toru", "mahana maha", "mahana pae", "mahana maa", "tapati"]
+          },
+          {
+            "type": "time-telling",
+            "instruction": {
+              "fr": "Quelle heure est-il ?",
+              "ty": "E aha te taime ?",
+              "en": "What time is it?"
+            },
+            "clocks": [
+              {
+                "time": "09:00",
+                "answer": "Te iva hora",
+                "translation": "Il est neuf heures / It's nine o'clock"
+              },
+              {
+                "time": "14:30",
+                "answer": "Te ahuru-ma-maha hora e te afa",
+                "translation": "Il est quatorze heures trente / It's two thirty PM"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "En Polynésie française, le concept du temps est plus flexible qu'en Occident. L'expression 'heure tahitienne' fait référence à une approche plus détendue de la ponctualité. Les Tahitiens accordent plus d'importance aux relations humaines qu'aux horaires stricts.",
+          "ty": "I Porinētia farāni, te mana'o o te taime e māmā atu i te fenua 'ē. Te parau 'taime tahiti' e fa'a'ite nei i te huru māmā o te taime. Te mau tahiti e fa'anahonaho atu i te mau taata i te mau taime pa'ari.",
+          "en": "In French Polynesia, the concept of time is more flexible than in the West. The expression 'Tahitian time' refers to a more relaxed approach to punctuality. Tahitians place more importance on human relationships than strict schedules."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous savez maintenant exprimer le temps en tahitien. Pratiquez en parlant de votre emploi du temps quotidien avec ces nouveaux mots.",
+          "ty": "Ua 'oe 'ite teie nei e parau i te taime tahiti. E ha'api'i ma te parau i to 'oe taime mahana e teie mau 'upu 'āpī.",
+          "en": "You now know how to express time in Tahitian. Practice by talking about your daily schedule with these new words."
+        },
+        "keyPoints": [
+          "Days of the week use numbers (piti=2, toru=3, etc.)",
+          "'Mahana' means day and is used in most weekday names",
+          "Time expressions can be flexible in Tahitian culture"
+        ]
+      }
+    }
+  ]
+}
