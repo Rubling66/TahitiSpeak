@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TahitiSpeak 🌺
 
-## Getting Started
+**Interactive Tahitian Language Learning Platform**
 
-First, run the development server:
+TahitiSpeak is a comprehensive web application designed to help users learn the beautiful Tahitian language through interactive lessons, pronunciation practice, and cultural immersion.
 
+## ✨ Features
+
+- **Interactive Lessons**: Structured learning modules with progressive difficulty
+- **Pronunciation Practice**: Audio-based learning with speech recognition
+- **Cultural Context**: Learn language through Tahitian culture and traditions
+- **Progress Tracking**: Monitor your learning journey with detailed analytics
+- **Multi-language Support**: Interface available in English, French, and Tahitian
+- **Offline Capability**: Continue learning even without internet connection
+- **Admin Dashboard**: Content management and user analytics
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Rubling66/TahitiSpeak.git
+cd TahitiSpeak
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+# Edit .env.local with your configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Testing**: Jest, React Testing Library, Playwright
+- **Internationalization**: next-intl
+- **Audio Processing**: Web Audio API
+- **PWA**: Service Workers, Workbox
+- **Analytics**: Custom performance monitoring
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 Progressive Web App
 
-## Deploy on Vercel
+TahitiSpeak is built as a PWA, offering:
+- Offline functionality
+- App-like experience on mobile devices
+- Push notifications for learning reminders
+- Fast loading with service worker caching
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧪 Testing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run the test suite:
+```bash
+# Unit tests
+npm run test
+
+# Integration tests
+npm run test:integration
+
+# End-to-end tests
+npm run test:e2e
+
+# All tests with coverage
+npm run test:coverage
+```
+
+## 🌐 Internationalization
+
+Supported languages:
+- English (en)
+- French (fr) 
+- Tahitian (ty)
+
+## 📊 Performance
+
+- Lighthouse score: 95+
+- Core Web Vitals optimized
+- Bundle size analysis with webpack-bundle-analyzer
+- Performance monitoring with custom metrics
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Tahitian language experts and cultural consultants
+- Open source community for amazing tools and libraries
+- Beta testers and early adopters
+
+---
+
+**Māuruuru roa!** (Thank you very much!) for your interest in TahitiSpeak. Together, let's preserve and share the beauty of the Tahitian language! 🌺

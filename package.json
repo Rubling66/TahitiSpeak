@@ -1,6 +1,14 @@
 {
-  "name": "tahitian-tutor-web",
-  "version": "0.1.0",
+  "name": "tahitispeak",
+  "version": "1.0.0",
+  "description": "TahitiSpeak - Interactive Tahitian Language Learning Platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rubling66/TahitiSpeak.git"
+  },
+  "homepage": "https://github.com/Rubling66/TahitiSpeak",
+  "author": "Rubling66",
+  "keywords": ["tahitian", "language-learning", "education", "nextjs", "react"],
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
