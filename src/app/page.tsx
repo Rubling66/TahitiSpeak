@@ -3,9 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Users, Award, ArrowRight, Play } from 'lucide-react';
-import Button from '@/components/ui/Button';
-import Card, { CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 import { PublicLayout } from '@/components/layout/AppLayout';
 
 export default function Home() {

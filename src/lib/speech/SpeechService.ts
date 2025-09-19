@@ -10,6 +10,18 @@ interface SpeechRecognitionErrorEvent extends Event {
   message: string;
 }
 
+interface SpeechGrammarList {
+  length: number;
+  item(index: number): SpeechGrammar;
+  addFromURI(src: string, weight?: number): void;
+  addFromString(string: string, weight?: number): void;
+}
+
+interface SpeechGrammar {
+  src: string;
+  weight: number;
+}
+
 interface SpeechRecognition extends EventTarget {
   continuous: boolean;
   grammars: SpeechGrammarList;
@@ -41,7 +53,6 @@ declare global {
     webkitSpeechRecognition: {
       new (): SpeechRecognition;
     };
-    speechSynthesis: SpeechSynthesis;
   }
 }
 

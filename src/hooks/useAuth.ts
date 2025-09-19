@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import authService, { AuthState, LoginCredentials, RegisterData, ResetPasswordData, ChangePasswordData, User } from '../services/AuthService';
-import { LoggingService } from '../services/LoggingService';
-import { PerformanceMonitoringService } from '../services/PerformanceMonitoringService';
+import { logger } from '../services/LoggingService';
+import { performanceMonitoring } from '../services/PerformanceMonitoringService';
 
 export interface UseAuthReturn {
   // State
@@ -39,44 +39,45 @@ export function useAuth(): UseAuthReturn {
       
       // Log authentication events
       if (newState.isAuthenticated && !authState.isAuthenticated) {
-        LoggingService.info('User logged in', {
+        logger.info('User logged in', {
           userId: newState.user?.id,
           userRole: newState.user?.role,
           timestamp: new Date().toISOString()
         });
         
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_login_success',
           value: 1,
-          timestamp: Date.now(),
-          tags: {
+          unit: 'count',
+          category: 'custom',
+          metadata: {
             userRole: newState.user?.role || 'unknown'
           }
         });
       } else if (!newState.isAuthenticated && authState.isAuthenticated) {
-        LoggingService.info('User logged out', {
+        logger.info('User logged out', {
           timestamp: new Date().toISOString()
         });
         
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_logout',
           value: 1,
-          timestamp: Date.now()
+          unit: 'count',
+          category: 'custom'
         });
       }
       
       if (newState.error && newState.error !== authState.error) {
-        LoggingService.error('Authentication error', {
+        logger.error('Authentication error', {
           error: newState.error,
           timestamp: new Date().toISOString()
         });
         
-        PerformanceMonitoringService.recordError({
-          name: 'AuthenticationError',
+        performanceMonitoring.logError({
           message: newState.error,
           stack: '',
-          timestamp: Date.now(),
-          context: {
+          level: 'error',
+          metadata: {
             component: 'useAuth',
             action: 'state_change'
           }
@@ -91,7 +92,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Login attempt started', {
+      logger.info('Login attempt started', {
         email: credentials.email,
         rememberMe: credentials.rememberMe,
         timestamp: new Date().toISOString()
@@ -102,32 +103,34 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       
       if (result.success) {
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_login_duration',
           value: duration,
-          timestamp: Date.now(),
-          tags: {
+          unit: 'milliseconds',
+          category: 'custom',
+          metadata: {
             success: 'true'
           }
         });
         
-        LoggingService.info('Login successful', {
+        logger.info('Login successful', {
           email: credentials.email,
           duration,
           timestamp: new Date().toISOString()
         });
       } else {
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_login_duration',
           value: duration,
-          timestamp: Date.now(),
-          tags: {
+          unit: 'milliseconds',
+          category: 'custom',
+          metadata: {
             success: 'false',
             error: result.error || 'unknown'
           }
         });
         
-        LoggingService.warn('Login failed', {
+        logger.warn('Login failed', {
           email: credentials.email,
           error: result.error,
           duration,
@@ -140,12 +143,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'LoginError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'login',
           email: credentials.email,
@@ -153,7 +155,7 @@ export function useAuth(): UseAuthReturn {
         }
       });
       
-      LoggingService.error('Login error', {
+      logger.error('Login error', {
         email: credentials.email,
         error: errorMessage,
         duration,
@@ -168,7 +170,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Registration attempt started', {
+      logger.info('Registration attempt started', {
         email: data.email,
         name: data.name,
         role: data.role,
@@ -180,17 +182,18 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       
       if (result.success) {
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_register_duration',
           value: duration,
-          timestamp: Date.now(),
-          tags: {
+          unit: 'milliseconds',
+          category: 'custom',
+          metadata: {
             success: 'true',
             role: data.role || 'student'
           }
         });
         
-        LoggingService.info('Registration successful', {
+        logger.info('Registration successful', {
           email: data.email,
           name: data.name,
           role: data.role,
@@ -198,17 +201,18 @@ export function useAuth(): UseAuthReturn {
           timestamp: new Date().toISOString()
         });
       } else {
-        PerformanceMonitoringService.recordMetric({
+        performanceMonitoring.recordMetric({
           name: 'auth_register_duration',
           value: duration,
-          timestamp: Date.now(),
-          tags: {
+          unit: 'milliseconds',
+          category: 'custom',
+          metadata: {
             success: 'false',
             error: result.error || 'unknown'
           }
         });
         
-        LoggingService.warn('Registration failed', {
+        logger.warn('Registration failed', {
           email: data.email,
           error: result.error,
           duration,
@@ -221,12 +225,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Registration failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'RegistrationError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'register',
           email: data.email,
@@ -234,7 +237,7 @@ export function useAuth(): UseAuthReturn {
         }
       });
       
-      LoggingService.error('Registration error', {
+      logger.error('Registration error', {
         email: data.email,
         error: errorMessage,
         duration,
@@ -249,7 +252,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Logout started', {
+      logger.info('Logout started', {
         userId: authState.user?.id,
         timestamp: new Date().toISOString()
       });
@@ -258,13 +261,14 @@ export function useAuth(): UseAuthReturn {
       
       const duration = Date.now() - startTime;
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'auth_logout_duration',
         value: duration,
-        timestamp: Date.now()
+        unit: 'ms',
+        category: 'custom'
       });
       
-      LoggingService.info('Logout completed', {
+      logger.info('Logout completed', {
         duration,
         timestamp: new Date().toISOString()
       });
@@ -272,19 +276,18 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Logout failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'LogoutError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'logout',
           duration
         }
       });
       
-      LoggingService.error('Logout error', {
+      logger.error('Logout error', {
         error: errorMessage,
         duration,
         timestamp: new Date().toISOString()
@@ -296,7 +299,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Password reset attempt started', {
+      logger.info('Password reset attempt started', {
         email: data.email,
         timestamp: new Date().toISOString()
       });
@@ -305,23 +308,24 @@ export function useAuth(): UseAuthReturn {
       
       const duration = Date.now() - startTime;
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'auth_reset_password_duration',
         value: duration,
-        timestamp: Date.now(),
-        tags: {
-          success: result.success.toString()
-        }
+        unit: 'ms',
+        category: 'custom',
+        metadata: {
+            success: result.success.toString()
+          }
       });
       
       if (result.success) {
-        LoggingService.info('Password reset successful', {
+        logger.info('Password reset successful', {
           email: data.email,
           duration,
           timestamp: new Date().toISOString()
         });
       } else {
-        LoggingService.warn('Password reset failed', {
+        logger.warn('Password reset failed', {
           email: data.email,
           error: result.error,
           duration,
@@ -334,12 +338,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Password reset failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'PasswordResetError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'resetPassword',
           email: data.email,
@@ -355,7 +358,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Password change attempt started', {
+      logger.info('Password change attempt started', {
         userId: authState.user?.id,
         timestamp: new Date().toISOString()
       });
@@ -364,23 +367,24 @@ export function useAuth(): UseAuthReturn {
       
       const duration = Date.now() - startTime;
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'auth_change_password_duration',
         value: duration,
-        timestamp: Date.now(),
-        tags: {
+        unit: 'milliseconds',
+        category: 'custom',
+        metadata: {
           success: result.success.toString()
         }
       });
       
       if (result.success) {
-        LoggingService.info('Password change successful', {
+        logger.info('Password change successful', {
           userId: authState.user?.id,
           duration,
           timestamp: new Date().toISOString()
         });
       } else {
-        LoggingService.warn('Password change failed', {
+        logger.warn('Password change failed', {
           userId: authState.user?.id,
           error: result.error,
           duration,
@@ -393,12 +397,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Password change failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'PasswordChangeError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'changePassword',
           userId: authState.user?.id,
@@ -414,7 +417,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Profile update attempt started', {
+      logger.info('Profile update attempt started', {
         userId: authState.user?.id,
         updates: Object.keys(updates),
         timestamp: new Date().toISOString()
@@ -424,24 +427,25 @@ export function useAuth(): UseAuthReturn {
       
       const duration = Date.now() - startTime;
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'auth_update_profile_duration',
         value: duration,
-        timestamp: Date.now(),
-        tags: {
+        unit: 'milliseconds',
+        category: 'custom',
+        metadata: {
           success: result.success.toString()
         }
       });
       
       if (result.success) {
-        LoggingService.info('Profile update successful', {
+        logger.info('Profile update successful', {
           userId: authState.user?.id,
           updates: Object.keys(updates),
           duration,
           timestamp: new Date().toISOString()
         });
       } else {
-        LoggingService.warn('Profile update failed', {
+        logger.warn('Profile update failed', {
           userId: authState.user?.id,
           error: result.error,
           duration,
@@ -454,12 +458,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Profile update failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'ProfileUpdateError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'updateProfile',
           userId: authState.user?.id,
@@ -475,7 +478,7 @@ export function useAuth(): UseAuthReturn {
     const startTime = Date.now();
     
     try {
-      LoggingService.info('Token refresh attempt started', {
+      logger.info('Token refresh attempt started', {
         userId: authState.user?.id,
         timestamp: new Date().toISOString()
       });
@@ -484,23 +487,24 @@ export function useAuth(): UseAuthReturn {
       
       const duration = Date.now() - startTime;
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'auth_refresh_tokens_duration',
         value: duration,
-        timestamp: Date.now(),
-        tags: {
+        unit: 'milliseconds',
+        category: 'custom',
+        metadata: {
           success: success.toString()
         }
       });
       
       if (success) {
-        LoggingService.info('Token refresh successful', {
+        logger.info('Token refresh successful', {
           userId: authState.user?.id,
           duration,
           timestamp: new Date().toISOString()
         });
       } else {
-        LoggingService.warn('Token refresh failed', {
+        logger.warn('Token refresh failed', {
           userId: authState.user?.id,
           duration,
           timestamp: new Date().toISOString()
@@ -512,12 +516,11 @@ export function useAuth(): UseAuthReturn {
       const duration = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Token refresh failed';
       
-      PerformanceMonitoringService.recordError({
-        name: 'TokenRefreshError',
-        message: errorMessage,
+      performanceMonitoring.logError({
+          message: errorMessage,
         stack: error instanceof Error ? error.stack || '' : '',
-        timestamp: Date.now(),
-        context: {
+        level: 'error',
+        metadata: {
           component: 'useAuth',
           action: 'refreshTokens',
           userId: authState.user?.id,
@@ -532,7 +535,7 @@ export function useAuth(): UseAuthReturn {
   const clearError = useCallback(() => {
     // This would need to be implemented in AuthService
     // For now, we'll just log it
-    LoggingService.info('Auth error cleared', {
+    logger.info('Auth error cleared', {
       timestamp: new Date().toISOString()
     });
   }, []);

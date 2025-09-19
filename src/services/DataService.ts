@@ -223,6 +223,7 @@ export class DataService {
 
   private getAuthHeader(): string {
     // Get auth token from localStorage or context
+    if (typeof window === 'undefined') return '';
     const token = localStorage.getItem('auth_token');
     return token ? `Bearer ${token}` : '';
   }

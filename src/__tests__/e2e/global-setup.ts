@@ -93,4 +93,4 @@ async function setupTestData(page: any) {
   }
 }
 
-ex
+export default globalSetup;

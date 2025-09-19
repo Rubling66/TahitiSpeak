@@ -72,9 +72,9 @@ export const handlers = [
   }),
 
   http.post('/api/auth/register', async ({ request }) => {
-    const userData = await request.json();
+    const userData = await request.json() as Record<string, any>;
     return HttpResponse.json({
-      user: { ...mockUser, ...userData },
+      user: { ...mockUser, ...(userData || {}) },
       token: 'mock-jwt-token',
       success: true
     });
@@ -116,10 +116,10 @@ export const handlers = [
   }),
 
   http.post('/api/courses', async ({ request }) => {
-    const courseData = await request.json();
+    const courseData = await request.json() as Record<string, any>;
     const newCourse = {
       id: String(mockCourses.length + 1),
-      ...courseData,
+      ...(courseData || {}),
       lessons: 0,
       progress: 0
     };
@@ -148,11 +148,11 @@ export const handlers = [
 
   // Progress endpoints
   http.post('/api/progress', async ({ request }) => {
-    const progressData = await request.json();
+    const progressData = await request.json() as Record<string, any>;
     return HttpResponse.json({
       progress: {
         id: '1',
-        ...progressData,
+        ...(progressData || {}),
         timestamp: new Date().toISOString()
       }
     });

@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { AdminLayout } from '../../components/layout/AdminLayout';
-import { AdminDashboard } from '../../pages/admin/AdminDashboard';
-import { UserManagement } from '../../pages/admin/UserManagement';
-import { CourseManagement } from '../../pages/admin/CourseManagement';
+import AdminLayout from '../../components/admin/AdminLayout';
+import AdminDashboard from '../../pages/admin/AdminDashboard';
+import UserManagement from '../../pages/admin/UserManagement';
+import CourseManagement from '../../pages/admin/CourseManagement';
 
 // Mock dependencies
 jest.mock('next/navigation', () => ({

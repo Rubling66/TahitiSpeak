@@ -72,6 +72,9 @@ export class AdminAuthService {
    * Get current authenticated admin user
    */
   static getCurrentUser(): AdminUser | null {
+    // Check if running on server-side
+    if (typeof window === 'undefined') return null;
+    
     try {
       const stored = localStorage.getItem(this.ADMIN_STORAGE_KEY);
       if (!stored) return null;
@@ -95,6 +98,8 @@ export class AdminAuthService {
    * Set current user session
    */
   private static setCurrentUser(user: AdminUser): void {
+    if (typeof window === 'undefined') return;
+    
     try {
       const session = {
         user,
@@ -110,7 +115,9 @@ export class AdminAuthService {
    * Logout current user
    */
   static logout(): void {
-    localStorage.removeItem(this.ADMIN_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.ADMIN_STORAGE_KEY);
+    }
   }
 
   /**

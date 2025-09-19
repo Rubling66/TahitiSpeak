@@ -162,7 +162,7 @@ export function useTranslationManager(
     } catch (error) {
       updateState({ 
         isLoading: false, 
-        error: `Failed to update translation '${key}': ${error.message}` 
+        error: `Failed to update translation '${key}': ${error instanceof Error ? error.message : String(error)}` 
       });
       
       logger.error('Failed to update translation', { locale, key, error });
@@ -213,7 +213,7 @@ export function useTranslationManager(
     } catch (error) {
       updateState({ 
         isLoading: false, 
-        error: `Failed to preload namespaces: ${error.message}` 
+        error: `Failed to preload namespaces: ${error instanceof Error ? error.message : String(error)}` 
       });
       
       logger.error('Failed to preload namespaces', { locale, namespaces, error });
@@ -310,7 +310,7 @@ export function useTranslationManager(
       lastModified: state.lastUpdated,
       source: 'dynamic'
     };
-  }, [key, locale, state.lastUpdated]);
+  }, [locale, state.lastUpdated]);
 
   // Auto-load default namespace on mount
   useEffect(() => {

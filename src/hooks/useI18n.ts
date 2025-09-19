@@ -102,10 +102,10 @@ export function useI18n() {
   }, [formatter]);
   
   // RTL functions
-  const isRTL = useMemo(() => rtlUtils.isRTL(), [rtlUtils]);
-  const getTextDirection = useCallback(() => rtlUtils.getTextDirection(), [rtlUtils]);
-  const getRTLStyles = useCallback(() => rtlUtils.getRTLStyles(), [rtlUtils]);
-  const applyRTLStyles = useCallback((element: HTMLElement) => rtlUtils.applyRTLStyles(element), [rtlUtils]);
+  const isRTL = useMemo(() => rtlUtils.isRTL, [rtlUtils]);
+  const getTextDirection = useCallback(() => rtlUtils.direction, [rtlUtils]);
+  const getRTLStyles = useCallback(() => rtlUtils.getCSSProperties(), [rtlUtils]);
+  const applyRTLStyles = useCallback((styles: Record<string, any>) => rtlUtils.applyStyles(styles), [rtlUtils]);
   
   // Locale information
   const localeInfo = useMemo(() => ({
@@ -113,7 +113,7 @@ export function useI18n() {
     currency: formatter.currency,
     timezone: formatter.timezone,
     isRTL: formatter.isRTL,
-    direction: rtlUtils.getTextDirection()
+    direction: rtlUtils.direction
   }), [locale, formatter, rtlUtils]);
   
   // Common translation shortcuts

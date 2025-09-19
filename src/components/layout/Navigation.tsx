@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthorization } from '../../hooks/useAuthorization';
 import { authBridge } from '@/lib/auth/AuthBridge';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +14,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+} from '../ui/DropdownMenu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Badge } from '../ui/badge';
+import { Badge } from '../ui/Badge';
 import {
   Menu,
   X,

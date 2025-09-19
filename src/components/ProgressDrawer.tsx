@@ -59,38 +59,38 @@ export default function ProgressDrawer({
 
       // Combine lessons with progress data
       const progressItems: LessonProgressItem[] = lessons.map(lesson => {
-        const progress = userProgress.find(p => p.lessonSlug === lesson.slug) || null;
+        const progress = userProgress.find(p => p.lessonId === lesson.id) || null;
         return { lesson, progress };
       });
 
-      // Sort by lesson order or last accessed
+      // Sort by lesson order or last updated
       progressItems.sort((a, b) => {
-        if (a.progress?.lastAccessedAt && b.progress?.lastAccessedAt) {
-          return new Date(b.progress.lastAccessedAt).getTime() - new Date(a.progress.lastAccessedAt).getTime();
+        if (a.progress?.updatedAt && b.progress?.updatedAt) {
+          return b.progress.updatedAt - a.progress.updatedAt;
         }
-        if (a.progress?.lastAccessedAt) return -1;
-        if (b.progress?.lastAccessedAt) return 1;
+        if (a.progress?.updatedAt) return -1;
+        if (b.progress?.updatedAt) return 1;
         return a.lesson.title.en.localeCompare(b.lesson.title.en);
       });
 
       setProgressData(progressItems);
 
       // Calculate stats
-      const completedLessons = userProgress.filter(p => p.completedAt).length;
-      const totalTimeSpent = userProgress.reduce((sum, p) => sum + (p.timeSpent || 0), 0);
+      const completedLessons = userProgress.filter(p => p.completed).length;
+      const totalTimeSpent = 0; // Time tracking not available in current UserProgress structure
       const averageScore = userProgress.length > 0 
         ? userProgress.reduce((sum, p) => sum + (p.score || 0), 0) / userProgress.length 
         : 0;
       
       // Calculate streak (simplified - consecutive days with activity)
       const sortedProgress = userProgress
-        .filter(p => p.lastAccessedAt)
-        .sort((a, b) => new Date(b.lastAccessedAt!).getTime() - new Date(a.lastAccessedAt!).getTime());
+        .filter(p => p.updatedAt)
+        .sort((a, b) => b.updatedAt - a.updatedAt);
       
       let currentStreak = 0;
       if (sortedProgress.length > 0) {
         const today = new Date();
-        const lastActivity = new Date(sortedProgress[0].lastAccessedAt!);
+        const lastActivity = new Date(sortedProgress[0].updatedAt);
         const daysDiff = Math.floor((today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24));
         
         if (daysDiff <= 1) {
@@ -104,7 +104,7 @@ export default function ProgressDrawer({
         totalTimeSpent,
         averageScore,
         currentStreak,
-        lastActivity: sortedProgress.length > 0 ? new Date(sortedProgress[0].lastAccessedAt!) : null
+        lastActivity: sortedProgress.length > 0 ? new Date(sortedProgress[0].updatedAt) : null
       });
 
     } catch (err) {
@@ -136,7 +136,7 @@ export default function ProgressDrawer({
       return <span className="text-xs text-gray-400">Not started</span>;
     }
     
-    if (progress.completedAt) {
+    if (progress.completed) {
       return (
         <div className="flex items-center space-x-1">
           <Trophy className="h-3 w-3 text-yellow-500" />
@@ -145,7 +145,7 @@ export default function ProgressDrawer({
       );
     }
     
-    if (progress.lastAccessedAt) {
+    if (progress.attempts > 0) {
       return (
         <div className="flex items-center space-x-1">
           <Clock className="h-3 w-3 text-blue-500" />
@@ -308,16 +308,12 @@ export default function ProgressDrawer({
                               <span>
                                 {progress.attempts || 0} attempt{(progress.attempts || 0) !== 1 ? 's' : ''}
                               </span>
-                              {progress.timeSpent && (
-                                <span>{formatTime(progress.timeSpent)}</span>
-                              )}
+                              <span>Updated: {new Date(progress.updatedAt).toLocaleDateString()}</span>
                             </div>
                             
-                            {progress.lastAccessedAt && (
-                              <p className="text-xs text-gray-400">
-                                Last accessed: {new Date(progress.lastAccessedAt).toLocaleDateString()}
-                              </p>
-                            )}
+                            <p className="text-xs text-gray-400">
+                              Section: {progress.sectionKind}
+                            </p>
                           </div>
                         )}
                       </div>

@@ -95,24 +95,25 @@ export class AnalyticsService implements AnalyticsAPI {
   async getCourseAnalytics(courseId?: string, dateRange?: DateRange): Promise<CourseAnalytics[]> {
     try {
       const courses = courseId ? 
-        [await this.dataService.getCourse(courseId)] : 
-        await this.dataService.getAllCourses();
+        [await this.dataService.getCourse(parseInt(courseId))] :
+        await this.dataService.getCourses();
       
       const analytics: CourseAnalytics[] = [];
       
       for (const course of courses) {
         if (!course) continue;
         
-        const enrollments = await this.getCourseEnrollments(course.id);
-        const completions = await this.getCourseCompletions(course.id, dateRange);
-        const scores = await this.getCourseScores(course.id, dateRange);
-        const timeData = await this.getCourseTimeData(course.id, dateRange);
-        const dropoffPoints = await this.getDropoffPoints(course.id, dateRange);
-        const engagementMetrics = await this.getCourseEngagement(course.id, dateRange);
+        const courseIdStr = String(course.id);
+        const enrollments = await this.getCourseEnrollments(courseIdStr);
+        const completions = await this.getCourseCompletions(courseIdStr, dateRange);
+        const scores = await this.getCourseScores(courseIdStr, dateRange);
+        const timeData = await this.getCourseTimeData(courseIdStr, dateRange);
+        const dropoffPoints = await this.getDropoffPoints(courseIdStr, dateRange);
+        const engagementMetrics = await this.getCourseEngagement(courseIdStr, dateRange);
         
         analytics.push({
-          courseId: course.id,
-          courseName: course.title,
+          courseId: courseIdStr,
+          courseName: typeof course.title === 'string' ? course.title : (course.title.en || course.title.fr || 'Unknown Course'),
           enrollments: enrollments.length,
           completions: completions.length,
           completionRate: enrollments.length > 0 ? 
@@ -299,9 +300,9 @@ export class AnalyticsService implements AnalyticsAPI {
           return this.exportToCSV(data);
         case 'xlsx':
           return this.exportToExcel(data);
-        case 'json':
-          return new Blob([JSON.stringify(data, null, 2)], 
-            { type: 'application/json' });
+        case 'png':
+        case 'svg':
+          throw new Error(`Image export format ${options.format} not yet implemented`);
         default:
           throw new Error(`Unsupported export format: ${options.format}`);
       }

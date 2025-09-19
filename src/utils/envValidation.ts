@@ -133,41 +133,23 @@ export const API_KEY_CONFIGS: Record<string, ApiKeyConfig> = {
 
 /**
  * Validates all environment variables
+ * Safe for client-side usage - returns default state
  */
 export function validateEnvironment(): EnvValidationResult {
   const result: EnvValidationResult = {
-    isValid: true,
+    isValid: false,
     missingKeys: [],
     invalidKeys: [],
     warnings: [],
     errors: []
   };
 
-  // Check each configured API key
+  // For client-side, return default state
+  // Actual validation should be done server-side via API
   Object.values(API_KEY_CONFIGS).forEach(config => {
-    const value = process.env[config.key];
-    
-    if (!value) {
-      if (config.required) {
-        result.missingKeys.push(config.key);
-        result.errors.push(`Missing required environment variable: ${config.key} (${config.description})`);
-        result.isValid = false;
-      } else {
-        result.warnings.push(`Optional environment variable not set: ${config.key} (${config.description})`);
-      }
-    } else {
-      // Validate the key format if validator is provided
-      if (config.validator && !config.validator(value)) {
-        result.invalidKeys.push(config.key);
-        result.errors.push(`Invalid format for ${config.key}: ${config.description}`);
-        result.isValid = false;
-      }
-      
-      // Check for placeholder values
-      if (value.includes('your-') || value.includes('replace-') || value.includes('example')) {
-        result.invalidKeys.push(config.key);
-        result.warnings.push(`${config.key} appears to contain a placeholder value`);
-      }
+    if (config.required) {
+      result.missingKeys.push(config.key);
+      result.errors.push(`Environment validation should be done server-side: ${config.key}`);
     }
   });
 
@@ -217,6 +199,7 @@ export function getEnvironmentByCategory(): Record<string, ApiKeyConfig[]> {
 
 /**
  * Gets the current status of all environment variables
+ * Safe for client-side usage - doesn't access process.env directly
  */
 export function getEnvironmentStatus(): Record<string, {
   configured: boolean;
@@ -228,14 +211,13 @@ export function getEnvironmentStatus(): Record<string, {
   const status: Record<string, any> = {};
   
   Object.values(API_KEY_CONFIGS).forEach(config => {
-    const value = process.env[config.key];
-    const validation = value ? validateApiKey(config.key, value) : { isValid: false };
-    
+    // For client-side, we'll initialize with default values
+    // Actual values should be fetched from API endpoints
     status[config.key] = {
-      configured: !!value,
-      valid: validation.isValid,
+      configured: false,
+      valid: false,
       required: config.required,
-      maskedValue: value ? maskApiKey(value) : undefined
+      maskedValue: undefined
     };
   });
   
@@ -259,6 +241,7 @@ export function maskApiKey(key: string): string {
 
 /**
  * Checks if the application is properly configured for production
+ * Safe for client-side usage - returns default state
  */
 export function isProductionReady(): { ready: boolean; issues: string[] } {
   const validation = validateEnvironment();
@@ -274,24 +257,23 @@ export function isProductionReady(): { ready: boolean; issues: string[] } {
     issues.push(`Invalid API keys: ${validation.invalidKeys.join(', ')}`);
   }
   
-  // Check environment
-  if (process.env.NODE_ENV !== 'production') {
-    issues.push('NODE_ENV is not set to production');
-  }
+  // For client-side, we can't check NODE_ENV reliably
+  issues.push('Production readiness should be checked server-side');
   
   return {
-    ready: issues.length === 0,
+    ready: false,
     issues
   };
 }
 
 /**
  * Logs environment validation results
+ * Safe for client-side usage - logs default state
  */
 export function logEnvironmentStatus(): void {
   const validation = validateEnvironment();
   
-  console.log('🔧 Environment Validation Results:');
+  console.log('🔧 Environment Validation Results (Client-side):');
   console.log(`✅ Valid: ${validation.isValid}`);
   
   if (validation.errors.length > 0) {
@@ -308,9 +290,8 @@ export function logEnvironmentStatus(): void {
   Object.entries(categories).forEach(([category, configs]) => {
     console.log(`\n📁 ${category}:`);
     configs.forEach(config => {
-      const value = process.env[config.key];
-      const status = value ? '✅' : (config.required ? '❌' : '⚠️');
-      console.log(`  ${status} ${config.key} ${config.required ? '(required)' : '(optional)'}`);
+      const status = config.required ? '❌' : '⚠️';
+      console.log(`  ${status} ${config.key} ${config.required ? '(required)' : '(optional)'} - Check server-side`);
     });
   });
 }

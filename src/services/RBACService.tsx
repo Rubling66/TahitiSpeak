@@ -1,6 +1,6 @@
 import React from 'react';
-import { LoggingService } from './LoggingService';
-import { PerformanceMonitoringService } from './PerformanceMonitoringService';
+import { logger } from './LoggingService';
+import { performanceMonitoring } from './PerformanceMonitoringService';
 
 // Types and Interfaces
 export interface Permission {
@@ -349,7 +349,7 @@ class RBACService {
       const result = this.evaluateAccess(context, userPermissions);
       
       // Log access check
-      LoggingService.log('debug', 'Access check performed', {
+      logger.debug('Access check performed', {
         userId: context.user.id,
         resource: context.resource,
         action: context.action,
@@ -360,7 +360,7 @@ class RBACService {
       return result;
     } finally {
       const duration = performance.now() - startTime;
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'rbac_access_check_duration',
         value: duration,
         unit: 'milliseconds',

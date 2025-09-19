@@ -263,6 +263,7 @@ class SecurityService {
   // Private helper methods
   private getCurrentUserId(): string {
     // In a real implementation, get from authentication context
+    if (typeof window === 'undefined') return 'anonymous';
     return localStorage.getItem('current-user-id') || 'anonymous';
   }
 
@@ -273,6 +274,10 @@ class SecurityService {
 
   private getCSRFToken(): string {
     // Generate or retrieve CSRF token
+    if (typeof window === 'undefined') {
+      return CryptoJS.lib.WordArray.random(128/8).toString();
+    }
+    
     let token = sessionStorage.getItem('csrf-token');
     if (!token) {
       token = CryptoJS.lib.WordArray.random(128/8).toString();
@@ -291,6 +296,11 @@ class SecurityService {
   }
 
   private loadAuditLogs(): void {
+    if (typeof window === 'undefined') {
+      this.auditLogs = [];
+      return;
+    }
+    
     try {
       const stored = localStorage.getItem('tahitian-tutor-audit-logs');
       if (stored) {
@@ -306,6 +316,8 @@ class SecurityService {
   }
 
   private saveAuditLogs(): void {
+    if (typeof window === 'undefined') return;
+    
     try {
       // Keep only last 1000 entries to prevent storage bloat
       const logsToSave = this.auditLogs.slice(-1000);
@@ -360,4 +372,4 @@ class SecurityService {
 }
 
 export const securityService = SecurityService.getInstance();
-export default Security
+export default SecurityService;

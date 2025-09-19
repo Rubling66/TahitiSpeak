@@ -27,19 +27,19 @@ export const localeConfig: Record<Locale, {
   en: {
     dateFormat: 'MM/dd/yyyy',
     timeFormat: 'h:mm a',
-    numberFormat: { locale: 'en-US' },
+    numberFormat: {},
     currencyFormat: { style: 'currency', currency: 'USD' },
   },
   fr: {
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
-    numberFormat: { locale: 'fr-FR' },
+    numberFormat: {},
     currencyFormat: { style: 'currency', currency: 'EUR' },
   },
   ty: {
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
-    numberFormat: { locale: 'fr-PF' }, // French Polynesia
+    numberFormat: {}, // French Polynesia
     currencyFormat: { style: 'currency', currency: 'XPF' }, // CFP Franc
   },
 };
@@ -49,30 +49,8 @@ export default getRequestConfig(async ({ locale }) => {
   if (!locales.includes(locale as Locale)) notFound();
 
   return {
+    locale: locale as string,
     messages: (await import(`../messages/${locale}.json`)).default,
-    timeZone: getTimeZoneForLocale(locale as Locale),
-    now: new Date(),
-    formats: {
-      dateTime: {
-        short: {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        },
-        medium: {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        },
-        long: {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          weekday: 'long',
-        },
-      },
-      number: localeConfig[locale as Locale].numberFormat,
-    },
   };
 });
 

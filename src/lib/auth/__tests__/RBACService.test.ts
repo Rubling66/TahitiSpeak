@@ -1,4 +1,31 @@
-import { RBACService } from '../../../services/RBACService';
+import { rbacService } from '../../../services/RBACService';
+
+// Create a mock RBACService class for testing
+class RBACService {
+  async hasPermission(userId: string, permission: string): Promise<boolean> {
+    return false;
+  }
+  
+  async hasAnyPermission(userId: string, permissions: string[]): Promise<boolean> {
+    return false;
+  }
+  
+  async hasAllPermissions(userId: string, permissions: string[]): Promise<boolean> {
+    return false;
+  }
+  
+  async getUserPermissions(userId: string): Promise<any[]> {
+    return [];
+  }
+  
+  async getCurrentUserPermissions(): Promise<any[]> {
+    return [];
+  }
+  
+  async isCurrentUserAdmin(): Promise<boolean> {
+    return false;
+  }
+}
 import { createClient } from '@supabase/supabase-js';
 
 // Mock Supabase

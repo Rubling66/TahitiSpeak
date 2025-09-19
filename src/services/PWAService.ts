@@ -307,13 +307,25 @@ class PWAService {
   }
 
   getStatus(): PWAStatus {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      return {
+        isSupported: false,
+        isInstalled: false,
+        isInstallable: false,
+        isOnline: false,
+        serviceWorkerRegistered: false,
+        notificationsEnabled: false
+      };
+    }
+
     return {
       isSupported: 'serviceWorker' in navigator,
       isInstalled: window.matchMedia('(display-mode: standalone)').matches,
       isInstallable: !!this.installPrompt,
       isOnline: navigator.onLine,
       serviceWorkerRegistered: !!this.registration,
-      notificationsEnabled: Notification.permission === 'granted'
+      notificationsEnabled: typeof Notification !== 'undefined' && Notification.permission === 'granted'
     };
   }
 

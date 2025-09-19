@@ -30,6 +30,9 @@ class PerformanceService implements PerformanceAPI {
   }
 
   private initializeSampleData(): void {
+    // Only initialize on client-side to avoid SSR issues
+    if (typeof window === 'undefined') return;
+    
     // Initialize sample thresholds
     const sampleThresholds: PerformanceThreshold[] = [
       {
@@ -213,17 +216,20 @@ class PerformanceService implements PerformanceAPI {
   }
 
   private saveAlert(alert: PerformanceAlert): void {
+    if (typeof window === 'undefined') return;
     const alerts = this.getAlertsSync();
     alerts.unshift(alert);
     localStorage.setItem('performance_alerts', JSON.stringify(alerts.slice(0, 1000))); // Keep last 1000 alerts
   }
 
   private getThresholdsSync(): PerformanceThreshold[] {
+    if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem('performance_thresholds');
     return stored ? JSON.parse(stored) : [];
   }
 
   private getAlertsSync(): PerformanceAlert[] {
+    if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem('performance_alerts');
     return stored ? JSON.parse(stored) : [];
   }
@@ -284,7 +290,9 @@ class PerformanceService implements PerformanceAPI {
     alerts[alertIndex].resolved = true;
     alerts[alertIndex].resolvedAt = new Date();
     
-    localStorage.setItem('performance_alerts', JSON.stringify(alerts));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_alerts', JSON.stringify(alerts));
+    }
     return alerts[alertIndex];
   }
 
@@ -302,7 +310,9 @@ class PerformanceService implements PerformanceAPI {
     };
     
     thresholds.push(newThreshold);
-    localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
+    }
     return newThreshold;
   }
 
@@ -315,14 +325,18 @@ class PerformanceService implements PerformanceAPI {
     }
     
     thresholds[index] = { ...thresholds[index], ...threshold, updatedAt: new Date() };
-    localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
+    }
     return thresholds[index];
   }
 
   async deleteThreshold(id: string): Promise<void> {
     const thresholds = this.getThresholdsSync();
     const filtered = thresholds.filter(t => t.id !== id);
-    localStorage.setItem('performance_thresholds', JSON.stringify(filtered));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_thresholds', JSON.stringify(filtered));
+    }
   }
 
   // Content Performance
@@ -412,6 +426,7 @@ class PerformanceService implements PerformanceAPI {
 
   // Reports
   async getReports(): Promise<PerformanceReport[]> {
+    if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem('performance_reports');
     return stored ? JSON.parse(stored) : [];
   }
@@ -451,7 +466,9 @@ class PerformanceService implements PerformanceAPI {
     
     const reports = await this.getReports();
     reports.push(report);
-    localStorage.setItem('performance_reports', JSON.stringify(reports));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_reports', JSON.stringify(reports));
+    }
     
     return report;
   }
@@ -471,6 +488,7 @@ class PerformanceService implements PerformanceAPI {
 
   // Dashboards
   async getDashboards(): Promise<MonitoringDashboard[]> {
+    if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem('performance_dashboards');
     return stored ? JSON.parse(stored) : [];
   }
@@ -484,7 +502,9 @@ class PerformanceService implements PerformanceAPI {
     };
     
     dashboards.push(newDashboard);
-    localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
+    }
     return newDashboard;
   }
 
@@ -497,14 +517,18 @@ class PerformanceService implements PerformanceAPI {
     }
     
     dashboards[index] = { ...dashboards[index], ...dashboard, updatedAt: new Date() };
-    localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
+    }
     return dashboards[index];
   }
 
   async deleteDashboard(id: string): Promise<void> {
     const dashboards = await this.getDashboards();
     const filtered = dashboards.filter(d => d.id !== id);
-    localStorage.setItem('performance_dashboards', JSON.stringify(filtered));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('performance_dashboards', JSON.stringify(filtered));
+    }
   }
 
   // Logs

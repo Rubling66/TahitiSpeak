@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { IntlProvider } from 'react-intl';
-import { locales, defaultLocale, getDirection } from './config';
+import { locales, defaultLocale, getLocaleDirection } from './config';
 
 // Import message files
 import enMessages from '../messages/en.json';
@@ -55,7 +55,7 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
   
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState(() => messageMap[locale]);
-  const [direction, setDirection] = useState(() => getDirection(locale));
+  const [direction, setDirection] = useState(() => getLocaleDirection(locale));
 
   const setLocale = async (newLocale: Locale) => {
     if (newLocale === locale) return;
@@ -71,11 +71,11 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
       // Update state
       setLocaleState(newLocale);
       setMessages(messageMap[newLocale]);
-      setDirection(getDirection(newLocale));
+      setDirection(getLocaleDirection(newLocale));
       
       // Update document direction and lang
       if (typeof document !== 'undefined') {
-        document.documentElement.dir = getDirection(newLocale);
+        document.documentElement.dir = getLocaleDirection(newLocale);
         document.documentElement.lang = newLocale;
       }
     } catch (error) {

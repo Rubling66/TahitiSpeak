@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
 import { rbacService, AccessContext, AccessResult, ACTIONS, RESOURCES } from '../services/RBACService';
-import { LoggingService } from '../services/LoggingService';
-import { PerformanceMonitoringService } from '../services/PerformanceMonitoringService';
+import { logger } from '../services/LoggingService';
+import { performanceMonitoring } from '../services/PerformanceMonitoringService';
 
 // Types
 export interface AuthorizationHook {
@@ -50,7 +50,7 @@ export function useAuthorization(): AuthorizationHook {
   // Core permission checking
   const hasPermission = useCallback((resource: string, action: string, data?: any): boolean => {
     if (!isAuthenticated || !user) {
-      LoggingService.log('debug', 'Permission denied - not authenticated', { resource, action });
+      logger.debug('Permission denied - not authenticated', { resource, action });
       return false;
     }
 
@@ -58,11 +58,12 @@ export function useAuthorization(): AuthorizationHook {
     const result = rbacService.hasPermission(user, resource, action, data);
     const duration = performance.now() - startTime;
 
-    PerformanceMonitoringService.recordMetric({
+    performanceMonitoring.recordMetric({
       name: 'authorization_check_duration',
       value: duration,
       unit: 'milliseconds',
-      tags: {
+      category: 'custom',
+      metadata: {
         resource,
         action,
         userRole: user.role,

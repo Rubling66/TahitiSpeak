@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { PasswordResetForm } from '../../../components/auth/PasswordResetForm';
 import { Card, CardContent } from '../../../components/ui/card';
-import { Button } from '../../../components/ui/button';
+import { Button } from '../../../components/ui/Button';
 import { ArrowLeft, Shield, Mail, Lock } from 'lucide-react';
 import { AuthLayout } from '@/components/layout/AppLayout';
 

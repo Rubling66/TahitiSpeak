@@ -14,7 +14,7 @@ import {
   PluginRegistry 
 } from '../types/integration';
 import { DataService } from './DataService';
-import { validateEnvironmentVariables, getApiKeyConfig } from '../utils/envValidation';
+import { validateEnvironment, API_KEY_CONFIGS } from '../utils/envValidation';
 
 class IntegrationService implements IntegrationAPI {
   private dataService: DataService;
@@ -35,7 +35,7 @@ class IntegrationService implements IntegrationAPI {
   }
 
   private validateEnvironment(): void {
-    this.envValidation = validateEnvironmentVariables();
+    this.envValidation = validateEnvironment();
     if (!this.envValidation.isValid) {
       console.warn('Integration Service: Some API keys are missing or invalid:', this.envValidation.errors);
     }

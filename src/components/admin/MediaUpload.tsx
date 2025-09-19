@@ -14,7 +14,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/badge';
 
 interface MediaUploadProps {
   onFilesUploaded: (assets: MediaAsset[]) => void;

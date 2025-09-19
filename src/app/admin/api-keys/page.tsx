@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Badge } from '@/components/ui/Badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { 
   CheckCircle, 
   XCircle, 
@@ -143,7 +143,7 @@ export default function ApiKeysManagementPage() {
                   <Input
                     type="password"
                     value={tempValues[keyName] || ''}
-                    onChange={(e) => setTempValues(prev => ({ ...prev, [keyName]: e.target.value }))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempValues(prev => ({ ...prev, [keyName]: e.target.value }))}
                     placeholder={`Enter ${keyName}`}
                     className="text-sm"
                   />
@@ -273,7 +273,7 @@ export default function ApiKeysManagementPage() {
                 <div>
                   <p className="text-sm font-medium">Missing Keys</p>
                   <p className="text-2xl font-bold">
-                    {validation?.missingKeys.length || 0}
+                    {validation?.errors.length || 0}
                   </p>
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function ApiKeysManagementPage() {
                 <div>
                   <p className="text-sm font-medium">Invalid Keys</p>
                   <p className="text-2xl font-bold">
-                    {validation?.invalidKeys.length || 0}
+                    {validation?.warnings.length || 0}
                   </p>
                 </div>
               </div>
@@ -297,11 +297,11 @@ export default function ApiKeysManagementPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Shield className={`h-5 w-5 ${productionReady.ready ? 'text-green-500' : 'text-red-500'}`} />
+                <Shield className={`h-5 w-5 ${productionReady ? 'text-green-500' : 'text-red-500'}`} />
                 <div>
                   <p className="text-sm font-medium">Production Ready</p>
                   <p className="text-2xl font-bold">
-                    {productionReady.ready ? 'Yes' : 'No'}
+                    {productionReady ? 'Yes' : 'No'}
                   </p>
                 </div>
               </div>
@@ -326,33 +326,47 @@ export default function ApiKeysManagementPage() {
       </div>
 
       {/* API Keys by Category */}
-      <Tabs defaultValue={Object.keys(categories)[0]} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
-          {Object.keys(categories).map(category => (
-            <TabsTrigger key={category} value={category} className="text-xs">
-              {category.split(' ')[0]}
-            </TabsTrigger>
+      {Object.keys(categories).length > 0 ? (
+        <Tabs defaultValue={Object.keys(categories)[0]} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+            {Object.keys(categories).map(category => (
+              <TabsTrigger key={category} value={category} className="text-xs">
+                {category.split(' ')[0]}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          
+          {Object.entries(categories).map(([category, configs]) => (
+            <TabsContent key={category} value={category} className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">{category}</CardTitle>
+                  <CardDescription>
+                    Manage API keys for {category.toLowerCase()} services
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {configs.map(config => renderKeyCard(config, config.key))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
           ))}
-        </TabsList>
-        
-        {Object.entries(categories).map(([category, configs]) => (
-          <TabsContent key={category} value={category} className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">{category}</CardTitle>
-                <CardDescription>
-                  Manage API keys for {category.toLowerCase()} services
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {configs.map(config => renderKeyCard(config, config.key))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        ))}
-      </Tabs>
+        </Tabs>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">API Keys</CardTitle>
+            <CardDescription>
+              No API key categories configured yet.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-500">API key management will be available once the environment validation is properly configured.</p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Footer Info */}
       <div className="mt-8 text-center text-sm text-gray-500">

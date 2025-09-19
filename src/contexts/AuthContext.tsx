@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import type { User } from '../services/AuthService';
+import type { User, LoginCredentials, RegisterData, ResetPasswordData, ChangePasswordData } from '../services/AuthService';
 
 // Auth Context Types
 interface AuthContextType {
@@ -10,12 +10,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: any) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+  register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-  changePassword: (data: any) => Promise<void>;
-  refreshToken: () => Promise<void>;
+  resetPassword: (data: ResetPasswordData) => Promise<{ success: boolean; error?: string }>;
+  changePassword: (data: ChangePasswordData) => Promise<{ success: boolean; error?: string }>;
+  updateProfile: (updates: Partial<User>) => Promise<{ success: boolean; error?: string }>;
+  refreshTokens: () => Promise<boolean>;
   clearError: () => void;
   getAuthHeader: () => string | null;
   hasRole: (role: string) => boolean;

@@ -123,9 +123,9 @@ const ProgressDrawer: React.FC<ProgressDrawerProps> = ({
                   <Clock className="w-4 h-4 text-blue-600" />
                 </div>
                 <div className="text-sm font-medium text-blue-900">
-                  {formatTime(progress.timeSpentSeconds || 0)}
+                  {progress.attempts || 0} attempts
                 </div>
-                <div className="text-xs text-blue-600">Temps passé</div>
+                <div className="text-xs text-blue-600">Tentatives</div>
               </div>
               
               <div className="bg-green-50 rounded-lg p-3 text-center">
@@ -133,7 +133,7 @@ const ProgressDrawer: React.FC<ProgressDrawerProps> = ({
                   <Trophy className="w-4 h-4 text-green-600" />
                 </div>
                 <div className="text-sm font-medium text-green-900">
-                  {progress.overallScore || 0}%
+                  {progress.score || 0}%
                 </div>
                 <div className="text-xs text-green-600">Score global</div>
               </div>
@@ -197,29 +197,24 @@ const ProgressDrawer: React.FC<ProgressDrawerProps> = ({
               </div>
             </section>
 
-            {/* Achievements */}
-            {progress.achievements && progress.achievements.length > 0 && (
-              <section aria-labelledby="achievements-heading">
-                <div className="space-y-3">
-                  <h3 id="achievements-heading" className="text-sm font-medium text-gray-700">Réussites</h3>
-                  
-                  <div className="space-y-2" role="list" aria-label="Réussites obtenues">
-                    {progress.achievements.map((achievement, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center space-x-3 p-2 bg-yellow-50 rounded-lg"
-                        role="listitem"
-                      >
-                        <Trophy className="w-4 h-4 text-yellow-600 flex-shrink-0" aria-hidden="true" />
-                        <span className="text-sm text-yellow-800">
-                          {achievement}
-                        </span>
-                      </div>
-                    ))}
+            {/* Section Info */}
+            <section aria-labelledby="section-info-heading">
+              <div className="space-y-3">
+                <h3 id="section-info-heading" className="text-sm font-medium text-gray-700">Section actuelle</h3>
+                
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Target className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-900">
+                      {progress.sectionKind}
+                    </span>
+                  </div>
+                  <div className="text-xs text-blue-600 mt-1">
+                    {progress.completed ? 'Complétée' : 'En cours'}
                   </div>
                 </div>
-              </section>
-            )}
+              </div>
+            </section>
           </div>
 
           {/* Footer */}
@@ -227,10 +222,7 @@ const ProgressDrawer: React.FC<ProgressDrawerProps> = ({
             <div className="text-xs text-gray-500 text-center" role="status" aria-live="polite">
               Dernière mise à jour :
               <br />
-              {progress.lastAccessedAt ? 
-                new Date(progress.lastAccessedAt).toLocaleString('fr-FR') : 
-                'Jamais'
-              }
+              {new Date(progress.updatedAt).toLocaleString('fr-FR')}
             </div>
           </div>
         </div>

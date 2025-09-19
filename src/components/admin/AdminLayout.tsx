@@ -117,7 +117,7 @@ const navItems: NavItem[] = [
   }
 ];
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+function AdminLayout({ children }: AdminLayoutProps) {
   const [currentUser, setCurrentUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -308,3 +308,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 }
+
+export { AdminLayout };
+export default AdminLayout;

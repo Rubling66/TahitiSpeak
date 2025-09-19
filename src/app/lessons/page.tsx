@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Search, Filter, BookOpen, Clock, Users, ArrowRight } from 'lucide-react';
 import { JSONDataService } from '@/lib/data/JSONDataService';
 import { Lesson, LessonLevel } from '@/types';
-import Card, { CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import Badge from '@/components/ui/Badge';
-import Input from '@/components/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Input } from '@/components/ui/Input';
 import { AuthenticatedLayout } from '@/components/layout/AppLayout';
 
 const LessonsPage: React.FC = () => {

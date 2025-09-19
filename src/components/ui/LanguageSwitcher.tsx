@@ -62,7 +62,7 @@ export function LanguageSwitcher({
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
-  const { t, formatMessage } = useI18n();
+  const { t } = useI18n();
 
   const currentLanguage = SUPPORTED_LANGUAGES.find(lang => lang.code === currentLocale) || SUPPORTED_LANGUAGES[0];
 
@@ -125,7 +125,7 @@ export function LanguageSwitcher({
       onLanguageChange?.(newLocale);
 
       // Navigate to the same page with new locale
-      const newPath = pathname.replace(/^\/[a-z]{2}/, `/${newLocale}`);
+      const newPath = pathname ? pathname.replace(/^\/[a-z]{2}/, `/${newLocale}`) : `/${newLocale}`;
       router.push(newPath);
       
       setIsOpen(false);
@@ -211,7 +211,7 @@ export function LanguageSwitcher({
         disabled={isLoading}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={formatMessage('common.selectLanguage', { current: currentLanguage.name })}
+        aria-label={t('common.selectLanguage', { current: currentLanguage.name })}
       >
         {showFlag && (
           <span className="text-lg" role="img" aria-label={`${currentLanguage.name} flag`}>

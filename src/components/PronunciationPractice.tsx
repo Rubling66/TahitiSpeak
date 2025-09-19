@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, MicOff, Volume2, RotateCcw, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mic, MicOff, Volume2, RotateCcw, CheckCircle, AlertCircle, User, Brain } from 'lucide-react';
 import { speechService, PronunciationResult } from '../lib/speech/SpeechService';
+import TalkingHeadAvatar from './TalkingHeadAvatar';
+import { useAI } from '../hooks/useAI';
+
+interface PronunciationFeedback {
+  accuracy: number;
+  feedback: string;
+  suggestions: string[];
+  phonetics: string;
+}
 
 interface PronunciationPracticeProps {
   targetText: string;
@@ -8,6 +17,9 @@ interface PronunciationPracticeProps {
   language?: string;
   onResult?: (result: PronunciationResult) => void;
   className?: string;
+  enableAvatar?: boolean;
+  avatarLanguage?: 'fr' | 'en';
+  enableAI?: boolean;
 }
 
 export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
@@ -15,7 +27,10 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
   audioUrl,
   language = 'ty-PF',
   onResult,
-  className = ''
+  className = '',
+  enableAvatar = true,
+  avatarLanguage = 'fr',
+  enableAI = true
 }) => {
   const [isListening, setIsListening] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,6 +38,14 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [isSupported, setIsSupported] = useState(true);
+  const [avatarText, setAvatarText] = useState<string>('');
+  const [avatarMood, setAvatarMood] = useState<'neutral' | 'happy' | 'sad' | 'surprised'>('neutral');
+  const [showAvatar, setShowAvatar] = useState(enableAvatar);
+  const [aiAnalysis, setAiAnalysis] = useState<PronunciationFeedback | null>(null);
+  const [useAIFeedback, setUseAIFeedback] = useState(enableAI);
+  
+  // AI service hook
+  const { analyzePronunciation, isAnalyzing, analysisError } = useAI();
 
   useEffect(() => {
     // Check if speech recognition is supported
@@ -52,7 +75,11 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
     setError(null);
     
     try {
-      if (audioUrl) {
+      if (enableAvatar && showAvatar) {
+        // Use TalkingHead avatar for pronunciation demonstration
+        setAvatarText(targetText);
+        setAvatarMood('neutral');
+      } else if (audioUrl) {
         // Play audio file
         const audio = new Audio(audioUrl);
         audio.onended = () => setIsPlaying(false);
@@ -101,6 +128,62 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
       
       setResult(pronunciationResult);
       onResult?.(pronunciationResult);
+      
+      // Enhanced AI analysis if enabled
+      if (useAIFeedback && enableAI) {
+        try {
+          const aiLanguage = language.startsWith('fr') ? 'fr' : 'ty';
+          const aiResult = await analyzePronunciation(
+            targetText,
+            pronunciationResult.transcript,
+            aiLanguage
+          );
+          setAiAnalysis(aiResult);
+          
+          // Update avatar with AI feedback
+          if (enableAvatar && showAvatar) {
+            if (aiResult.accuracy >= 90) {
+              setAvatarMood('happy');
+              setAvatarText(`Excellent! ${aiResult.feedback}`);
+            } else if (aiResult.accuracy >= 75) {
+              setAvatarMood('neutral');
+              setAvatarText(aiResult.feedback);
+            } else {
+              setAvatarMood('surprised');
+              setAvatarText(`${aiResult.feedback} Try: ${aiResult.suggestions[0] || 'Practice slowly'}`);
+            }
+          }
+        } catch (aiError) {
+          console.warn('AI analysis failed, using basic feedback:', aiError);
+          // Fallback to basic avatar feedback
+          if (enableAvatar && showAvatar) {
+            if (pronunciationResult.accuracy >= 90) {
+              setAvatarMood('happy');
+              setAvatarText('Excellent pronunciation! Très bien!');
+            } else if (pronunciationResult.accuracy >= 75) {
+              setAvatarMood('neutral');
+              setAvatarText('Good job! Try again for better accuracy.');
+            } else {
+              setAvatarMood('surprised');
+              setAvatarText('Let\'s practice that again. Listen carefully.');
+            }
+          }
+        }
+      } else {
+        // Basic avatar feedback when AI is disabled
+        if (enableAvatar && showAvatar) {
+          if (pronunciationResult.accuracy >= 90) {
+            setAvatarMood('happy');
+            setAvatarText('Excellent pronunciation! Très bien!');
+          } else if (pronunciationResult.accuracy >= 75) {
+            setAvatarMood('neutral');
+            setAvatarText('Good job! Try again for better accuracy.');
+          } else {
+            setAvatarMood('surprised');
+            setAvatarText('Let\'s practice that again. Listen carefully.');
+          }
+        }
+      }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Speech recognition failed');
       console.error('Speech recognition error:', error);
@@ -121,6 +204,30 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
     speechService.stopSpeaking();
     setIsListening(false);
     setIsPlaying(false);
+    setAvatarText('');
+    setAvatarMood('neutral');
+    setAiAnalysis(null);
+  };
+
+  const toggleAvatar = () => {
+    setShowAvatar(!showAvatar);
+    if (!showAvatar) {
+      setAvatarText('');
+      setAvatarMood('neutral');
+    }
+  };
+
+  const handleAvatarSpeechStart = () => {
+    setIsPlaying(true);
+  };
+
+  const handleAvatarSpeechEnd = () => {
+    setIsPlaying(false);
+  };
+
+  const handleAvatarError = (avatarError: Error) => {
+    console.warn('Avatar error:', avatarError);
+    setError(`Avatar: ${avatarError.message}`);
   };
 
   const getAccuracyColor = (accuracy: number) => {
@@ -153,13 +260,59 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
       <div className="space-y-4">
         {/* Target Text */}
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Practice Pronunciation
-          </h3>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Practice Pronunciation
+            </h3>
+            {enableAvatar && (
+              <button
+                onClick={toggleAvatar}
+                className={`p-2 rounded-lg transition-colors ${
+                  showAvatar 
+                    ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                title={showAvatar ? 'Hide 3D Avatar' : 'Show 3D Avatar'}
+              >
+                <User className="w-4 h-4" />
+              </button>
+            )}
+            {enableAI && (
+              <button
+                onClick={() => setUseAIFeedback(!useAIFeedback)}
+                className={`p-2 rounded-lg transition-colors ${
+                  useAIFeedback 
+                    ? 'bg-purple-100 text-purple-600 hover:bg-purple-200' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                title={useAIFeedback ? 'Disable AI Enhanced Feedback' : 'Enable AI Enhanced Feedback'}
+              >
+                <Brain className="w-4 h-4" />
+              </button>
+            )}
+          </div>
           <div className="text-2xl font-medium text-blue-600 bg-blue-50 rounded-lg p-4">
             {targetText}
           </div>
         </div>
+
+        {/* 3D Avatar */}
+        {enableAvatar && showAvatar && (
+          <div className="bg-gradient-to-b from-blue-50 to-blue-100 rounded-lg p-4">
+            <div className="text-center mb-2">
+              <h4 className="text-sm font-medium text-gray-700">3D Pronunciation Guide</h4>
+            </div>
+            <TalkingHeadAvatar
+              text={avatarText}
+              language={avatarLanguage}
+              mood={avatarMood}
+              onSpeechStart={handleAvatarSpeechStart}
+              onSpeechEnd={handleAvatarSpeechEnd}
+              onError={handleAvatarError}
+              className="w-full h-64"
+            />
+          </div>
+        )}
 
         {/* Audio Controls */}
         <div className="flex justify-center gap-4">
@@ -204,6 +357,20 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
           </button>
         </div>
 
+        {/* Avatar Controls */}
+        {enableAvatar && showAvatar && (
+          <div className="bg-blue-50 rounded-lg p-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700 font-medium">3D Avatar Active</span>
+              <div className="flex items-center gap-2">
+                <span className="text-blue-600">Language: {avatarLanguage.toUpperCase()}</span>
+                <span className="text-blue-600">•</span>
+                <span className="text-blue-600">Mood: {avatarMood}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Permission Warning */}
         {hasPermission === false && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -246,7 +413,14 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
           <div className="bg-gray-50 rounded-lg p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h4 className="font-semibold text-gray-900">Pronunciation Result</h4>
-              {getAccuracyIcon(result.accuracy)}
+              <div className="flex items-center gap-2">
+                {aiAnalysis && useAIFeedback && (
+                  <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">
+                    AI Enhanced
+                  </span>
+                )}
+                {getAccuracyIcon(aiAnalysis?.accuracy || result.accuracy)}
+              </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
@@ -256,25 +430,34 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
               </div>
               <div>
                 <span className="text-sm text-gray-600">Accuracy:</span>
-                <p className={`font-bold text-lg ${getAccuracyColor(result.accuracy)}`}>
-                  {result.accuracy}%
+                <p className={`font-bold text-lg ${getAccuracyColor(aiAnalysis?.accuracy || result.accuracy)}`}>
+                  {aiAnalysis?.accuracy || result.accuracy}%
                 </p>
               </div>
             </div>
             
             <div>
               <span className="text-sm text-gray-600">Feedback:</span>
-              <p className="font-medium text-gray-900">{result.feedback}</p>
+              <p className="font-medium text-gray-900">{aiAnalysis?.feedback || result.feedback}</p>
             </div>
             
-            {result.suggestions.length > 0 && (
+            {(aiAnalysis?.suggestions || result.suggestions).length > 0 && (
               <div>
                 <span className="text-sm text-gray-600">Suggestions:</span>
                 <ul className="list-disc list-inside text-gray-700 mt-1 space-y-1">
-                  {result.suggestions.map((suggestion, index) => (
+                  {(aiAnalysis?.suggestions || result.suggestions).map((suggestion, index) => (
                     <li key={index} className="text-sm">{suggestion}</li>
                   ))}
                 </ul>
+              </div>
+            )}
+            
+            {aiAnalysis && useAIFeedback && aiAnalysis.phoneticBreakdown && (
+              <div>
+                <span className="text-sm text-gray-600">Phonetic Analysis:</span>
+                <p className="text-sm font-mono bg-gray-100 p-2 rounded mt-1">
+                  {aiAnalysis.phoneticBreakdown}
+                </p>
               </div>
             )}
             
@@ -292,6 +475,25 @@ export const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({
                 </span>
               </div>
             )}
+          </div>
+        )}
+        
+        {/* AI Analysis Status */}
+        {isAnalyzing && (
+          <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+            <div className="flex items-center gap-2">
+              <Brain className="w-4 h-4 text-purple-600 animate-pulse" />
+              <p className="text-purple-700">AI is analyzing your pronunciation...</p>
+            </div>
+          </div>
+        )}
+        
+        {analysisError && (
+          <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-600" />
+              <p className="text-red-700">AI analysis failed. Using basic feedback.</p>
+            </div>
           </div>
         )}
 

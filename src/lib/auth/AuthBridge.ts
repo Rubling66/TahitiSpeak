@@ -5,8 +5,8 @@ import authService from '../../services/AuthService';
 import { rbacService } from '../../services/RBACService';
 import type { AdminUser, UserRole } from '@/types';
 import type { User } from '../../services/AuthService';
-import { LoggingService } from '../../services/LoggingService';
-import { PerformanceMonitoringService } from '../../services/PerformanceMonitoringService';
+import { logger } from '../../services/LoggingService';
+import { performanceMonitoring } from '../../services/PerformanceMonitoringService';
 
 /**
  * Authentication Bridge Service
@@ -39,9 +39,9 @@ export class AuthBridge {
       });
 
       this.initialized = true;
-      LoggingService.info('AuthBridge initialized successfully');
+      logger.info('AuthBridge initialized successfully');
     } catch (error) {
-      LoggingService.error('Failed to initialize AuthBridge', { error });
+      logger.error('Failed to initialize AuthBridge', { error });
       throw error;
     }
   }
@@ -61,7 +61,7 @@ export class AuthBridge {
         // Set admin session
         this.setAdminSession(adminUser);
         
-        LoggingService.info('Admin session established', {
+        logger.info('Admin session established', {
           userId: user.id,
           userRole: user.role,
           adminPermissions: adminUser.permissions
@@ -70,7 +70,7 @@ export class AuthBridge {
     } else {
       // Clear admin session when user logs out
       AdminAuthService.logout();
-      LoggingService.info('Admin session cleared');
+      logger.info('Admin session cleared');
     }
   }
 
@@ -196,17 +196,18 @@ export class AuthBridge {
       
       localStorage.setItem('tahitian-tutor-admin-user', JSON.stringify(session));
       
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'admin_session_created',
         value: 1,
-        timestamp: Date.now(),
-        tags: {
+        unit: 'count',
+        category: 'custom',
+        metadata: {
           userRole: adminUser.role,
           permissionCount: adminUser.permissions.length.toString()
         }
       });
     } catch (error) {
-      LoggingService.error('Failed to set admin session', { error, adminUser });
+      logger.error('Failed to set admin session', { error, adminUser });
     }
   }
 
@@ -215,9 +216,9 @@ export class AuthBridge {
    */
   public hasAdminAccess(): boolean {
     const authState = authService.getState();
-    return authState.isAuthenticated && 
-           authState.user && 
-           this.isAdminUser(authState.user);
+    return Boolean(authState.isAuthenticated && 
+                   authState.user && 
+                   this.isAdminUser(authState.user));
   }
 
   /**
@@ -263,7 +264,7 @@ export class AuthBridge {
       const adminUser = this.convertToAdminUser(authState.user);
       this.setAdminSession(adminUser);
       
-      LoggingService.info('Admin session synced with user changes', {
+      logger.info('Admin session synced with user changes', {
         userId: authState.user.id
       });
     }

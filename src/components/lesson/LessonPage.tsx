@@ -6,8 +6,8 @@ import LessonHeader from './LessonHeader';
 import TabNavigation from './TabNavigation';
 import VocabularyTab from './VocabularyTab';
 import ProgressDrawer from './ProgressDrawer';
-import Card, { CardContent } from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { BookOpen, Target, Users, Award, RotateCcw } from 'lucide-react';
 
 interface LessonPageProps {
@@ -40,11 +40,16 @@ const LessonPage: React.FC<LessonPageProps> = ({
     
     switch (activeTab) {
       case 'vocabulary':
+        const vocabularySection = lesson.sections.find(s => s.kind === 'Vocabulary');
         return (
           <VocabularyTab
-            vocabulary={lesson.vocabulary}
-            currentLanguage={currentLanguage}
-            onLanguageToggle={() => setCurrentLanguage(prev => prev === 'french' ? 'tahitian' : 'french')}
+            vocabulary={vocabularySection?.vocab || []}
+            currentLanguage={currentLanguage as "fr" | "tah" | "en"}
+            showTranslations={true}
+            showPhonetics={true}
+            onToggleTranslations={() => {}}
+            onTogglePhonetics={() => {}}
+            onPlayAudio={(audioId: number) => {}}
           />
         );
         
@@ -59,14 +64,16 @@ const LessonPage: React.FC<LessonPageProps> = ({
                 </div>
                 
                 <ul className="space-y-2" role="list" aria-label="Learning objectives for this lesson">
-                  {lesson.objectives.map((objective, index) => (
-                    <li key={index} className="flex items-start gap-2" role="listitem">
-                      <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium mt-0.5" aria-hidden="true">
-                        {index + 1}
-                      </span>
-                      <span className="text-gray-700">{objective}</span>
-                    </li>
-                  ))}
+                  {lesson.sections.filter(s => s.kind === 'Objectives').map((section, sectionIndex) => 
+                    section.contentMd ? (
+                      <li key={sectionIndex} className="flex items-start gap-2" role="listitem">
+                        <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium mt-0.5" aria-hidden="true">
+                          {sectionIndex + 1}
+                        </span>
+                        <span className="text-gray-700">{section.contentMd}</span>
+                      </li>
+                    ) : null
+                  )}
                 </ul>
               </div>
             </CardContent>
@@ -99,9 +106,9 @@ const LessonPage: React.FC<LessonPageProps> = ({
                   <h3 className="text-lg font-semibold">Cultural Context</h3>
                 </div>
                 
-                {section?.content ? (
+                {section?.contentMd ? (
                   <div className="prose max-w-none">
-                    <p className="text-gray-700 leading-relaxed">{section.content}</p>
+                    <p className="text-gray-700 leading-relaxed">{section.contentMd}</p>
                   </div>
                 ) : (
                   <div className="text-center py-8">
@@ -140,11 +147,11 @@ const LessonPage: React.FC<LessonPageProps> = ({
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button variant="primary" className="flex-1" ariaLabel="Review vocabulary from this lesson">
+                      <Button variant="default" className="flex-1" aria-label="Review vocabulary from this lesson">
                         <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />
                         Review Vocabulary
                       </Button>
-                      <Button variant="outline" className="flex-1" ariaLabel="Continue to next lesson">
+                      <Button variant="outline" className="flex-1" aria-label="Continue to next lesson">
                         Next Lesson
                       </Button>
                     </div>
@@ -173,7 +180,7 @@ const LessonPage: React.FC<LessonPageProps> = ({
       {/* Lesson Header */}
       <LessonHeader
         lesson={lesson}
-        currentLanguage={currentLanguage}
+        currentLanguage={currentLanguage as "fr" | "tah" | "en"}
         onLanguageToggle={() => setCurrentLanguage(prev => prev === 'french' ? 'tahitian' : 'french')}
         onShowProgress={() => setShowProgress(true)}
         progress={calculateProgress()}
@@ -188,7 +195,7 @@ const LessonPage: React.FC<LessonPageProps> = ({
             onTabChange={setActiveTab}
             tabs={[
               { id: 'objectives', label: 'Objectives', icon: Target },
-              { id: 'vocabulary', label: 'Vocabulary', icon: BookOpen, count: lesson.vocabulary.length },
+              { id: 'vocabulary', label: 'Vocabulary', icon: BookOpen, count: lesson.sections.find(s => s.kind === 'Vocabulary')?.vocab?.length || 0 },
               { id: 'practice', label: 'Practice', icon: BookOpen },
               { id: 'culture', label: 'Culture', icon: Users },
               { id: 'review', label: 'Review', icon: Award }
@@ -214,4 +221,5 @@ const LessonPage: React.FC<LessonPageProps> = ({
   );
 };
 
+export { LessonPage };
 export default LessonPage;
