@@ -16,10 +16,9 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  serverExternalPackages: ['@supabase/supabase-js'],
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['lucide-react', 'recharts', '@supabase/supabase-js'],
+    optimizePackageImports: ['lucide-react', 'recharts'],
   },
   turbopack: {
     rules: {
