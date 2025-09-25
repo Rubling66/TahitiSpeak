@@ -1,0 +1,223 @@
+{
+  "id": "emotions-feelings",
+  "slug": "emotions-feelings",
+  "level": "intermediate",
+  "title": {
+    "fr": "Émotions et Sentiments",
+    "ty": "Te Mau Mana'o ma te Mau Nehenehe",
+    "en": "Emotions and Feelings"
+  },
+  "summary": {
+    "fr": "Exprimez vos émotions et sentiments en tahitien",
+    "ty": "E fa'a'ite i to 'oe mau mana'o ma te mau nehenehe",
+    "en": "Express your emotions and feelings in Tahitian"
+  },
+  "durationMin": 25,
+  "heroMediaId": "emotions-feelings-hero",
+  "isPublished": true,
+  "tags": ["emotions", "feelings", "intermediate", "expression"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Exprimer ses émotions et sentiments",
+            "ty": "E fa'a'ite i te mau mana'o ma te mau nehenehe",
+            "en": "Express emotions and feelings"
+          },
+          {
+            "fr": "Comprendre les émotions des autres",
+            "ty": "E mārama i te mau mana'o o te ta'ata 'ē",
+            "en": "Understand others' emotions"
+          },
+          {
+            "fr": "Découvrir l'expression émotionnelle polynésienne",
+            "ty": "E 'ite i te huru fa'a'ite mana'o porinētia",
+            "en": "Discover Polynesian emotional expression"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "hauoli",
+            "french": "heureux/joyeux",
+            "english": "happy/joyful",
+            "pronunciation": "hah-oo-oh-lee",
+            "audioId": "audio-hauoli"
+          },
+          {
+            "tahitian": "riri",
+            "french": "en colère",
+            "english": "angry",
+            "pronunciation": "ree-ree",
+            "audioId": "audio-riri"
+          },
+          {
+            "tahitian": "mata'u",
+            "french": "peur/crainte",
+            "english": "fear/afraid",
+            "pronunciation": "mah-tah-oo",
+            "audioId": "audio-matau"
+          },
+          {
+            "tahitian": "'oa'oa",
+            "french": "joie/bonheur",
+            "english": "joy/happiness",
+            "pronunciation": "oh-ah-oh-ah",
+            "audioId": "audio-oaoa"
+          },
+          {
+            "tahitian": "pe'ape'a",
+            "french": "triste",
+            "english": "sad",
+            "pronunciation": "peh-ah-peh-ah",
+            "audioId": "audio-peapea"
+          },
+          {
+            "tahitian": "here",
+            "french": "amour",
+            "english": "love",
+            "pronunciation": "heh-reh",
+            "audioId": "audio-here"
+          },
+          {
+            "tahitian": "'ino",
+            "french": "mauvais/méchant",
+            "english": "bad/mean",
+            "pronunciation": "ee-noh",
+            "audioId": "audio-ino"
+          },
+          {
+            "tahitian": "maita'i",
+            "french": "bien/bon",
+            "english": "good/well",
+            "pronunciation": "mah-ee-tah-ee",
+            "audioId": "audio-maitai"
+          },
+          {
+            "tahitian": "fiu",
+            "french": "fatigué/ennuyé",
+            "english": "tired/bored",
+            "pronunciation": "fee-oo",
+            "audioId": "audio-fiu"
+          },
+          {
+            "tahitian": "māuruuru",
+            "french": "reconnaissance",
+            "english": "gratitude",
+            "pronunciation": "mah-oo-roo-oo-roo",
+            "audioId": "audio-mauruuru"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "emotion-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation sur les émotions",
+              "ty": "E ha'api'i i teie parau mana'o",
+              "en": "Practice this conversation about emotions"
+            },
+            "dialogue": [
+              {
+                "speaker": "Hoa",
+                "text": "E aha to 'oe nehenehe?",
+                "translation": "Comment te sens-tu ? / How do you feel?"
+              },
+              {
+                "speaker": "'Oe",
+                "text": "Ua hauoli au",
+                "translation": "Je suis heureux / I am happy"
+              },
+              {
+                "speaker": "Hoa",
+                "text": "E aha te mea ua hauoli ai 'oe?",
+                "translation": "Pourquoi es-tu heureux ? / Why are you happy?"
+              }
+            ]
+          },
+          {
+            "type": "emotion-matching",
+            "instruction": {
+              "fr": "Associez les émotions aux situations",
+              "ty": "E fa'ari'i te mau mana'o e te mau ravea",
+              "en": "Match emotions to situations"
+            },
+            "pairs": [
+              { "emotion": "hauoli", "situation": "receiving good news" },
+              { "emotion": "pe'ape'a", "situation": "saying goodbye" },
+              { "emotion": "mata'u", "situation": "during a storm" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Dans la culture polynésienne, l'expression des émotions est souvent collective et liée à la communauté. Les chants (himene), les danses (ori) et les rassemblements familiaux (feti'a) sont des moyens traditionnels d'exprimer et de partager les sentiments. Le concept de 'mana' (force spirituelle) influence aussi la façon dont les émotions sont perçues et exprimées.",
+          "ty": "I roto i te haapiira'a porinētia, te fa'a'ite mana'o e mea 'ohipa tōtahi ma te feti'a. Te mau himene, te mau ori ma te mau feti'a 'utuafare o te mau huru tupuna no te fa'a'ite ma te fa'atau'e i te mau nehenehe. Te mana'o 'mana' (te mana varua) e fa'ahiti hia ai te huru 'ite ma te fa'a'ite i te mau mana'o.",
+          "en": "In Polynesian culture, emotional expression is often collective and community-based. Songs (himene), dances (ori), and family gatherings (feti'a) are traditional ways to express and share feelings. The concept of 'mana' (spiritual force) also influences how emotions are perceived and expressed."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant exprimer vos émotions en tahitien et comprendre celles des autres. Cette capacité enrichira vos relations interpersonnelles.",
+          "ty": "E nehenehe teie nei ia 'oe e fa'a'ite i to 'oe mau mana'o tahiti ma te mārama i ta te ta'ata 'ē. Teie nehenehe e fa'anahonaho ai i to 'oe mau piripiri ta'ata.",
+          "en": "You can now express your emotions in Tahitian and understand those of others. This ability will enrich your interpersonal relationships."
+        },
+        "keyPoints": [
+          "Emotions are often expressed collectively in Polynesian culture",
+          "Music and dance are important for emotional expression",
+          "The concept of 'mana' influences emotional perception"
+        ]
+      }
+    }
+  ]
+}

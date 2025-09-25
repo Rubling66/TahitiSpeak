@@ -1,0 +1,230 @@
+{
+  "id": "technology-modern",
+  "slug": "technology-modern",
+  "level": "advanced",
+  "title": {
+    "fr": "Technologie Moderne",
+    "ty": "Te Mau Taputapu Taime Nei",
+    "en": "Modern Technology"
+  },
+  "summary": {
+    "fr": "Apprenez le vocabulaire technologique moderne en tahitien",
+    "ty": "E hi'o i te mau 'upu taputapu taime nei",
+    "en": "Learn modern technology vocabulary in Tahitian"
+  },
+  "durationMin": 30,
+  "heroMediaId": "technology-modern-hero",
+  "isPublished": true,
+  "tags": ["technology", "modern", "advanced", "digital"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Utiliser le vocabulaire technologique moderne",
+            "ty": "E fa'aohipa i te mau 'upu taputapu taime nei",
+            "en": "Use modern technology vocabulary"
+          },
+          {
+            "fr": "Parler des réseaux sociaux et d'internet",
+            "ty": "E parau i te mau rēhia feti'a ma te 'initenete",
+            "en": "Talk about social media and internet"
+          },
+          {
+            "fr": "Comprendre l'impact de la technologie en Polynésie",
+            "ty": "E mārama i te taui o te taputapu i Porinētia",
+            "en": "Understand technology's impact in Polynesia"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "'ōrdinātā",
+            "french": "ordinateur",
+            "english": "computer",
+            "pronunciation": "oh-ree-dee-nah-tah",
+            "audioId": "audio-ordinata"
+          },
+          {
+            "tahitian": "tēlēfoni",
+            "french": "téléphone",
+            "english": "telephone",
+            "pronunciation": "teh-leh-foh-nee",
+            "audioId": "audio-telefoni"
+          },
+          {
+            "tahitian": "'initenete",
+            "french": "internet",
+            "english": "internet",
+            "pronunciation": "ee-nee-teh-neh-teh",
+            "audioId": "audio-initenete"
+          },
+          {
+            "tahitian": "mēra",
+            "french": "email/courriel",
+            "english": "email",
+            "pronunciation": "meh-rah",
+            "audioId": "audio-mera"
+          },
+          {
+            "tahitian": "rēhia feti'a",
+            "french": "réseaux sociaux",
+            "english": "social media",
+            "pronunciation": "reh-hee-ah feh-tee-ah",
+            "audioId": "audio-rehia-fetia"
+          },
+          {
+            "tahitian": "'āpirihia",
+            "french": "application",
+            "english": "app/application",
+            "pronunciation": "ah-pee-ree-hee-ah",
+            "audioId": "audio-apirihia"
+          },
+          {
+            "tahitian": "pāhono",
+            "french": "connexion",
+            "english": "connection",
+            "pronunciation": "pah-hoh-noh",
+            "audioId": "audio-pahono"
+          },
+          {
+            "tahitian": "taputapu",
+            "french": "appareil/outil",
+            "english": "device/tool",
+            "pronunciation": "tah-poo-tah-poo",
+            "audioId": "audio-taputapu"
+          },
+          {
+            "tahitian": "pāhī parau",
+            "french": "message",
+            "english": "message",
+            "pronunciation": "pah-hee pah-rah-oo",
+            "audioId": "audio-pahi-parau"
+          },
+          {
+            "tahitian": "vi'i",
+            "french": "vidéo",
+            "english": "video",
+            "pronunciation": "vee-ee",
+            "audioId": "audio-vii"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "tech-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation technologique",
+              "ty": "E ha'api'i i teie parau taputapu",
+              "en": "Practice this technology conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Hoa",
+                "text": "E nehenehe ta 'oe e fa'aohipa i te 'initenete?",
+                "translation": "Peux-tu utiliser internet ? / Can you use the internet?"
+              },
+              {
+                "speaker": "'Oe",
+                "text": "E, ua mārama au i te 'ōrdinātā",
+                "translation": "Oui, je comprends l'ordinateur / Yes, I understand computers"
+              },
+              {
+                "speaker": "Hoa",
+                "text": "E aha te 'āpirihia here roa ia 'oe?",
+                "translation": "Quelle est ton application préférée ? / What is your favorite app?"
+              }
+            ]
+          },
+          {
+            "type": "tech-scenarios",
+            "instruction": {
+              "fr": "Décrivez ces situations technologiques",
+              "ty": "E fa'a'ite i teie mau ravea taputapu",
+              "en": "Describe these technology scenarios"
+            },
+            "scenarios": [
+              {
+                "situation": "Sending an email",
+                "tahitian": "E pāhī mēra",
+                "description": "Using computer to send electronic message"
+              },
+              {
+                "situation": "Video call",
+                "tahitian": "E 'ite vi'i",
+                "description": "Talking with someone using video technology"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La technologie moderne transforme la Polynésie française tout en préservant sa culture. Internet permet aux jeunes Polynésiens de rester connectés avec leur diaspora mondiale. Les réseaux sociaux aident à promouvoir la langue et la culture tahitiennes. Cependant, l'équilibre entre modernité et tradition reste un défi important pour préserver l'identité culturelle polynésienne.",
+          "ty": "Te taputapu taime nei e taui nei i Porinētia farāni e e fa'aora tonu i tona haapiira'a. Te 'initenete e fa'a'oa nei i te mau tamariki porinētia e pāhono tonu e to rātou feti'a fenua atoa. Te mau rēhia feti'a e 'oa nei e fa'anahonaho i te reo ma te haapiira'a tahiti. E te mea rā, te fa'atau'ē i te taime nei ma te haapiira'a tupuna o te piha'ina rahi tonu no te fa'aora i te huru porinētia.",
+          "en": "Modern technology is transforming French Polynesia while preserving its culture. The internet allows young Polynesians to stay connected with their global diaspora. Social media helps promote Tahitian language and culture. However, balancing modernity and tradition remains an important challenge for preserving Polynesian cultural identity."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous maîtrisez maintenant le vocabulaire technologique moderne en tahitien. Ces compétences vous aideront à naviguer dans le monde numérique polynésien.",
+          "ty": "Ua mārama nei 'oe i te mau 'upu taputapu taime nei tahiti. Teie mau nehenehe e 'oa ia 'oe e tere ai i te ao numera porinētia.",
+          "en": "You now master modern technology vocabulary in Tahitian. These skills will help you navigate the Polynesian digital world."
+        },
+        "keyPoints": [
+          "Technology helps preserve and promote Tahitian culture",
+          "Digital connectivity links global Polynesian communities",
+          "Balance between tradition and modernity is important"
+        ]
+      }
+    }
+  ]
+}

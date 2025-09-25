@@ -1,0 +1,278 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer",
+    "welcome": "Bienvenue",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "dashboard": "Tableau de bord",
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact",
+    "help": "Aide",
+    "language": "Langue",
+    "theme": "Thème",
+    "notifications": "Notifications"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "courses": "Cours",
+    "lessons": "Leçons",
+    "progress": "Progrès",
+    "profile": "Profil",
+    "admin": "Administration",
+    "dashboard": "Tableau de bord",
+    "users": "Utilisateurs",
+    "analytics": "Analyses",
+    "settings": "Paramètres"
+  },
+  "auth": {
+    "login": {
+      "title": "Se connecter",
+      "subtitle": "Bienvenue sur Tahitian Tutor",
+      "email": "Email",
+      "password": "Mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublié ?",
+      "signIn": "Se connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUp": "S'inscrire",
+      "errors": {
+        "invalidCredentials": "Email ou mot de passe invalide",
+        "emailRequired": "L'email est requis",
+        "passwordRequired": "Le mot de passe est requis",
+        "invalidEmail": "Veuillez entrer une adresse email valide"
+      }
+    },
+    "register": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez votre apprentissage du tahitien",
+      "name": "Nom complet",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "agreeTerms": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
+      "createAccount": "Créer un compte",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter",
+      "errors": {
+        "nameRequired": "Le nom est requis",
+        "emailRequired": "L'email est requis",
+        "passwordRequired": "Le mot de passe est requis",
+        "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "invalidEmail": "Veuillez entrer une adresse email valide",
+        "termsRequired": "Vous devez accepter les conditions générales"
+      }
+    },
+    "logout": {
+      "confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+      "success": "Vous avez été déconnecté avec succès"
+    }
+  },
+  "courses": {
+    "title": "Cours",
+    "subtitle": "Explorez nos cours de langue tahitienne",
+    "levels": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "status": {
+      "notStarted": "Non commencé",
+      "inProgress": "En cours",
+      "completed": "Terminé"
+    },
+    "actions": {
+      "start": "Commencer le cours",
+      "continue": "Continuer",
+      "review": "Réviser",
+      "enroll": "S'inscrire"
+    },
+    "details": {
+      "lessons": "Leçons",
+      "duration": "Durée",
+      "level": "Niveau",
+      "instructor": "Instructeur",
+      "description": "Description",
+      "whatYouWillLearn": "Ce que vous apprendrez",
+      "prerequisites": "Prérequis"
+    },
+    "progress": {
+      "completed": "Terminé",
+      "remaining": "Restant",
+      "percentage": "{percentage}% terminé"
+    }
+  },
+  "lessons": {
+    "title": "Leçon",
+    "navigation": {
+      "previous": "Leçon précédente",
+      "next": "Leçon suivante",
+      "backToCourse": "Retour au cours"
+    },
+    "content": {
+      "vocabulary": "Vocabulaire",
+      "grammar": "Grammaire",
+      "pronunciation": "Prononciation",
+      "exercises": "Exercices",
+      "audio": "Audio",
+      "video": "Vidéo",
+      "transcript": "Transcription"
+    },
+    "actions": {
+      "markComplete": "Marquer comme terminé",
+      "takeNotes": "Prendre des notes",
+      "practice": "Pratiquer",
+      "repeat": "Répéter"
+    },
+    "status": {
+      "completed": "Leçon terminée !",
+      "inProgress": "Leçon en cours",
+      "locked": "Leçon verrouillée"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "tabs": {
+      "general": "Général",
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "achievements": "Réalisations"
+    },
+    "general": {
+      "personalInfo": "Informations personnelles",
+      "name": "Nom",
+      "email": "Email",
+      "bio": "Biographie",
+      "location": "Localisation",
+      "joinedDate": "Inscrit le",
+      "updateProfile": "Mettre à jour le profil"
+    },
+    "preferences": {
+      "language": "Langue de l'interface",
+      "learningLanguage": "Langue d'apprentissage",
+      "notifications": "Notifications",
+      "emailNotifications": "Notifications par email",
+      "pushNotifications": "Notifications push",
+      "theme": "Thème",
+      "timezone": "Fuseau horaire"
+    },
+    "security": {
+      "changePassword": "Changer le mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "twoFactor": "Authentification à deux facteurs",
+      "enable2FA": "Activer 2FA",
+      "disable2FA": "Désactiver 2FA"
+    },
+    "achievements": {
+      "title": "Réalisations",
+      "streak": "Série d'apprentissage",
+      "coursesCompleted": "Cours terminés",
+      "lessonsCompleted": "Leçons terminées",
+      "totalStudyTime": "Temps d'étude total",
+      "badges": "Badges"
+    }
+  },
+  "admin": {
+    "title": "Tableau de bord administrateur",
+    "navigation": {
+      "dashboard": "Tableau de bord",
+      "users": "Gestion des utilisateurs",
+      "courses": "Gestion des cours",
+      "content": "Gestion du contenu",
+      "analytics": "Analyses",
+      "settings": "Paramètres"
+    },
+    "dashboard": {
+      "overview": "Vue d'ensemble",
+      "totalUsers": "Total des utilisateurs",
+      "activeCourses": "Cours actifs",
+      "completionRate": "Taux de réussite",
+      "recentActivity": "Activité récente"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "createUser": "Créer un utilisateur",
+      "editUser": "Modifier l'utilisateur",
+      "deleteUser": "Supprimer l'utilisateur",
+      "userDetails": "Détails de l'utilisateur",
+      "role": "Rôle",
+      "status": "Statut",
+      "lastActive": "Dernière activité",
+      "actions": "Actions"
+    },
+    "courses": {
+      "title": "Gestion des cours",
+      "createCourse": "Créer un cours",
+      "editCourse": "Modifier le cours",
+      "deleteCourse": "Supprimer le cours",
+      "publishCourse": "Publier le cours",
+      "unpublishCourse": "Dépublier le cours",
+      "courseDetails": "Détails du cours",
+      "enrollments": "Inscriptions"
+    }
+  },
+  "errors": {
+    "general": "Une erreur s'est produite. Veuillez réessayer.",
+    "network": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "unauthorized": "Vous n'êtes pas autorisé à accéder à cette ressource.",
+    "forbidden": "Accès refusé.",
+    "notFound": "La ressource demandée n'a pas été trouvée.",
+    "validation": "Veuillez vérifier votre saisie et réessayer.",
+    "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
+  },
+  "success": {
+    "profileUpdated": "Profil mis à jour avec succès",
+    "passwordChanged": "Mot de passe modifié avec succès",
+    "courseCompleted": "Félicitations ! Vous avez terminé le cours",
+    "lessonCompleted": "Leçon terminée avec succès",
+    "settingsSaved": "Paramètres enregistrés avec succès"
+  },
+  "tahitian": {
+    "greetings": {
+      "hello": "Ia ora na",
+      "goodbye": "Nana",
+      "goodMorning": "Ia ora na i te matahiti nei",
+      "goodEvening": "Ia ora na i te ahiahi nei",
+      "welcome": "Maeva",
+      "thankYou": "Mauruuru",
+      "please": "Taime",
+      "excuse": "Aroha"
+    },
+    "basics": {
+      "yes": "E",
+      "no": "Aita",
+      "maybe": "Eiaha",
+      "good": "Maitai",
+      "bad": "Ino",
+      "big": "Rahi",
+      "small": "Iti",
+      "beautiful": "Nehenehe",
+      "ugly": "Ino"
+    }
+  }
+}

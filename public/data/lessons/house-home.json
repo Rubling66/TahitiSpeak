@@ -1,0 +1,218 @@
+{
+  "id": "house-home",
+  "slug": "house-home",
+  "level": "beginner",
+  "title": {
+    "fr": "Maison et Foyer",
+    "ty": "Te Fare ma te 'Utuafare",
+    "en": "House and Home"
+  },
+  "summary": {
+    "fr": "Apprenez le vocabulaire de la maison et du foyer en tahitien",
+    "ty": "E hi'o i te mau 'upu fare ma te 'utuafare",
+    "en": "Learn house and home vocabulary in Tahitian"
+  },
+  "durationMin": 20,
+  "heroMediaId": "house-home-hero",
+  "isPublished": true,
+  "tags": ["house", "home", "beginner", "family"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Nommer les parties de la maison",
+            "ty": "E ta'a i te mau 'āpī o te fare",
+            "en": "Name the parts of the house"
+          },
+          {
+            "fr": "Décrire les objets du foyer",
+            "ty": "E fa'a'ite i te mau mea o te 'utuafare",
+            "en": "Describe household objects"
+          },
+          {
+            "fr": "Comprendre l'architecture traditionnelle polynésienne",
+            "ty": "E mārama i te huru fare tupuna porinētia",
+            "en": "Understand traditional Polynesian architecture"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "fare",
+            "french": "maison",
+            "english": "house",
+            "pronunciation": "fah-reh",
+            "audioId": "audio-fare"
+          },
+          {
+            "tahitian": "'utuafare",
+            "french": "famille/foyer",
+            "english": "family/household",
+            "pronunciation": "oo-too-ah-fah-reh",
+            "audioId": "audio-utuafare"
+          },
+          {
+            "tahitian": "puta",
+            "french": "porte",
+            "english": "door",
+            "pronunciation": "poo-tah",
+            "audioId": "audio-puta"
+          },
+          {
+            "tahitian": "mata",
+            "french": "fenêtre",
+            "english": "window",
+            "pronunciation": "mah-tah",
+            "audioId": "audio-mata"
+          },
+          {
+            "tahitian": "'ōfa'i moe",
+            "french": "chambre",
+            "english": "bedroom",
+            "pronunciation": "oh-fah-ee moh-eh",
+            "audioId": "audio-ofai-moe"
+          },
+          {
+            "tahitian": "'ōfa'i tāmā'a",
+            "french": "cuisine",
+            "english": "kitchen",
+            "pronunciation": "oh-fah-ee tah-mah-ah",
+            "audioId": "audio-ofai-tamaa"
+          },
+          {
+            "tahitian": "moe",
+            "french": "lit",
+            "english": "bed",
+            "pronunciation": "moh-eh",
+            "audioId": "audio-moe"
+          },
+          {
+            "tahitian": "papa",
+            "french": "table",
+            "english": "table",
+            "pronunciation": "pah-pah",
+            "audioId": "audio-papa"
+          },
+          {
+            "tahitian": "noa'a",
+            "french": "chaise",
+            "english": "chair",
+            "pronunciation": "noh-ah-ah",
+            "audioId": "audio-noaa"
+          },
+          {
+            "tahitian": "fare 'amu",
+            "french": "salle à manger",
+            "english": "dining room",
+            "pronunciation": "fah-reh ah-moo",
+            "audioId": "audio-fare-amu"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "house-tour",
+            "instruction": {
+              "fr": "Décrivez votre maison en tahitien",
+              "ty": "E fa'a'ite i to 'oe fare tahiti",
+              "en": "Describe your house in Tahitian"
+            },
+            "prompts": [
+              {
+                "fr": "Combien de chambres avez-vous ?",
+                "ty": "E hia 'ōfa'i moe to 'oe?",
+                "en": "How many bedrooms do you have?"
+              },
+              {
+                "fr": "Où est la cuisine ?",
+                "ty": "I hea te 'ōfa'i tāmā'a?",
+                "en": "Where is the kitchen?"
+              }
+            ]
+          },
+          {
+            "type": "room-matching",
+            "instruction": {
+              "fr": "Associez les objets aux pièces",
+              "ty": "E fa'ari'i te mau mea e te mau 'ōfa'i",
+              "en": "Match objects to rooms"
+            },
+            "pairs": [
+              { "object": "moe", "room": "'ōfa'i moe" },
+              { "object": "papa", "room": "fare 'amu" },
+              { "object": "noa'a", "room": "fare 'amu" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "L'architecture traditionnelle polynésienne privilégie les matériaux naturels comme le bambou, les feuilles de pandanus et le bois. Les maisons traditionnelles (fare) sont conçues pour la ventilation naturelle et l'adaptation au climat tropical. Le concept de 'utuafare (famille élargie) influence l'organisation de l'espace domestique, favorisant les espaces communs et l'hospitalité.",
+          "ty": "Te huru fare tupuna porinētia e fa'anahonaho nei i te mau mea taiao e pehe ai te 'ofe, te mau rau fara ma te rā'au. Te mau fare tupuna e hāmani hia no te mata'i taiao ma te fa'atau'ē i te taime mahana. Te mana'o 'utuafare e fa'ahiti nei i te huru fa'aterera'a 'ōfa'i, e fa'anahonaho nei i te mau 'ōfa'i tōtahi ma te fa'amaita'i manihini.",
+          "en": "Traditional Polynesian architecture favors natural materials like bamboo, pandanus leaves, and wood. Traditional houses (fare) are designed for natural ventilation and adaptation to the tropical climate. The concept of 'utuafare (extended family) influences domestic space organization, favoring common areas and hospitality."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant décrire votre maison et parler du foyer en tahitien. Ce vocabulaire est essentiel pour la vie quotidienne.",
+          "ty": "E nehenehe teie nei ia 'oe e fa'a'ite i to 'oe fare ma te parau i te 'utuafare tahiti. Teie mau 'upu e mea rahi no te orara'a o te mau mahana atoa.",
+          "en": "You can now describe your house and talk about home in Tahitian. This vocabulary is essential for daily life."
+        },
+        "keyPoints": [
+          "Traditional houses use natural materials",
+          "'Utuafare represents extended family concept",
+          "Architecture adapts to tropical climate"
+        ]
+      }
+    }
+  ]
+}

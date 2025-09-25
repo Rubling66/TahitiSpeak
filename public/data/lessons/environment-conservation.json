@@ -1,0 +1,250 @@
+{
+  "id": "environment-conservation",
+  "slug": "environment-conservation",
+  "level": "advanced",
+  "title": {
+    "fr": "Environnement et Conservation",
+    "ty": "Te Taiao ma te Paruru",
+    "en": "Environment and Conservation"
+  },
+  "summary": {
+    "fr": "Apprenez à parler de l'environnement et de la conservation en tahitien",
+    "ty": "E hi'o e parau i te taiao ma te paruru i te reo tahiti",
+    "en": "Learn to talk about environment and conservation in Tahitian"
+  },
+  "durationMin": 35,
+  "heroMediaId": "environment-conservation-hero",
+  "isPublished": true,
+  "tags": ["environment", "conservation", "nature", "ecology"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Utiliser le vocabulaire environnemental tahitien",
+            "ty": "E fa'aohipa i te mau 'upu taiao tahiti",
+            "en": "Use Tahitian environmental vocabulary"
+          },
+          {
+            "fr": "Comprendre les enjeux écologiques polynésiens",
+            "ty": "E mārama i te mau piha'ina taiao porinētia",
+            "en": "Understand Polynesian ecological issues"
+          },
+          {
+            "fr": "Parler de conservation et protection",
+            "ty": "E parau i te paruru ma te fa'aora",
+            "en": "Talk about conservation and protection"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "taiao",
+            "french": "environnement",
+            "english": "environment",
+            "pronunciation": "tah-ee-ah-oh",
+            "audioId": "audio-taiao"
+          },
+          {
+            "tahitian": "paruru",
+            "french": "protection/conservation",
+            "english": "protection/conservation",
+            "pronunciation": "pah-roo-roo",
+            "audioId": "audio-paruru"
+          },
+          {
+            "tahitian": "rahui",
+            "french": "protection traditionnelle",
+            "english": "traditional protection",
+            "pronunciation": "rah-hoo-ee",
+            "audioId": "audio-rahui"
+          },
+          {
+            "tahitian": "moana",
+            "french": "océan",
+            "english": "ocean",
+            "pronunciation": "moh-ah-nah",
+            "audioId": "audio-moana"
+          },
+          {
+            "tahitian": "motu",
+            "french": "îlot/atoll",
+            "english": "islet/atoll",
+            "pronunciation": "moh-too",
+            "audioId": "audio-motu"
+          },
+          {
+            "tahitian": "repo",
+            "french": "lagon",
+            "english": "lagoon",
+            "pronunciation": "reh-poh",
+            "audioId": "audio-repo"
+          },
+          {
+            "tahitian": "i'a",
+            "french": "poisson",
+            "english": "fish",
+            "pronunciation": "ee-ah",
+            "audioId": "audio-ia"
+          },
+          {
+            "tahitian": "pua",
+            "french": "corail",
+            "english": "coral",
+            "pronunciation": "poo-ah",
+            "audioId": "audio-pua"
+          },
+          {
+            "tahitian": "'ōpū",
+            "french": "pollution",
+            "english": "pollution",
+            "pronunciation": "oh-poo",
+            "audioId": "audio-opu"
+          },
+          {
+            "tahitian": "fa'a'ore",
+            "french": "nettoyer/purifier",
+            "english": "clean/purify",
+            "pronunciation": "fah-ah-oh-reh",
+            "audioId": "audio-faaore"
+          },
+          {
+            "tahitian": "rauemi",
+            "french": "ressources",
+            "english": "resources",
+            "pronunciation": "rah-oo-eh-mee",
+            "audioId": "audio-rauemi"
+          },
+          {
+            "tahitian": "fa'a'apu",
+            "french": "cultiver/planter",
+            "english": "cultivate/plant",
+            "pronunciation": "fah-ah-ah-poo",
+            "audioId": "audio-faaapu"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "environment-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation environnementale",
+              "ty": "E ha'api'i i teie parau taiao",
+              "en": "Practice this environmental conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Metua",
+                "text": "E aha te mea e rave ai no te paruru i te moana?",
+                "translation": "Que peut-on faire pour protéger l'océan ? / What can we do to protect the ocean?"
+              },
+              {
+                "speaker": "Tamarii",
+                "text": "E fa'a'ore i te fenua ma te fa'aore i te 'ōpū",
+                "translation": "Nettoyer la terre et éliminer la pollution / Clean the land and eliminate pollution"
+              },
+              {
+                "speaker": "Metua",
+                "text": "E, e rahui hoi i te mau repo",
+                "translation": "Oui, et protéger aussi les lagons / Yes, and also protect the lagoons"
+              }
+            ]
+          },
+          {
+            "type": "conservation-scenarios",
+            "instruction": {
+              "fr": "Décrivez ces actions de conservation",
+              "ty": "E fa'a'ite i teie mau rave paruru",
+              "en": "Describe these conservation actions"
+            },
+            "scenarios": [
+              {
+                "action": "Rahui implementation",
+                "tahitian": "E fa'atū i te rahui",
+                "description": "Traditional protection of marine areas"
+              },
+              {
+                "action": "Coral restoration",
+                "tahitian": "E fa'ahou i te pua",
+                "description": "Restoring damaged coral reefs"
+              },
+              {
+                "action": "Waste reduction",
+                "tahitian": "E fa'a'iti i te 'ōpū",
+                "description": "Reducing pollution and waste"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La conservation environnementale est profondément ancrée dans la culture polynésienne. Le concept de rahui protège traditionnellement les ressources marines et terrestres selon les cycles naturels. Les Polynésiens considèrent la nature comme sacrée, avec une responsabilité de gardiens (fa'a'amu). Le réchauffement climatique menace particulièrement les atolls bas. Les pratiques traditionnelles comme la rotation des cultures et la pêche saisonnière offrent des solutions durables. La jeunesse polynésienne combine sagesse ancestrale et science moderne pour protéger leur patrimoine naturel.",
+          "ty": "Te paruru taiao ua fa'a'iri roa i te haapiira'a porinētia. Te rahui e paruru tupuna nei i te mau rauemi moana ma te fenua e tia ai te taime taiao. Te mau porinētia e 'ite nei i te taiao e tabu, e wahi hoi rātou e fa'a'amu ai. Te vevehia o te taiao e fa'aea'e nei i te mau motu hanahana. Te mau rave tupuna e pehe ai te taui fa'a'apu ma te hi'i i'a taime e ha'apa'o nei i te mau ravea fa'ahou. Te mau tamariki porinētia e fa'atau nei i te mātauraa tupuna ma te taputapu taime nei no te paruru i to rātou tahua taiao.",
+          "en": "Environmental conservation is deeply rooted in Polynesian culture. The concept of rahui traditionally protects marine and terrestrial resources according to natural cycles. Polynesians consider nature sacred, with a responsibility as guardians (fa'a'amu). Climate change particularly threatens low atolls. Traditional practices like crop rotation and seasonal fishing offer sustainable solutions. Polynesian youth combine ancestral wisdom and modern science to protect their natural heritage."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous maîtrisez maintenant le vocabulaire environnemental tahitien. Cette connaissance vous permet de participer aux discussions sur la conservation en Polynésie.",
+          "ty": "Ua mārama nei 'oe i te mau 'upu taiao tahiti. Teie mātauraa e fa'a'oa ia 'oe e 'ite ai i te mau parau paruru i Porinētia.",
+          "en": "You now master Tahitian environmental vocabulary. This knowledge allows you to participate in conservation discussions in Polynesia."
+        },
+        "keyPoints": [
+          "Traditional rahui system provides sustainable resource management",
+          "Polynesians have a sacred responsibility as environmental guardians",
+          "Climate change poses serious threats to Pacific islands",
+          "Combining traditional wisdom with modern science offers solutions"
+        ]
+      }
+    }
+  ]
+}

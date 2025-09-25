@@ -1,0 +1,106 @@
+{
+  "id": "body-parts",
+  "slug": "body-parts",
+  "title": {
+    "fr": "Parties du Corps",
+    "tah": "Te Tino",
+    "en": "Body Parts"
+  },
+  "summary": "Learn the names of body parts in Tahitian and French. Essential vocabulary for describing yourself and others.",
+  "level": "Beginner",
+  "durationMin": 20,
+  "tags": ["vocabulary", "body", "health", "basic"],
+  "sections": [
+    {
+      "id": "objectives",
+      "kind": "Objectives",
+      "title": {
+        "fr": "Objectifs",
+        "tah": "Te Faanahora'a",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          "Learn basic body part vocabulary in Tahitian",
+          "Practice pronunciation of body-related terms",
+          "Understand cultural context of body language"
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "kind": "Vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "tah": "Te Parau",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "id": "head",
+            "tahitian": "upoo",
+            "french": "tête",
+            "english": "head",
+            "pronunciation": "oo-po-oh",
+            "audioUrl": "/audio/body-parts/upoo.mp3"
+          },
+          {
+            "id": "eyes",
+            "tahitian": "mata",
+            "french": "yeux",
+            "english": "eyes",
+            "pronunciation": "mah-tah",
+            "audioUrl": "/audio/body-parts/mata.mp3"
+          },
+          {
+            "id": "nose",
+            "tahitian": "ihu",
+            "french": "nez",
+            "english": "nose",
+            "pronunciation": "ee-hoo",
+            "audioUrl": "/audio/body-parts/ihu.mp3"
+          },
+          {
+            "id": "mouth",
+            "tahitian": "vaha",
+            "french": "bouche",
+            "english": "mouth",
+            "pronunciation": "vah-hah",
+            "audioUrl": "/audio/body-parts/vaha.mp3"
+          },
+          {
+            "id": "hand",
+            "tahitian": "rima",
+            "french": "main",
+            "english": "hand",
+            "pronunciation": "ree-mah",
+            "audioUrl": "/audio/body-parts/rima.mp3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "kind": "Practice",
+      "title": {
+        "fr": "Pratique",
+        "tah": "Te Haapiiraa",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "matching",
+            "question": "Match the Tahitian words with their French translations",
+            "pairs": [
+              {"tahitian": "upoo", "french": "tête"},
+              {"tahitian": "mata", "french": "yeux"},
+              {"tahitian": "rima", "french": "main"}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

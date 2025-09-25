@@ -1,0 +1,156 @@
+{
+  "id": 2,
+  "slug": "family-members",
+  "level": "Beginner",
+  "title": {
+    "fr": "Membres de la famille",
+    "tah": "Te 'utuafare",
+    "en": "Family Members"
+  },
+  "summary": "Apprenez les termes pour désigner les membres de la famille en français tahitien, y compris les relations familiales étendues importantes dans la culture polynésienne.",
+  "durationMin": 20,
+  "heroMediaId": 2,
+  "isPublished": true,
+  "tags": ["family", "relationships", "culture", "basics"],
+  "version": 1,
+  "createdAt": 1704067200000,
+  "updatedAt": 1704067200000,
+  "sections": [
+    {
+      "kind": "Objectives",
+      "title": "Objectifs de la leçon",
+      "contentMd": "## Objectifs d'apprentissage\n\nÀ la fin de cette leçon, vous serez capable de :\n\n- Nommer les membres de la famille proche\n- Utiliser les termes de parenté tahitiens\n- Comprendre l'importance de la famille étendue\n- Présenter votre famille\n\n## Contexte culturel\n\nLa famille ('utuafare) occupe une place centrale dans la société tahitienne. Les liens familiaux s'étendent bien au-delà de la famille nucléaire et incluent souvent des relations adoptives et communautaires.",
+      "sortOrder": 1
+    },
+    {
+      "kind": "Vocabulary",
+      "title": "Vocabulaire familial",
+      "vocab": [
+        {
+          "fr": "Famille",
+          "tah": "'Utuafare",
+          "en": "Family",
+          "ipaFr": "/fa.ˈmij/",
+          "ipaTah": "/'u.tu.a.fa.re/",
+          "partOfSpeech": "noun",
+          "note": "Concept central de la société tahitienne",
+          "audioMediaId": 201,
+          "isCore": true,
+          "sortOrder": 1
+        },
+        {
+          "fr": "Père",
+          "tah": "Metua tane",
+          "en": "Father",
+          "ipaFr": "/ˈpɛʁ/",
+          "ipaTah": "/me.ˈtu.a ˈta.ne/",
+          "partOfSpeech": "noun",
+          "note": "Littéralement 'parent mâle'",
+          "audioMediaId": 202,
+          "isCore": true,
+          "sortOrder": 2
+        },
+        {
+          "fr": "Mère",
+          "tah": "Metua vahine",
+          "en": "Mother",
+          "ipaFr": "/ˈmɛʁ/",
+          "ipaTah": "/me.ˈtu.a va.ˈhi.ne/",
+          "partOfSpeech": "noun",
+          "note": "Littéralement 'parent femelle'",
+          "audioMediaId": 203,
+          "isCore": true,
+          "sortOrder": 3
+        },
+        {
+          "fr": "Fils",
+          "tah": "Tamaiti tane",
+          "en": "Son",
+          "ipaFr": "/ˈfis/",
+          "ipaTah": "/ta.ˈmai.ti ˈta.ne/",
+          "partOfSpeech": "noun",
+          "note": "Enfant de sexe masculin",
+          "audioMediaId": 204,
+          "isCore": true,
+          "sortOrder": 4
+        },
+        {
+          "fr": "Fille",
+          "tah": "Tamaiti vahine",
+          "en": "Daughter",
+          "ipaFr": "/ˈfij/",
+          "ipaTah": "/ta.ˈmai.ti va.ˈhi.ne/",
+          "partOfSpeech": "noun",
+          "note": "Enfant de sexe féminin",
+          "audioMediaId": 205,
+          "isCore": true,
+          "sortOrder": 5
+        },
+        {
+          "fr": "Frère",
+          "tah": "Tunga'ne",
+          "en": "Brother",
+          "ipaFr": "/ˈfʁɛʁ/",
+          "ipaTah": "/tu.ˈŋa.ne/",
+          "partOfSpeech": "noun",
+          "note": "Frère (dit par une sœur)",
+          "audioMediaId": 206,
+          "isCore": true,
+          "sortOrder": 6
+        },
+        {
+          "fr": "Sœur",
+          "tah": "Tuahine",
+          "en": "Sister",
+          "ipaFr": "/ˈsœʁ/",
+          "ipaTah": "/tu.a.ˈhi.ne/",
+          "partOfSpeech": "noun",
+          "note": "Sœur (dit par un frère)",
+          "audioMediaId": 207,
+          "isCore": true,
+          "sortOrder": 7
+        },
+        {
+          "fr": "Grand-père",
+          "tah": "Tupuna tane",
+          "en": "Grandfather",
+          "ipaFr": "/ɡʁɑ̃ ˈpɛʁ/",
+          "ipaTah": "/tu.ˈpu.na ˈta.ne/",
+          "partOfSpeech": "noun",
+          "note": "Ancêtre masculin respecté",
+          "audioMediaId": 208,
+          "isCore": true,
+          "sortOrder": 8
+        }
+      ],
+      "sortOrder": 2
+    },
+    {
+      "kind": "Practice",
+      "title": "Exercices pratiques",
+      "exercises": [
+        {
+          "type": "MCQ",
+          "prompt": "Comment dit-on 'mère' en tahitien ?",
+          "data": {
+            "question": "Comment dit-on 'mère' en tahitien ?",
+            "options": ["Metua vahine", "Metua tane", "Tuahine", "Tupuna"],
+            "correctIndex": 0
+          },
+          "solution": {
+            "explanation": "'Metua vahine' signifie littéralement 'parent femelle' en tahitien."
+          },
+          "points": 10,
+          "sortOrder": 1
+        }
+      ],
+      "sortOrder": 3
+    },
+    {
+      "kind": "Culture",
+      "title": "La famille polynésienne",
+      "contentMd": "## Structure familiale traditionnelle\n\nLa famille polynésienne s'étend bien au-delà de la famille nucléaire. Elle inclut :\n\n- **Famille étendue** : cousins, oncles, tantes\n- **Famille adoptive** : très courante et acceptée\n- **Famille communautaire** : voisins proches\n\n### Respect des aînés\n\nLes grands-parents (tupuna) sont particulièrement respectés et jouent un rôle important dans l'éducation des enfants.",
+      "sortOrder": 4
+    }
+  ]
+}

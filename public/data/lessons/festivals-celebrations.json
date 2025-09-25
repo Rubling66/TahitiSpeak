@@ -1,0 +1,241 @@
+{
+  "id": "festivals-celebrations",
+  "slug": "festivals-celebrations",
+  "level": "intermediate",
+  "title": {
+    "fr": "Festivals et Célébrations",
+    "ty": "Te Mau Heiva ma te Mau Fa'anahora'a",
+    "en": "Festivals and Celebrations"
+  },
+  "summary": {
+    "fr": "Découvrez les festivals et célébrations polynésiens",
+    "ty": "E 'ite i te mau heiva ma te mau fa'anahora'a porinētia",
+    "en": "Discover Polynesian festivals and celebrations"
+  },
+  "durationMin": 25,
+  "heroMediaId": "festivals-celebrations-hero",
+  "isPublished": true,
+  "tags": ["festivals", "celebrations", "culture", "traditions"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Connaître les principales fêtes polynésiennes",
+            "ty": "E 'ite i te mau heiva rahi porinētia",
+            "en": "Know the main Polynesian festivals"
+          },
+          {
+            "fr": "Apprendre le vocabulaire des célébrations",
+            "ty": "E hi'o i te mau 'upu fa'anahora'a",
+            "en": "Learn celebration vocabulary"
+          },
+          {
+            "fr": "Comprendre l'importance culturelle des festivals",
+            "ty": "E mārama i te rahi o te mau heiva i te haapiira'a",
+            "en": "Understand the cultural importance of festivals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "heiva",
+            "french": "festival/fête",
+            "english": "festival/celebration",
+            "pronunciation": "heh-ee-vah",
+            "audioId": "audio-heiva"
+          },
+          {
+            "tahitian": "fa'anahora'a",
+            "french": "célébration",
+            "english": "celebration",
+            "pronunciation": "fah-ah-nah-hoh-rah-ah",
+            "audioId": "audio-faanahoraa"
+          },
+          {
+            "tahitian": "tiurai",
+            "french": "juillet (mois du Heiva)",
+            "english": "July (Heiva month)",
+            "pronunciation": "tee-oo-rah-ee",
+            "audioId": "audio-tiurai"
+          },
+          {
+            "tahitian": "matari'i",
+            "french": "Pléiades/Nouvel An tahitien",
+            "english": "Pleiades/Tahitian New Year",
+            "pronunciation": "mah-tah-ree-ee",
+            "audioId": "audio-matarii"
+          },
+          {
+            "tahitian": "tahua",
+            "french": "cérémonie",
+            "english": "ceremony",
+            "pronunciation": "tah-hoo-ah",
+            "audioId": "audio-tahua"
+          },
+          {
+            "tahitian": "tama'a",
+            "french": "festin/repas",
+            "english": "feast/meal",
+            "pronunciation": "tah-mah-ah",
+            "audioId": "audio-tamaa"
+          },
+          {
+            "tahitian": "ahima'a",
+            "french": "four traditionnel",
+            "english": "traditional oven",
+            "pronunciation": "ah-hee-mah-ah",
+            "audioId": "audio-ahimaa"
+          },
+          {
+            "tahitian": "fa'a'amu",
+            "french": "adoption traditionnelle",
+            "english": "traditional adoption",
+            "pronunciation": "fah-ah-ah-moo",
+            "audioId": "audio-faaamu"
+          },
+          {
+            "tahitian": "pāreu",
+            "french": "tissu traditionnel",
+            "english": "traditional fabric",
+            "pronunciation": "pah-reh-oo",
+            "audioId": "audio-pareu"
+          },
+          {
+            "tahitian": "hei",
+            "french": "couronne de fleurs",
+            "english": "flower crown",
+            "pronunciation": "heh-ee",
+            "audioId": "audio-hei"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "festival-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation sur les festivals",
+              "ty": "E ha'api'i i teie parau heiva",
+              "en": "Practice this festival conversation"
+            },
+            "dialogue": [
+              {
+                "speaker": "Vahine",
+                "text": "E aha te heiva rahi i Tahiti?",
+                "translation": "Quel est le grand festival à Tahiti ? / What is the big festival in Tahiti?"
+              },
+              {
+                "speaker": "Tane",
+                "text": "O te Heiva i Tahiti i te tiurai",
+                "translation": "C'est le Heiva i Tahiti en juillet / It's Heiva i Tahiti in July"
+              },
+              {
+                "speaker": "Vahine",
+                "text": "E aha te mea e rave ai i reira?",
+                "translation": "Qu'est-ce qu'on y fait ? / What do we do there?"
+              },
+              {
+                "speaker": "Tane",
+                "text": "E 'ori, e himene, e tama'a hoi",
+                "translation": "On danse, on chante, et on mange aussi / We dance, sing, and eat too"
+              }
+            ]
+          },
+          {
+            "type": "celebration-matching",
+            "instruction": {
+              "fr": "Associez les célébrations à leurs périodes",
+              "ty": "E fa'atau i te mau fa'anahora'a ma to rātou taime",
+              "en": "Match celebrations with their times"
+            },
+            "pairs": [
+              {
+                "celebration": "Heiva i Tahiti",
+                "time": "Juillet (Tiurai)",
+                "description": "Grand festival culturel avec danses et chants"
+              },
+              {
+                "celebration": "Matari'i i ni'a",
+                "time": "Novembre",
+                "description": "Saison d'abondance et de festivités"
+              },
+              {
+                "celebration": "Matari'i i raro",
+                "time": "Mai",
+                "description": "Saison de travail et de préparation"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Les festivals polynésiens suivent les cycles naturels et spirituels. Le Heiva i Tahiti en juillet est le plus grand festival culturel, célébrant la danse, la musique et l'artisanat. Matari'i, basé sur les Pléiades, marque le Nouvel An tahitien et les saisons agricoles. Les cérémonies incluent des ahima'a (fours traditionnels), des échanges de hei (couronnes), et des tama'a (festins). Ces célébrations renforcent les liens familiaux et communautaires tout en transmettant la culture aux nouvelles générations.",
+          "ty": "Te mau heiva porinētia e tia'i nei i te mau taime taiao ma te varua. Te Heiva i Tahiti i te tiurai o te heiva haapiira'a rahi roa, e fa'anahonaho nei i te 'ori, te himene ma te mau tū rima. Te Matari'i, e tia'i nei i te feti'a Matari'i, e fa'ailoa nei i te matahiti 'āpī tahiti ma te mau taime fa'a'apu. Te mau tahua e rave ai te ahima'a, te mau fa'atau hei, ma te mau tama'a. Teie mau fa'anahora'a e fa'amau nei i te mau pāhono 'utuāfare ma te feti'ara'a e ha'apa'o tonu hoi i te haapiira'a i te mau hōpoi 'āpī.",
+          "en": "Polynesian festivals follow natural and spiritual cycles. Heiva i Tahiti in July is the biggest cultural festival, celebrating dance, music and crafts. Matari'i, based on the Pleiades, marks the Tahitian New Year and agricultural seasons. Ceremonies include ahima'a (traditional ovens), exchanges of hei (crowns), and tama'a (feasts). These celebrations strengthen family and community bonds while transmitting culture to new generations."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous comprenez maintenant l'importance des festivals polynésiens. Ces célébrations sont essentielles pour maintenir vivante la culture tahitienne.",
+          "ty": "Ua mārama nei 'oe i te rahi o te mau heiva porinētia. Teie mau fa'anahora'a e rahi roa no te fa'aora i te haapiira'a tahiti.",
+          "en": "You now understand the importance of Polynesian festivals. These celebrations are essential for keeping Tahitian culture alive."
+        },
+        "keyPoints": [
+          "Festivals follow natural and spiritual cycles",
+          "Heiva i Tahiti is the most important cultural celebration",
+          "Matari'i marks the Tahitian calendar and seasons",
+          "Celebrations strengthen community bonds and cultural transmission"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "id": 3,
+  "slug": "numbers-counting",
+  "level": "Beginner",
+  "title": {
+    "fr": "Nombres et comptage",
+    "tah": "Te tatau",
+    "en": "Numbers and Counting"
+  },
+  "summary": "Maîtrisez les nombres de 1 à 20 en français tahitien, apprenez à compter et à utiliser les nombres dans des situations quotidiennes.",
+  "durationMin": 25,
+  "heroMediaId": 3,
+  "isPublished": true,
+  "tags": ["numbers", "counting", "mathematics", "basics"],
+  "version": 1,
+  "createdAt": 1704067200000,
+  "updatedAt": 1704067200000,
+  "sections": [
+    {
+      "kind": "Objectives",
+      "title": "Objectifs de la leçon",
+      "contentMd": "## Objectifs d'apprentissage\n\nÀ la fin de cette leçon, vous serez capable de :\n\n- Compter de 1 à 20 en tahitien\n- Utiliser les nombres dans des phrases simples\n- Comprendre le système de numération tahitien\n- Appliquer les nombres dans des situations pratiques\n\n## Contexte culturel\n\nLe système de numération tahitien traditionnel était basé sur le nombre 20, reflétant l'usage des doigts et des orteils pour compter.",
+      "sortOrder": 1
+    },
+    {
+      "kind": "Vocabulary",
+      "title": "Les nombres de base",
+      "vocab": [
+        {
+          "fr": "Un",
+          "tah": "Hoe",
+          "en": "One",
+          "ipaFr": "/œ̃/",
+          "ipaTah": "/ˈho.e/",
+          "partOfSpeech": "number",
+          "note": "Nombre cardinal de base",
+          "audioMediaId": 301,
+          "isCore": true,
+          "sortOrder": 1
+        },
+        {
+          "fr": "Deux",
+          "tah": "Piti",
+          "en": "Two",
+          "ipaFr": "/dø/",
+          "ipaTah": "/ˈpi.ti/",
+          "partOfSpeech": "number",
+          "note": "Deuxième nombre",
+          "audioMediaId": 302,
+          "isCore": true,
+          "sortOrder": 2
+        },
+        {
+          "fr": "Trois",
+          "tah": "Toru",
+          "en": "Three",
+          "ipaFr": "/tʁwa/",
+          "ipaTah": "/ˈto.ru/",
+          "partOfSpeech": "number",
+          "note": "Troisième nombre",
+          "audioMediaId": 303,
+          "isCore": true,
+          "sortOrder": 3
+        },
+        {
+          "fr": "Quatre",
+          "tah": "Maha",
+          "en": "Four",
+          "ipaFr": "/katʁ/",
+          "ipaTah": "/ˈma.ha/",
+          "partOfSpeech": "number",
+          "note": "Quatrième nombre",
+          "audioMediaId": 304,
+          "isCore": true,
+          "sortOrder": 4
+        },
+        {
+          "fr": "Cinq",
+          "tah": "Pae",
+          "en": "Five",
+          "ipaFr": "/sɛ̃k/",
+          "ipaTah": "/ˈpa.e/",
+          "partOfSpeech": "number",
+          "note": "Cinquième nombre",
+          "audioMediaId": 305,
+          "isCore": true,
+          "sortOrder": 5
+        },
+        {
+          "fr": "Six",
+          "tah": "Ono",
+          "en": "Six",
+          "ipaFr": "/sis/",
+          "ipaTah": "/ˈo.no/",
+          "partOfSpeech": "number",
+          "note": "Sixième nombre",
+          "audioMediaId": 306,
+          "isCore": true,
+          "sortOrder": 6
+        },
+        {
+          "fr": "Sept",
+          "tah": "Hitu",
+          "en": "Seven",
+          "ipaFr": "/sɛt/",
+          "ipaTah": "/ˈhi.tu/",
+          "partOfSpeech": "number",
+          "note": "Septième nombre",
+          "audioMediaId": 307,
+          "isCore": true,
+          "sortOrder": 7
+        },
+        {
+          "fr": "Huit",
+          "tah": "Va'u",
+          "en": "Eight",
+          "ipaFr": "/ɥit/",
+          "ipaTah": "/ˈva.u/",
+          "partOfSpeech": "number",
+          "note": "Huitième nombre",
+          "audioMediaId": 308,
+          "isCore": true,
+          "sortOrder": 8
+        },
+        {
+          "fr": "Neuf",
+          "tah": "Iva",
+          "en": "Nine",
+          "ipaFr": "/nœf/",
+          "ipaTah": "/ˈi.va/",
+          "partOfSpeech": "number",
+          "note": "Neuvième nombre",
+          "audioMediaId": 309,
+          "isCore": true,
+          "sortOrder": 9
+        },
+        {
+          "fr": "Dix",
+          "tah": "Ahuru",
+          "en": "Ten",
+          "ipaFr": "/dis/",
+          "ipaTah": "/a.ˈhu.ru/",
+          "partOfSpeech": "number",
+          "note": "Base du système décimal",
+          "audioMediaId": 310,
+          "isCore": true,
+          "sortOrder": 10
+        }
+      ],
+      "sortOrder": 2
+    },
+    {
+      "kind": "Practice",
+      "title": "Exercices de comptage",
+      "exercises": [
+        {
+          "type": "MCQ",
+          "prompt": "Comment dit-on 'cinq' en tahitien ?",
+          "data": {
+            "question": "Comment dit-on 'cinq' en tahitien ?",
+            "options": ["Pae", "Maha", "Ono", "Hitu"],
+            "correctIndex": 0
+          },
+          "solution": {
+            "explanation": "'Pae' est le nombre cinq en tahitien."
+          },
+          "points": 10,
+          "sortOrder": 1
+        },
+        {
+          "type": "Match",
+          "prompt": "Associez les nombres français avec leurs équivalents tahitiens :",
+          "data": {
+            "pairs": [
+              {"left": "Trois", "right": "Toru"},
+              {"left": "Sept", "right": "Hitu"},
+              {"left": "Dix", "right": "Ahuru"},
+              {"left": "Un", "right": "Hoe"}
+            ]
+          },
+          "solution": {
+            "explanation": "Ces associations montrent les nombres de base en tahitien."
+          },
+          "points": 20,
+          "sortOrder": 2
+        }
+      ],
+      "sortOrder": 3
+    },
+    {
+      "kind": "Culture",
+      "title": "Le système de numération polynésien",
+      "contentMd": "## Système traditionnel\n\nLe système de numération tahitien traditionnel était basé sur 20 (vingt), utilisant les doigts et les orteils.\n\n### Usage moderne\n\nAujourd'hui, le système décimal français est largement utilisé, mais les nombres tahitiens restent importants dans :\n\n- Les chants traditionnels\n- Les cérémonies\n- L'enseignement culturel\n- Les conversations familiales\n\n### Particularités\n\n- Les nombres tahitiens sont souvent utilisés pour compter les personnes\n- Le français est préféré pour les calculs mathématiques\n- Certains nombres ont des significations culturelles spéciales",
+      "sortOrder": 4
+    }
+  ]
+}

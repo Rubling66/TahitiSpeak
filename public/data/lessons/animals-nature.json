@@ -1,0 +1,211 @@
+{
+  "id": "animals-nature",
+  "slug": "animals-nature",
+  "level": "beginner",
+  "title": {
+    "fr": "Animaux et Nature",
+    "ty": "Te Mau Manu ma te Taiao",
+    "en": "Animals and Nature"
+  },
+  "summary": {
+    "fr": "Découvrez les animaux et la nature de Tahiti",
+    "ty": "E 'ite i te mau manu ma te taiao o Tahiti",
+    "en": "Discover the animals and nature of Tahiti"
+  },
+  "durationMin": 20,
+  "heroMediaId": "animals-nature-hero",
+  "isPublished": true,
+  "tags": ["animals", "nature", "beginner", "environment"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Identifier les animaux locaux de Tahiti",
+            "ty": "E 'ite i te mau manu fenua o Tahiti",
+            "en": "Identify local animals of Tahiti"
+          },
+          {
+            "fr": "Décrire les éléments naturels",
+            "ty": "E fa'a'ite i te mau mea taiao",
+            "en": "Describe natural elements"
+          },
+          {
+            "fr": "Comprendre l'importance de la nature en Polynésie",
+            "ty": "E mārama i te mea rahi o te taiao i Porinētia",
+            "en": "Understand the importance of nature in Polynesia"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "manu",
+            "french": "oiseau",
+            "english": "bird",
+            "pronunciation": "mah-noo",
+            "audioId": "audio-manu"
+          },
+          {
+            "tahitian": "i'a",
+            "french": "poisson",
+            "english": "fish",
+            "pronunciation": "ee-ah",
+            "audioId": "audio-ia"
+          },
+          {
+            "tahitian": "puā",
+            "french": "cochon",
+            "english": "pig",
+            "pronunciation": "poo-ah",
+            "audioId": "audio-pua"
+          },
+          {
+            "tahitian": "'ūrī",
+            "french": "chien",
+            "english": "dog",
+            "pronunciation": "oo-ree",
+            "audioId": "audio-uri"
+          },
+          {
+            "tahitian": "pōpoki",
+            "french": "chat",
+            "english": "cat",
+            "pronunciation": "poh-poh-kee",
+            "audioId": "audio-popoki"
+          },
+          {
+            "tahitian": "rā'au",
+            "french": "arbre",
+            "english": "tree",
+            "pronunciation": "rah-ah-oo",
+            "audioId": "audio-raau-tree"
+          },
+          {
+            "tahitian": "tiare",
+            "french": "fleur",
+            "english": "flower",
+            "pronunciation": "tee-ah-reh",
+            "audioId": "audio-tiare"
+          },
+          {
+            "tahitian": "moana",
+            "french": "océan",
+            "english": "ocean",
+            "pronunciation": "moh-ah-nah",
+            "audioId": "audio-moana"
+          },
+          {
+            "tahitian": "maunga",
+            "french": "montagne",
+            "english": "mountain",
+            "pronunciation": "mah-oo-ngah",
+            "audioId": "audio-maunga"
+          },
+          {
+            "tahitian": "vai",
+            "french": "eau/rivière",
+            "english": "water/river",
+            "pronunciation": "vah-ee",
+            "audioId": "audio-vai"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "nature-description",
+            "instruction": {
+              "fr": "Décrivez ce paysage tahitien",
+              "ty": "E fa'a'ite i teie 'ōfa'i tahiti",
+              "en": "Describe this Tahitian landscape"
+            },
+            "description": {
+              "fr": "Utilisez les mots: maunga (montagne), moana (océan), rā'au (arbre), tiare (fleur)",
+              "ty": "E fa'aohipa i te mau 'upu: maunga, moana, rā'au, tiare",
+              "en": "Use the words: maunga (mountain), moana (ocean), rā'au (tree), tiare (flower)"
+            }
+          },
+          {
+            "type": "animal-sounds",
+            "instruction": {
+              "fr": "Associez les animaux à leurs environnements",
+              "ty": "E fa'ari'i te mau manu e to rātou mau 'āi'a",
+              "en": "Match animals to their environments"
+            },
+            "pairs": [
+              { "animal": "i'a", "environment": "moana" },
+              { "animal": "manu", "environment": "rā'au" },
+              { "animal": "puā", "environment": "fenua" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La nature occupe une place centrale dans la culture polynésienne. Chaque élément naturel a sa propre signification spirituelle et pratique. Les Polynésiens vivent en harmonie avec leur environnement, respectant les cycles naturels et les ressources de leurs îles. Les animaux et plantes sont souvent intégrés dans les légendes et les traditions orales.",
+          "ty": "Te taiao e 'āi'a tōtahi roa i roto i te haapiira'a porinētia. Te mau mea taiao atoa e mea ta'e roa tona fa'a'ite varua ma te mea 'ohipa. Te mau porinētia e noho hia e te taiao, e fa'arue i te mau taime taiao ma te mau mea o to rātou mau motu. Te mau manu ma te mau rā'au e fa'auru hia i roto i te mau pārau tupuna ma te mau haapiira'a vaha.",
+          "en": "Nature holds a central place in Polynesian culture. Each natural element has its own spiritual and practical significance. Polynesians live in harmony with their environment, respecting natural cycles and the resources of their islands. Animals and plants are often integrated into legends and oral traditions."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous connaissez maintenant les principaux animaux et éléments naturels de Tahiti. Ce vocabulaire vous aidera à apprécier la beauté naturelle de la Polynésie.",
+          "ty": "Ua 'ite nei 'oe i te mau manu ma te mau mea taiao rahi o Tahiti. Teie mau 'upu e 'oa ia 'oe e 'oa'oa ai i te nehenehe taiao o Porinētia.",
+          "en": "You now know the main animals and natural elements of Tahiti. This vocabulary will help you appreciate the natural beauty of Polynesia."
+        },
+        "keyPoints": [
+          "Nature is sacred in Polynesian culture",
+          "Each natural element has spiritual significance",
+          "Animals and plants feature in traditional stories"
+        ]
+      }
+    }
+  ]
+}

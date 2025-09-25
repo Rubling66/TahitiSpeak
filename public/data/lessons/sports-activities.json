@@ -1,0 +1,223 @@
+{
+  "id": "sports-activities",
+  "slug": "sports-activities",
+  "level": "intermediate",
+  "title": {
+    "fr": "Sports et Activités",
+    "ty": "Te Mau Ha'api'ira'a ma te Mau Tamaraa",
+    "en": "Sports and Activities"
+  },
+  "summary": {
+    "fr": "Découvrez les sports et activités populaires en Polynésie",
+    "ty": "E 'ite i te mau ha'api'ira'a ma te mau tamaraa rave mau i Porinētia",
+    "en": "Discover popular sports and activities in Polynesia"
+  },
+  "durationMin": 25,
+  "heroMediaId": "sports-activities-hero",
+  "isPublished": true,
+  "tags": ["sports", "activities", "intermediate", "recreation"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Nommer les sports et activités polynésiens",
+            "ty": "E ta'a i te mau ha'api'ira'a ma te mau tamaraa porinētia",
+            "en": "Name Polynesian sports and activities"
+          },
+          {
+            "fr": "Parler de vos loisirs préférés",
+            "ty": "E parau i to 'oe mau tamaraa here",
+            "en": "Talk about your favorite leisure activities"
+          },
+          {
+            "fr": "Comprendre l'importance culturelle du sport",
+            "ty": "E mārama i te mea rahi haapiira'a o te ha'api'ira'a",
+            "en": "Understand the cultural importance of sports"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "va'a",
+            "french": "pirogue/canoë",
+            "english": "canoe",
+            "pronunciation": "vah-ah",
+            "audioId": "audio-vaa-sport"
+          },
+          {
+            "tahitian": "ori",
+            "french": "danse",
+            "english": "dance",
+            "pronunciation": "oh-ree",
+            "audioId": "audio-ori"
+          },
+          {
+            "tahitian": "hōrue",
+            "french": "surf",
+            "english": "surfing",
+            "pronunciation": "hoh-roo-eh",
+            "audioId": "audio-horue"
+          },
+          {
+            "tahitian": "pōpā",
+            "french": "football",
+            "english": "soccer/football",
+            "pronunciation": "poh-pah",
+            "audioId": "audio-popa"
+          },
+          {
+            "tahitian": "'ōmiri",
+            "french": "natation",
+            "english": "swimming",
+            "pronunciation": "oh-mee-ree",
+            "audioId": "audio-omiri"
+          },
+          {
+            "tahitian": "tautai",
+            "french": "pêche",
+            "english": "fishing",
+            "pronunciation": "tah-oo-tah-ee",
+            "audioId": "audio-tautai"
+          },
+          {
+            "tahitian": "tere maunga",
+            "french": "randonnée",
+            "english": "hiking",
+            "pronunciation": "teh-reh mah-oo-ngah",
+            "audioId": "audio-tere-maunga"
+          },
+          {
+            "tahitian": "tamaraa",
+            "french": "jeu/activité",
+            "english": "game/activity",
+            "pronunciation": "tah-mah-rah-ah",
+            "audioId": "audio-tamaraa"
+          },
+          {
+            "tahitian": "ha'api'ira'a",
+            "french": "sport/exercice",
+            "english": "sport/exercise",
+            "pronunciation": "hah-ah-pee-ee-rah-ah",
+            "audioId": "audio-haapiraa"
+          },
+          {
+            "tahitian": "'ōpani",
+            "french": "équipe",
+            "english": "team",
+            "pronunciation": "oh-pah-nee",
+            "audioId": "audio-opani"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "sports-dialogue",
+            "instruction": {
+              "fr": "Pratiquez cette conversation sur les sports",
+              "ty": "E ha'api'i i teie parau ha'api'ira'a",
+              "en": "Practice this conversation about sports"
+            },
+            "dialogue": [
+              {
+                "speaker": "Hoa",
+                "text": "E aha ta 'oe ha'api'ira'a here?",
+                "translation": "Quel est ton sport préféré ? / What is your favorite sport?"
+              },
+              {
+                "speaker": "'Oe",
+                "text": "Ua here au i te va'a",
+                "translation": "J'aime la pirogue / I like canoeing"
+              },
+              {
+                "speaker": "Hoa",
+                "text": "E hia taime i te hebedoma 'oe e va'a ai?",
+                "translation": "Combien de fois par semaine fais-tu de la pirogue ? / How many times per week do you canoe?"
+              }
+            ]
+          },
+          {
+            "type": "activity-matching",
+            "instruction": {
+              "fr": "Associez les activités aux lieux",
+              "ty": "E fa'ari'i te mau tamaraa e te mau 'āi'a",
+              "en": "Match activities to locations"
+            },
+            "pairs": [
+              { "activity": "hōrue", "location": "moana" },
+              { "activity": "tere maunga", "location": "maunga" },
+              { "activity": "ori", "location": "toere" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "Les sports traditionnels polynésiens sont profondément liés à la culture et à l'histoire. La pirogue (va'a) est plus qu'un sport - c'est un lien avec les ancêtres navigateurs. Le surf (hōrue) est né en Polynésie et reste une passion locale. La danse (ori) combine sport, art et spiritualité. Ces activités renforcent les liens communautaires et transmettent les valeurs culturelles.",
+          "ty": "Te mau ha'api'ira'a tupuna porinētia e pi'i roa i te haapiira'a ma te pārau tupuna. Te va'a, 'aita e ha'api'ira'a anae - o te pi'ira'a ia e te mau tupuna tere moana. Te hōrue ua fānau mai i Porinētia e o te mea here tonu no te feti'a nei. Te ori e fa'atau'ē nei i te ha'api'ira'a, te tāpura ma te varua. Teie mau tamaraa e fa'amarohi nei i te mau pi'ira'a feti'a ma te ha'apa'o i te mau mea rahi haapiira'a.",
+          "en": "Traditional Polynesian sports are deeply connected to culture and history. Canoeing (va'a) is more than a sport - it's a connection to ancestral navigators. Surfing (hōrue) was born in Polynesia and remains a local passion. Dance (ori) combines sport, art, and spirituality. These activities strengthen community bonds and transmit cultural values."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous pouvez maintenant parler de sports et d'activités en tahitien. Ces connaissances vous aideront à participer à la vie sociale polynésienne.",
+          "ty": "E nehenehe teie nei ia 'oe e parau i te mau ha'api'ira'a ma te mau tamaraa tahiti. Teie mau 'ite e 'oa ia 'oe e 'uru ai i te orara'a feti'a porinētia.",
+          "en": "You can now talk about sports and activities in Tahitian. This knowledge will help you participate in Polynesian social life."
+        },
+        "keyPoints": [
+          "Traditional sports connect to ancestral heritage",
+          "Va'a racing is a major cultural event",
+          "Sports strengthen community bonds"
+        ]
+      }
+    }
+  ]
+}

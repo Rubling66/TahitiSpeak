@@ -1,0 +1,225 @@
+{
+  "id": "food-dining",
+  "slug": "food-dining",
+  "level": "beginner",
+  "title": {
+    "fr": "Nourriture et Repas",
+    "ty": "Te Ma'a ma te Tāmā'ara'a",
+    "en": "Food and Dining"
+  },
+  "summary": {
+    "fr": "Découvrez la cuisine tahitienne et le vocabulaire des repas",
+    "ty": "E hi'o i te ma'a tahiti ma te mau 'upu tāmā'ara'a",
+    "en": "Discover Tahitian cuisine and dining vocabulary"
+  },
+  "durationMin": 30,
+  "heroMediaId": "food-dining-hero",
+  "isPublished": true,
+  "tags": ["food", "dining", "beginner", "culture"],
+  "version": "1.0.0",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "updatedAt": "2024-01-15T10:00:00Z",
+  "sections": [
+    {
+      "id": "objectives",
+      "type": "objectives",
+      "title": {
+        "fr": "Objectifs",
+        "ty": "Te mau ravea",
+        "en": "Objectives"
+      },
+      "content": {
+        "objectives": [
+          {
+            "fr": "Apprendre les noms des aliments tahitiens traditionnels",
+            "ty": "E hi'o i te mau i'oa o te ma'a tahiti tupuna",
+            "en": "Learn names of traditional Tahitian foods"
+          },
+          {
+            "fr": "Comprendre les expressions liées aux repas",
+            "ty": "E mārama i te mau parau no te tāmā'ara'a",
+            "en": "Understand meal-related expressions"
+          },
+          {
+            "fr": "Découvrir la culture culinaire polynésienne",
+            "ty": "E hi'o i te haapiira'a ma'a porinētia",
+            "en": "Discover Polynesian culinary culture"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "title": {
+        "fr": "Vocabulaire",
+        "ty": "Te mau 'upu",
+        "en": "Vocabulary"
+      },
+      "content": {
+        "words": [
+          {
+            "tahitian": "ma'a",
+            "french": "nourriture",
+            "english": "food",
+            "pronunciation": "mah-ah",
+            "audioId": "audio-maa"
+          },
+          {
+            "tahitian": "i'a",
+            "french": "poisson",
+            "english": "fish",
+            "pronunciation": "ee-ah",
+            "audioId": "audio-ia"
+          },
+          {
+            "tahitian": "uru",
+            "french": "fruit à pain",
+            "english": "breadfruit",
+            "pronunciation": "oo-roo",
+            "audioId": "audio-uru"
+          },
+          {
+            "tahitian": "taro",
+            "french": "taro",
+            "english": "taro",
+            "pronunciation": "tah-roh",
+            "audioId": "audio-taro"
+          },
+          {
+            "tahitian": "niu",
+            "french": "noix de coco",
+            "english": "coconut",
+            "pronunciation": "nee-oo",
+            "audioId": "audio-niu"
+          },
+          {
+            "tahitian": "vai",
+            "french": "eau",
+            "english": "water",
+            "pronunciation": "vah-ee",
+            "audioId": "audio-vai"
+          },
+          {
+            "tahitian": "poe",
+            "french": "dessert aux fruits",
+            "english": "fruit pudding",
+            "pronunciation": "poh-eh",
+            "audioId": "audio-poe"
+          },
+          {
+            "tahitian": "poisson cru",
+            "french": "poisson cru",
+            "english": "raw fish",
+            "pronunciation": "pwah-sohn kroo",
+            "audioId": "audio-poisson-cru"
+          },
+          {
+            "tahitian": "tamaaraa",
+            "french": "festin",
+            "english": "feast",
+            "pronunciation": "tah-mah-ah-rah-ah",
+            "audioId": "audio-tamaaraa"
+          },
+          {
+            "tahitian": "ahimaa",
+            "french": "four traditionnel",
+            "english": "traditional oven",
+            "pronunciation": "ah-hee-mah-ah",
+            "audioId": "audio-ahimaa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "title": {
+        "fr": "Pratique",
+        "ty": "Te ha'api'ira'a",
+        "en": "Practice"
+      },
+      "content": {
+        "exercises": [
+          {
+            "type": "vocabulary",
+            "instruction": {
+              "fr": "Identifiez ces aliments tahitiens",
+              "ty": "E 'ite i teie mau ma'a tahiti",
+              "en": "Identify these Tahitian foods"
+            },
+            "items": [
+              {
+                "image": "breadfruit.jpg",
+                "options": ["uru", "taro", "niu"],
+                "correct": "uru"
+              },
+              {
+                "image": "coconut.jpg",
+                "options": ["vai", "niu", "i'a"],
+                "correct": "niu"
+              }
+            ]
+          },
+          {
+            "type": "translation",
+            "instruction": {
+              "fr": "Traduisez ces phrases sur la nourriture",
+              "ty": "E 'ohipa i teie mau parau no te ma'a",
+              "en": "Translate these food-related sentences"
+            },
+            "sentences": [
+              {
+                "tahitian": "Ua amu vau i te i'a",
+                "french": "J'ai mangé du poisson",
+                "english": "I ate fish"
+              },
+              {
+                "tahitian": "Te ma'a maita'i teie",
+                "french": "Cette nourriture est délicieuse",
+                "english": "This food is delicious"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "culture",
+      "type": "culture",
+      "title": {
+        "fr": "Culture",
+        "ty": "Te haapiira'a",
+        "en": "Culture"
+      },
+      "content": {
+        "text": {
+          "fr": "La cuisine tahitienne est riche en saveurs tropicales. Le poisson cru au lait de coco est le plat emblématique, préparé avec du poisson frais mariné dans du citron vert et mélangé avec du lait de coco. L'ahimaa, le four traditionnel enterré, est utilisé pour les grandes occasions et donne aux aliments une saveur fumée unique.",
+          "ty": "Te ma'a tahiti e rahi ai te mau hāmani tropique. Te i'a mata e te pape niu te ma'a rahi, e haamaohia e te i'a mata i roto i te taporo mata e fa'aro'o hia e te pape niu. Te ahimaa, te umu tupuna i roto i te repo, e fa'aohipa hia no te mau taime rahi e haamaohia ai te ma'a e te hāmani auahi.",
+          "en": "Tahitian cuisine is rich in tropical flavors. Raw fish with coconut milk is the emblematic dish, prepared with fresh fish marinated in lime juice and mixed with coconut milk. The ahimaa, the traditional underground oven, is used for special occasions and gives food a unique smoky flavor."
+        }
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "title": {
+        "fr": "Révision",
+        "ty": "Te toe 'ite",
+        "en": "Review"
+      },
+      "content": {
+        "summary": {
+          "fr": "Vous avez découvert les aliments de base de la cuisine tahitienne et leur importance culturelle. Essayez de goûter ces plats lors de votre prochaine visite en Polynésie !",
+          "ty": "Ua 'oe hi'o i te mau ma'a rahi o te ma'a tahiti e to ratou mana'o haapiira'a. E tia'i e hāmani i teie mau ma'a i to 'oe tere 'ē i Porinētia !",
+          "en": "You have discovered the staple foods of Tahitian cuisine and their cultural importance. Try to taste these dishes on your next visit to Polynesia!"
+        },
+        "keyPoints": [
+          "Fish and coconut are central to Tahitian cuisine",
+          "Traditional cooking methods like ahimaa are still used",
+          "Breadfruit and taro are important staple foods"
+        ]
+      }
+    }
+  ]
+}

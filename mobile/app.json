@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Tahiti French Tutor",
+    "slug": "tahiti-french-tutor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tahitifrenchtutor.app"
+    },
+    "android": {
+      "package": "com.tahitifrenchtutor.app"
+    },
+    "web": {
+      "bundler": "webpack"
+    },
+    "plugins": [
+      "expo-av"
+    ]
+  }
+}

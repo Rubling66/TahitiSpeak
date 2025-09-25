@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "kind": "Image",
+    "url": "/images/lessons/greetings-hero.jpg",
+    "altText": "Traditional Tahitian greeting scene with people saying Ia ora na",
+    "caption": "Traditional greetings in Tahitian culture",
+    "attribution": "Tahiti Tourism Board",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 101,
+    "kind": "Audio",
+    "url": "/audio/vocab/bonjour-ia-ora-na.mp3",
+    "altText": "Pronunciation of 'Bonjour' and 'Ia ora na'",
+    "caption": "Native speaker pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 102,
+    "kind": "Audio",
+    "url": "/audio/vocab/bonsoir-ia-ora-na.mp3",
+    "altText": "Pronunciation of 'Bonsoir' and 'Ia ora na'",
+    "caption": "Evening greeting pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 103,
+    "kind": "Audio",
+    "url": "/audio/vocab/salut-kaoha.mp3",
+    "altText": "Pronunciation of 'Salut' and 'Kaoha'",
+    "caption": "Informal greeting pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 104,
+    "kind": "Audio",
+    "url": "/audio/vocab/au-revoir-nana.mp3",
+    "altText": "Pronunciation of 'Au revoir' and 'Nana'",
+    "caption": "Goodbye pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 105,
+    "kind": "Audio",
+    "url": "/audio/vocab/sil-vous-plait-taime.mp3",
+    "altText": "Pronunciation of 'S'il vous plaît' and 'Taime'",
+    "caption": "Please pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 106,
+    "kind": "Audio",
+    "url": "/audio/vocab/merci-mauruuru.mp3",
+    "altText": "Pronunciation of 'Merci' and 'Mauruuru'",
+    "caption": "Thank you pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 107,
+    "kind": "Audio",
+    "url": "/audio/vocab/de-rien-aita-peapea.mp3",
+    "altText": "Pronunciation of 'De rien' and 'Aita pe'ape'a'",
+    "caption": "You're welcome pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  },
+  {
+    "id": 108,
+    "kind": "Audio",
+    "url": "/audio/vocab/excusez-moi-aroha.mp3",
+    "altText": "Pronunciation of 'Excusez-moi' and 'Aroha'",
+    "caption": "Excuse me pronunciation",
+    "attribution": "Tahitian Language Institute",
+    "createdAt": 1704067200000
+  }
+]
