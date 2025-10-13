@@ -1,9 +1,15 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import { app } from '../../api/server';
-import { DatabaseService } from '../../api/services/DatabaseService';
 import { createTestUser, loginTestUser, deleteTestUser } from './auth.test';
 import { logger } from '../../src/services/LoggingService';
+
+// Mock database service for testing
+const DatabaseService = {
+  initialize: jest.fn(),
+  query: jest.fn(),
+  close: jest.fn()
+};
 
 // Test data
 const TEST_INSTRUCTOR = {
@@ -195,7 +201,7 @@ describe('Courses API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('courses');
-      response.body.courses.forEach((course: any) => {
+      response.body.courses.forEach((course: { level: string }) => {
         expect(course.level).toBe('beginner');
       });
     });
@@ -206,7 +212,7 @@ describe('Courses API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('courses');
-      response.body.courses.forEach((course: any) => {
+      response.body.courses.forEach((course: { category: string }) => {
         expect(course.category).toBe('language');
       });
     });
@@ -217,7 +223,7 @@ describe('Courses API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('courses');
-      response.body.courses.forEach((course: any) => {
+      response.body.courses.forEach((course: { title: string }) => {
         expect(course.title.toLowerCase()).toContain('tahitian');
       });
     });

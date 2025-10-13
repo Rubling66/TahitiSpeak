@@ -21,33 +21,63 @@ export const API_KEY_CONFIGS: Record<string, ApiKeyConfig> = {
   // Local AI Configuration
   LOCAL_AI_BASE_URL: {
     key: 'LOCAL_AI_BASE_URL',
-    required: true,
+    required: false,
     validator: (value) => /^https?:\/\/.+/.test(value),
     description: 'Base URL for local Llama 3.1 DeepSeek instance (e.g., http://localhost:11434)',
     category: 'Local AI Configuration'
   },
   LOCAL_AI_MODEL_NAME: {
     key: 'LOCAL_AI_MODEL_NAME',
-    required: true,
+    required: false,
     validator: (value) => /^[a-zA-Z0-9._-]+$/.test(value),
     description: 'Name of the local Llama model (e.g., llama3.1:8b)',
     category: 'Local AI Configuration'
   },
 
-  // Local AI Configuration
-  LOCAL_AI_ENDPOINT: {
-    key: 'LOCAL_AI_ENDPOINT',
+  // AI & Language Processing
+  OPENAI_API_KEY: {
+    key: 'OPENAI_API_KEY',
     required: false,
-    validator: (value) => value.startsWith('http://') || value.startsWith('https://'),
-    description: 'Local AI endpoint URL (default: http://localhost:11434)',
-    category: 'Local AI Configuration'
+    validator: (value) => value.startsWith('sk-') && value.length > 20,
+    description: 'OpenAI API key for AI content creation and cultural tutoring',
+    category: 'AI & Language Processing'
   },
-  LOCAL_AI_MODEL: {
-    key: 'LOCAL_AI_MODEL',
+  DEEPSEEK_API_KEY: {
+    key: 'DEEPSEEK_API_KEY',
     required: false,
-    validator: (value) => value.length > 0 && !value.includes('your-'),
-    description: 'Local AI model name (default: deepseek-llama-3.1)',
-    category: 'Local AI Configuration'
+    validator: (value) => value.startsWith('sk-') && value.length > 20,
+    description: 'DeepSeek API key for enhanced AI features',
+    category: 'AI & Language Processing'
+  },
+
+  // Translation Services
+  GOOGLE_TRANSLATE_API_KEY: {
+    key: 'GOOGLE_TRANSLATE_API_KEY',
+    required: false,
+    validator: (value) => value.length > 10 && !value.includes('your-'),
+    description: 'Google Translate API key for real-time translation',
+    category: 'Translation Services'
+  },
+  AZURE_TRANSLATE_API_KEY: {
+    key: 'AZURE_TRANSLATE_API_KEY',
+    required: false,
+    validator: (value) => value.length > 10 && !value.includes('your-'),
+    description: 'Azure Translator API key',
+    category: 'Translation Services'
+  },
+  DEEPL_API_KEY: {
+    key: 'DEEPL_API_KEY',
+    required: false,
+    validator: (value) => value.length > 10 && !value.includes('your-'),
+    description: 'DeepL API key for high-quality translation',
+    category: 'Translation Services'
+  },
+  AWS_TRANSLATE_ACCESS_KEY: {
+    key: 'AWS_TRANSLATE_ACCESS_KEY',
+    required: false,
+    validator: (value) => value.length > 10 && !value.includes('your-'),
+    description: 'AWS Translate access key',
+    category: 'Translation Services'
   },
 
   // Design & Content Creation
@@ -194,7 +224,13 @@ export function getEnvironmentStatus(): Record<string, {
   value?: string;
   maskedValue?: string;
 }> {
-  const status: Record<string, any> = {};
+  const status: Record<string, {
+    configured: boolean;
+    valid: boolean;
+    required: boolean;
+    value?: string;
+    maskedValue?: string;
+  }> = {};
   
   Object.values(API_KEY_CONFIGS).forEach(config => {
     // For client-side, we'll initialize with default values

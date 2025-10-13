@@ -477,7 +477,7 @@ class ContentManagementService implements ContentManagementAPI {
     personalization.preferences = { ...personalization.preferences, ...preferences };
   }
 
-  async addToUserHistory(userId: string, contentId: string, action: 'view' | 'complete' | 'bookmark' | 'rate', metadata?: any): Promise<void> {
+  async addToUserHistory(userId: string, contentId: string, action: 'view' | 'complete' | 'bookmark' | 'rate', metadata?: Record<string, unknown>): Promise<void> {
     const personalization = await this.getUserPersonalization(userId);
     
     switch (action) {

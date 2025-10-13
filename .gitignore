@@ -81,3 +81,53 @@ out/
 # Temporary files
 tmp/
 temp/
+
+# Test results and reports
+test-results/
+test-results.json
+test-synthetic-data.json
+lighthouse-report.json
+playwright-report/
+test-results/
+
+# AI and ML models (if any)
+*.model
+*.weights
+models/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache directories
+.cache/
+.parcel-cache/
+.swc/
+
+# Backup files
+*.backup
+*.bak
+
+# Security and sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+private/
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+
+# Supabase local development
+supabase/.branches
+supabase/.temp
+
+# Performance and monitoring
+*.perf
+performance-reports/
+
+# Deployment artifacts
+deployment-summary.json

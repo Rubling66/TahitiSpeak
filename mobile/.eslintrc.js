@@ -3,9 +3,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
   ],
-  parser: '@typescript-eslint/parser',
   plugins: [
-    '@typescript-eslint',
     'react',
     'react-hooks',
     'react-native',
@@ -29,11 +27,21 @@ module.exports = {
     'react-native/split-platform-components': 'warn',
     'react-native/no-inline-styles': 'warn',
     'react-native/no-color-literals': 'warn',
-    '@typescript-eslint/no-unused-vars': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
   },
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      extends: ['@typescript-eslint/recommended'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'warn',
+      },
+    },
+  ],
   ignorePatterns: [
     'node_modules/',
     'dist/',

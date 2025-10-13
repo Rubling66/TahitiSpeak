@@ -15,13 +15,13 @@ interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   direction: 'ltr' | 'rtl';
-  messages: Record<string, any>;
+  messages: Record<string, unknown>;
   isLoading: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-const messageMap: Record<Locale, Record<string, any>> = {
+const messageMap: Record<Locale, Record<string, unknown>> = {
   en: enMessages,
   fr: frMessages,
   ty: tyMessages,
@@ -132,13 +132,13 @@ export function useI18n() {
 export function useTranslations() {
   const { messages } = useI18n();
   
-  const t = (key: string, values?: Record<string, any>): string => {
+  const t = (key: string, values?: Record<string, unknown>): string => {
     const keys = key.split('.');
-    let result: any = messages;
+    let result: unknown = messages;
     
     for (const k of keys) {
       if (result && typeof result === 'object' && k in result) {
-        result = result[k];
+        result = (result as Record<string, unknown>)[k];
       } else {
         console.warn(`Translation key not found: ${key}`);
         return key; // Return the key if translation is not found

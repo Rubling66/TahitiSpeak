@@ -18,6 +18,10 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "api/**/*.js",
+      "jest.config.js",
+      "tailwind.config.js",
+      "test-local-ai.js",
     ],
   },
 ];

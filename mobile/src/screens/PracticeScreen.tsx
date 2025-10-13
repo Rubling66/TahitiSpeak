@@ -63,7 +63,7 @@ const practiceData = [
     id: 7,
     french: 'Dansons ensemble',
     tahitian: 'Ori tatou',
-    english: 'Let\'s dance together',
+    english: 'Let&apos;s dance together',
     category: 'Dance'
   },
   {
@@ -313,7 +313,7 @@ export default function PracticeScreen() {
           <View style={styles.phrasesSection}>
             <View style={styles.sectionHeader}>
               <TahitianDancer size="lg" className="text-white" />
-              <Text style={styles.sectionTitleWhite}>Phrases d'Entraînement</Text>
+              <Text style={styles.sectionTitleWhite}>Phrases d&apos;Entraînement</Text>
               <DancerPoses.Aparima size="lg" className="text-white" />
             </View>
             {practiceData.map((phrase) => (

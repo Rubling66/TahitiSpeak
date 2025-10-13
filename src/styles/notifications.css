@@ -1,0 +1,294 @@
+/* Enhanced notification styles for better UX */
+
+/* Base notification styling */
+.sonner-toast {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Error notification severity levels */
+.error-notification.low {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-left: 4px solid #f87171;
+  color: #7f1d1d;
+}
+
+.error-notification.medium {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border-left: 4px solid #ef4444;
+  color: #7f1d1d;
+}
+
+.error-notification.high {
+  background: linear-gradient(135deg, #fef2f2 0%, #fca5a5 100%);
+  border-left: 4px solid #dc2626;
+  color: #7f1d1d;
+  animation: pulse-error 2s infinite;
+}
+
+.error-notification.critical {
+  background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+  border-left: 4px solid #b91c1c;
+  color: white;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Success notifications */
+.sonner-toast[data-type="success"] {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-left: 4px solid #22c55e;
+  color: #14532d;
+}
+
+/* Warning notifications */
+.sonner-toast[data-type="warning"] {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-left: 4px solid #f59e0b;
+  color: #78350f;
+}
+
+/* Info notifications */
+.sonner-toast[data-type="info"] {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-left: 4px solid #3b82f6;
+  color: #1e3a8a;
+}
+
+/* Loading notifications */
+.sonner-toast[data-type="loading"] {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-left: 4px solid #64748b;
+  color: #334155;
+}
+
+/* Notification content styling */
+.sonner-toast .sonner-toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.sonner-toast .sonner-toast-description {
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+/* Action buttons */
+.sonner-toast button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.sonner-toast button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-notification button {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #dc2626;
+}
+
+.error-notification button:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* Retry button specific styling */
+.sonner-toast button[data-action="retry"] {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+}
+
+.sonner-toast button[data-action="retry"]:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+}
+
+/* Report button styling */
+.sonner-toast button[data-action="report"] {
+  background: rgba(107, 114, 128, 0.1);
+  border-color: #6b7280;
+  color: #4b5563;
+}
+
+.sonner-toast button[data-action="report"]:hover {
+  background: rgba(107, 114, 128, 0.2);
+}
+
+/* Animations */
+@keyframes pulse-error {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .sonner-toast {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(75, 85, 99, 0.3);
+    color: #f9fafb;
+  }
+
+  .error-notification.low {
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.2) 0%, rgba(220, 38, 38, 0.1) 100%);
+    color: #fca5a5;
+  }
+
+  .error-notification.medium {
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.3) 0%, rgba(220, 38, 38, 0.2) 100%);
+    color: #f87171;
+  }
+
+  .error-notification.high {
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.4) 0%, rgba(220, 38, 38, 0.3) 100%);
+    color: #ef4444;
+  }
+
+  .error-notification.critical {
+    background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+    color: white;
+  }
+
+  .sonner-toast[data-type="success"] {
+    background: linear-gradient(135deg, rgba(20, 83, 45, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+    color: #86efac;
+  }
+
+  .sonner-toast[data-type="warning"] {
+    background: linear-gradient(135deg, rgba(120, 53, 15, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+    color: #fbbf24;
+  }
+
+  .sonner-toast[data-type="info"] {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+    color: #93c5fd;
+  }
+
+  .sonner-toast button {
+    background: rgba(55, 65, 81, 0.8);
+    border-color: rgba(107, 114, 128, 0.3);
+    color: #d1d5db;
+  }
+
+  .sonner-toast button:hover {
+    background: rgba(75, 85, 99, 0.9);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .sonner-toast {
+    margin: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .sonner-toast .sonner-toast-title {
+    font-size: 13px;
+  }
+
+  .sonner-toast .sonner-toast-description {
+    font-size: 12px;
+  }
+
+  .sonner-toast button {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-left: 4px;
+  }
+}
+
+/* Accessibility improvements */
+.sonner-toast:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.sonner-toast button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .sonner-toast {
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  .error-notification {
+    border-color: #dc2626;
+    background: #fef2f2;
+    color: #7f1d1d;
+  }
+
+  .sonner-toast[data-type="success"] {
+    border-color: #16a34a;
+    background: #f0fdf4;
+    color: #14532d;
+  }
+
+  .sonner-toast[data-type="warning"] {
+    border-color: #d97706;
+    background: #fffbeb;
+    color: #78350f;
+  }
+
+  .sonner-toast[data-type="info"] {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #1e3a8a;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .sonner-toast {
+    animation: none;
+  }
+
+  .error-notification.high,
+  .error-notification.critical {
+    animation: none;
+  }
+
+  .sonner-toast button {
+    transition: none;
+  }
+
+  .sonner-toast button:hover {
+    transform: none;
+  }
+}

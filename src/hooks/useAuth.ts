@@ -27,6 +27,7 @@ export interface UseAuthReturn {
   hasAnyRole: (roles: string[]) => boolean;
   getAuthHeader: () => string | null;
   isTokenExpiringSoon: () => boolean;
+  hasRefreshToken: () => boolean;
 }
 
 export function useAuth(): UseAuthReturn {
@@ -556,6 +557,10 @@ export function useAuth(): UseAuthReturn {
     return authService.isTokenExpiringSoon();
   }, []);
 
+  const hasRefreshToken = useCallback(() => {
+    return authService.hasRefreshToken();
+  }, []);
+
   return {
     // State
     user: authState.user,
@@ -577,7 +582,8 @@ export function useAuth(): UseAuthReturn {
     hasRole,
     hasAnyRole,
     getAuthHeader,
-    isTokenExpiringSoon
+    isTokenExpiringSoon,
+    hasRefreshToken
   };
 }
 

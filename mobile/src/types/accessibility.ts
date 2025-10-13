@@ -124,7 +124,7 @@ export interface xAPIStatement {
       homePage: string;
       name: string;
     };
-  };
+  } | Record<string, unknown>;
   verb: {
     id: string;
     display: Record<string, string>;
@@ -136,7 +136,7 @@ export interface xAPIStatement {
       description: Record<string, string>;
       type?: string;
     };
-  };
+  } | Record<string, unknown>;
   result?: {
     score?: {
       scaled?: number;

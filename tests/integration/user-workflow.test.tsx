@@ -28,7 +28,7 @@ const LessonPage: React.FC<{ lessonId: string }> = ({ lessonId }) => (
     <h1>Greetings</h1>
     <p>Learn basic greetings in Tahitian</p>
     <button>Play</button>
-    <div>How do you say "Hello" in Tahitian?</div>
+    <div>How do you say &quot;Hello&quot; in Tahitian?</div>
     <button>Ia ora na</button>
     <button>Submit Answer</button>
   </div>

@@ -239,7 +239,7 @@ export default function CultureScreen() {
               <View style={styles.headerTexts}>
                 <Text style={styles.headerTitle}>Culture Polynésienne</Text>
                 <Text style={styles.headerSubtitle}>
-                  Découvrez les traditions et l'histoire de Tahiti
+                  Découvrez les traditions et l&apos;histoire de Tahiti
                 </Text>
               </View>
               <TiarePattern size="md" color="ocean" />
@@ -291,7 +291,7 @@ export default function CultureScreen() {
             <TapaPattern size="md" color="ocean" />
             <WavePattern size="md" color="coral" />
             <Text style={styles.footerText}>
-              Plus d'histoires culturelles bientôt disponibles !
+              Plus d&apos;histoires culturelles bientôt disponibles !
             </Text>
             <Text style={styles.footerSubtext}>
               Mauruuru (Merci) de découvrir notre culture

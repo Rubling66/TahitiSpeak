@@ -1,436 +1,625 @@
-// Service Worker for Tahitian Tutor PWA
-// Version 1.0.0
+// Enhanced Service Worker with Workbox
+import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { registerRoute, NavigationRoute } from 'workbox-routing';
+import { StaleWhileRevalidate, CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies';
+import { BackgroundSync } from 'workbox-background-sync';
+import { ExpirationPlugin } from 'workbox-expiration';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
-const CACHE_NAME = 'tahitian-tutor-v1';
-const STATIC_CACHE_NAME = 'tahitian-tutor-static-v1';
-const DYNAMIC_CACHE_NAME = 'tahitian-tutor-dynamic-v1';
-const API_CACHE_NAME = 'tahitian-tutor-api-v1';
+// Precache static assets
+precacheAndRoute(self.__WB_MANIFEST);
+cleanupOutdatedCaches();
 
-// Cache strategies
-const CACHE_STRATEGIES = {
-  CACHE_FIRST: 'cache-first',
-  NETWORK_FIRST: 'network-first',
-  STALE_WHILE_REVALIDATE: 'stale-while-revalidate',
-  NETWORK_ONLY: 'network-only',
-  CACHE_ONLY: 'cache-only'
+// Cache names
+const CACHE_NAMES = {
+  STATIC: 'tahiti-static-v1',
+  DYNAMIC: 'tahiti-dynamic-v1',
+  IMAGES: 'tahiti-images-v1',
+  AUDIO: 'tahiti-audio-v1',
+  API: 'tahiti-api-v1',
+  LESSONS: 'tahiti-lessons-v1'
 };
-
-// Static assets to cache immediately
-const STATIC_ASSETS = [
-  '/',
-  '/manifest.json',
-  '/offline',
-  '/_next/static/css/',
-  '/_next/static/js/',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
-];
-
-// API endpoints to cache
-const API_CACHE_PATTERNS = [
-  /^\/api\/vocabulary\//,
-  /^\/api\/lessons\//,
-  /^\/api\/progress\//,
-  /^\/api\/user\/profile$/
-];
-
-// Routes that should always go to network first
-const NETWORK_FIRST_PATTERNS = [
-  /^\/api\/auth\//,
-  /^\/api\/admin\//,
-  /^\/api\/health\//
-];
-
-// Routes that should be cached with stale-while-revalidate
-const SWR_PATTERNS = [
-  /^\/api\/content\//,
-  /^\/api\/translations\//
-];
-
-// Maximum cache sizes
-const MAX_CACHE_SIZES = {
-  [STATIC_CACHE_NAME]: 100,
-  [DYNAMIC_CACHE_NAME]: 50,
-  [API_CACHE_NAME]: 30
-};
-
-// Cache expiration times (in milliseconds)
-const CACHE_EXPIRATION = {
-  STATIC: 7 * 24 * 60 * 60 * 1000, // 7 days
-  DYNAMIC: 24 * 60 * 60 * 1000,    // 1 day
-  API: 30 * 60 * 1000              // 30 minutes
-};
-
-// Install event - cache static assets
-self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker');
-  
-  event.waitUntil(
-    Promise.all([
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
-        console.log('[SW] Caching static assets');
-        return cache.addAll(STATIC_ASSETS.filter(url => url));
-      }),
-      self.skipWaiting()
-    ])
-  );
-});
-
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker');
-  
-  event.waitUntil(
-    Promise.all([
-      // Clean up old caches
-      caches.keys().then((cacheNames) => {
-        return Promise.all(
-          cacheNames
-            .filter((cacheName) => {
-              return cacheName.startsWith('tahitian-tutor-') && 
-                     ![
-                       STATIC_CACHE_NAME,
-                       DYNAMIC_CACHE_NAME,
-                       API_CACHE_NAME
-                     ].includes(cacheName);
-            })
-            .map((cacheName) => {
-              console.log('[SW] Deleting old cache:', cacheName);
-              return caches.delete(cacheName);
-            })
-        );
-      }),
-      self.clients.claim()
-    ])
-  );
-});
-
-// Fetch event - handle requests with appropriate caching strategy
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-  
-  // Skip non-GET requests
-  if (request.method !== 'GET') {
-    return;
-  }
-  
-  // Skip chrome-extension and other non-http(s) requests
-  if (!url.protocol.startsWith('http')) {
-    return;
-  }
-  
-  event.respondWith(handleRequest(request));
-});
-
-// Main request handler
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  const pathname = url.pathname;
-  
-  try {
-    // Determine caching strategy based on request type
-    if (isStaticAsset(pathname)) {
-      return await cacheFirst(request, STATIC_CACHE_NAME);
-    }
-    
-    if (isAPIRequest(pathname)) {
-      if (matchesPatterns(pathname, NETWORK_FIRST_PATTERNS)) {
-        return await networkFirst(request, API_CACHE_NAME);
-      }
-      
-      if (matchesPatterns(pathname, SWR_PATTERNS)) {
-        return await staleWhileRevalidate(request, API_CACHE_NAME);
-      }
-      
-      if (matchesPatterns(pathname, API_CACHE_PATTERNS)) {
-        return await networkFirst(request, API_CACHE_NAME);
-      }
-      
-      // Default for other API requests
-      return await networkOnly(request);
-    }
-    
-    // For page requests, use network first with fallback
-    return await networkFirstWithOfflineFallback(request);
-    
-  } catch (error) {
-    console.error('[SW] Error handling request:', error);
-    return await handleOfflineRequest(request);
-  }
-}
-
-// Cache strategies implementation
-
-// Cache First - good for static assets
-async function cacheFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse && !isExpired(cachedResponse, CACHE_EXPIRATION.STATIC)) {
-    return cachedResponse;
-  }
-  
-  try {
-    const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      await limitCacheSize(cacheName, MAX_CACHE_SIZES[cacheName]);
-    }
-    return networkResponse;
-  } catch (error) {
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    throw error;
-  }
-}
-
-// Network First - good for dynamic content
-async function networkFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  
-  try {
-    const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      await limitCacheSize(cacheName, MAX_CACHE_SIZES[cacheName]);
-    }
-    return networkResponse;
-  } catch (error) {
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    throw error;
-  }
-}
-
-// Stale While Revalidate - good for content that can be stale
-async function staleWhileRevalidate(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cachedResponse = await cache.match(request);
-  
-  // Start network request in background
-  const networkPromise = fetch(request).then(async (networkResponse) => {
-    if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      await limitCacheSize(cacheName, MAX_CACHE_SIZES[cacheName]);
-    }
-    return networkResponse;
-  }).catch(() => {});
-  
-  // Return cached response immediately if available
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  
-  // Wait for network if no cache
-  return await networkPromise;
-}
-
-// Network Only - for requests that should never be cached
-async function networkOnly(request) {
-  return await fetch(request);
-}
-
-// Network First with Offline Fallback - for page requests
-async function networkFirstWithOfflineFallback(request) {
-  const cache = await caches.open(DYNAMIC_CACHE_NAME);
-  
-  try {
-    const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      await limitCacheSize(DYNAMIC_CACHE_NAME, MAX_CACHE_SIZES[DYNAMIC_CACHE_NAME]);
-    }
-    return networkResponse;
-  } catch (error) {
-    // Try cache first
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    
-    // Return offline page for navigation requests
-    if (request.mode === 'navigate') {
-      const offlineResponse = await cache.match('/offline');
-      if (offlineResponse) {
-        return offlineResponse;
-      }
-    }
-    
-    throw error;
-  }
-}
-
-// Handle offline requests
-async function handleOfflineRequest(request) {
-  const cache = await caches.open(DYNAMIC_CACHE_NAME);
-  
-  // Try to find cached response
-  const cachedResponse = await cache.match(request);
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  
-  // For navigation requests, return offline page
-  if (request.mode === 'navigate') {
-    const offlineResponse = await cache.match('/offline');
-    if (offlineResponse) {
-      return offlineResponse;
-    }
-  }
-  
-  // Return a basic offline response
-  return new Response(
-    JSON.stringify({
-      error: 'Offline',
-      message: 'This content is not available offline'
-    }),
-    {
-      status: 503,
-      statusText: 'Service Unavailable',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-}
-
-// Utility functions
-
-function isStaticAsset(pathname) {
-  return (
-    pathname.startsWith('/_next/static/') ||
-    pathname.startsWith('/icons/') ||
-    pathname.startsWith('/images/') ||
-    pathname.endsWith('.js') ||
-    pathname.endsWith('.css') ||
-    pathname.endsWith('.png') ||
-    pathname.endsWith('.jpg') ||
-    pathname.endsWith('.jpeg') ||
-    pathname.endsWith('.svg') ||
-    pathname.endsWith('.ico')
-  );
-}
-
-function isAPIRequest(pathname) {
-  return pathname.startsWith('/api/');
-}
-
-function matchesPatterns(pathname, patterns) {
-  return patterns.some(pattern => pattern.test(pathname));
-}
-
-function isExpired(response, maxAge) {
-  const dateHeader = response.headers.get('date');
-  if (!dateHeader) return false;
-  
-  const responseDate = new Date(dateHeader);
-  const now = new Date();
-  
-  return (now.getTime() - responseDate.getTime()) > maxAge;
-}
-
-async function limitCacheSize(cacheName, maxSize) {
-  const cache = await caches.open(cacheName);
-  const keys = await cache.keys();
-  
-  if (keys.length > maxSize) {
-    // Remove oldest entries
-    const keysToDelete = keys.slice(0, keys.length - maxSize);
-    await Promise.all(
-      keysToDelete.map(key => cache.delete(key))
-    );
-  }
-}
 
 // Background sync for offline actions
-self.addEventListener('sync', (event) => {
-  console.log('[SW] Background sync triggered:', event.tag);
-  
-  if (event.tag === 'background-sync') {
-    event.waitUntil(doBackgroundSync());
-  }
+const bgSync = new BackgroundSync('offline-actions', {
+  maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 
-async function doBackgroundSync() {
-  // Handle any queued offline actions
-  console.log('[SW] Performing background sync');
-  
-  // This would typically sync offline data, send queued requests, etc.
-  // Implementation depends on your specific offline functionality needs
-}
-
-// Push notifications (if needed)
-self.addEventListener('push', (event) => {
-  console.log('[SW] Push notification received');
-  
-  const options = {
-    body: event.data ? event.data.text() : 'New content available!',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/badge-72x72.png',
-    vibrate: [100, 50, 100],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
-    },
-    actions: [
+// API caching strategy with background sync
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/api/'),
+  new NetworkFirst({
+    cacheName: CACHE_NAMES.API,
+    networkTimeoutSeconds: 3,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      }),
+      new ExpirationPlugin({
+        maxEntries: 100,
+        maxAgeSeconds: 5 * 60 // 5 minutes
+      }),
       {
-        action: 'explore',
-        title: 'Open App',
-        icon: '/icons/checkmark.png'
-      },
-      {
-        action: 'close',
-        title: 'Close',
-        icon: '/icons/xmark.png'
+        cacheKeyWillBeUsed: async ({ request }) => {
+          // Remove auth headers from cache key for better cache hits
+          const url = new URL(request.url);
+          return url.href;
+        },
+        requestWillFetch: async ({ request }) => {
+          // Add offline indicator to requests
+          const headers = new Headers(request.headers);
+          headers.set('X-Offline-Capable', 'true');
+          
+          return new Request(request, { headers });
+        },
+        fetchDidFail: async ({ originalRequest }) => {
+          // Queue failed requests for background sync
+          if (originalRequest.method === 'POST' || originalRequest.method === 'PUT') {
+            await bgSync.replayRequests();
+          }
+        }
       }
     ]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification('Tahitian Tutor', options)
-  );
-});
+  })
+);
 
-// Handle notification clicks
-self.addEventListener('notificationclick', (event) => {
-  console.log('[SW] Notification click received');
-  
-  event.notification.close();
-  
-  if (event.action === 'explore') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
+// Lesson content caching
+registerRoute(
+  ({ url }) => url.pathname.includes('/lessons/') || url.pathname.includes('/stories/'),
+  new StaleWhileRevalidate({
+    cacheName: CACHE_NAMES.LESSONS,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      }),
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 24 * 60 * 60 // 24 hours
+      })
+    ]
+  })
+);
+
+// Image caching
+registerRoute(
+  ({ request }) => request.destination === 'image',
+  new CacheFirst({
+    cacheName: CACHE_NAMES.IMAGES,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      }),
+      new ExpirationPlugin({
+        maxEntries: 200,
+        maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+      })
+    ]
+  })
+);
+
+// Audio caching
+registerRoute(
+  ({ request }) => request.destination === 'audio' || request.url.includes('.mp3') || request.url.includes('.wav'),
+  new CacheFirst({
+    cacheName: CACHE_NAMES.AUDIO,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      }),
+      new ExpirationPlugin({
+        maxEntries: 100,
+        maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+      })
+    ]
+  })
+);
+
+// Static assets caching
+registerRoute(
+  ({ request }) => 
+    request.destination === 'script' ||
+    request.destination === 'style' ||
+    request.destination === 'font',
+  new StaleWhileRevalidate({
+    cacheName: CACHE_NAMES.STATIC,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      })
+    ]
+  })
+);
+
+// Navigation requests (SPA routing)
+const navigationRoute = new NavigationRoute(
+  new NetworkFirst({
+    cacheName: CACHE_NAMES.DYNAMIC,
+    networkTimeoutSeconds: 3,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200]
+      })
+    ]
+  }),
+  {
+    allowlist: [/^\/(?!api)/], // Cache all navigation except API routes
+    denylist: [/\/admin/, /\/api/] // Don't cache admin or API routes
   }
-});
+);
 
-// Message handling for communication with main thread
+registerRoute(navigationRoute);
+
+// Offline fallback for navigation
+registerRoute(
+  ({ request }) => request.mode === 'navigate',
+  async ({ event }) => {
+    try {
+      return await navigationRoute.handler(event);
+    } catch (error) {
+      return caches.match('/offline.html');
+    }
+  }
+);
+
+// Custom message handling
 self.addEventListener('message', (event) => {
-  console.log('[SW] Message received:', event.data);
-  
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
   
   if (event.data && event.data.type === 'GET_VERSION') {
-    event.ports[0].postMessage({ version: CACHE_NAME });
+    event.ports[0].postMessage({ version: '1.0.0' });
+  }
+  
+  if (event.data && event.data.type === 'CACHE_LESSON') {
+    cacheLessonContent(event.data.lessonId);
   }
   
   if (event.data && event.data.type === 'CLEAR_CACHE') {
-    event.waitUntil(clearAllCaches());
+    clearAllCaches();
   }
 });
 
-async function clearAllCaches() {
-  const cacheNames = await caches.keys();
-  await Promise.all(
-    cacheNames
-      .filter(name => name.startsWith('tahitian-tutor-'))
-      .map(name => caches.delete(name))
+// Background sync for offline actions
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'offline-actions') {
+    event.waitUntil(syncOfflineActions());
+  }
+  
+  if (event.tag === 'user-progress') {
+    event.waitUntil(syncUserProgress());
+  }
+  
+  if (event.tag === 'analytics') {
+    event.waitUntil(syncAnalytics());
+  }
+});
+
+// Push notification handling
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+  
+  const data = event.data.json();
+  const options = {
+    body: data.message,
+    icon: '/icon-192x192.png',
+    badge: '/badge-72x72.png',
+    tag: data.tag || 'default',
+    data: data.data || {},
+    actions: data.actions || [],
+    requireInteraction: data.priority === 'high',
+    silent: data.priority === 'low'
+  };
+  
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
   );
-  console.log('[SW] All caches cleared');
+});
+
+// Notification click handling
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  
+  const data = event.notification.data;
+  let url = '/';
+  
+  if (data.url) {
+    url = data.url;
+  } else if (data.lessonId) {
+    url = `/lessons/${data.lessonId}`;
+  } else if (data.type === 'achievement') {
+    url = '/profile/achievements';
+  }
+  
+  event.waitUntil(
+    clients.matchAll({ type: 'window' }).then((clientList) => {
+      // Check if there's already a window/tab open with the target URL
+      for (const client of clientList) {
+        if (client.url === url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      
+      // If not, open a new window/tab
+      if (clients.openWindow) {
+        return clients.openWindow(url);
+      }
+    })
+  );
+});
+
+// Install event
+self.addEventListener('install', (event) => {
+  console.log('Service Worker installing...');
+  
+  event.waitUntil(
+    Promise.all([
+      // Pre-cache critical resources
+      caches.open(CACHE_NAMES.STATIC).then((cache) => {
+        return cache.addAll([
+          '/',
+          '/offline.html',
+          '/manifest.json',
+          '/icon-192x192.png'
+        ]);
+      }),
+      // Initialize IndexedDB
+      initializeOfflineStorage()
+    ])
+  );
+  
+  self.skipWaiting();
+});
+
+// Activate event
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker activating...');
+  
+  event.waitUntil(
+    Promise.all([
+      // Clean up old caches
+      cleanupOldCaches(),
+      // Claim all clients
+      self.clients.claim(),
+      // Set up periodic sync
+      setupPeriodicSync()
+    ])
+  );
+});
+
+// Fetch event with enhanced offline handling
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+  
+  // Handle API requests with offline fallback
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(handleApiRequest(request));
+    return;
+  }
+  
+  // Handle lesson content requests
+  if (url.pathname.includes('/lessons/') || url.pathname.includes('/stories/')) {
+    event.respondWith(handleLessonRequest(request));
+    return;
+  }
+  
+  // Handle media requests
+  if (request.destination === 'audio' || request.destination === 'image') {
+    event.respondWith(handleMediaRequest(request));
+    return;
+  }
+});
+
+// Helper functions
+async function handleApiRequest(request) {
+  try {
+    // Try network first
+    const response = await fetch(request);
+    
+    // Cache successful responses
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAMES.API);
+      cache.put(request, response.clone());
+    }
+    
+    return response;
+  } catch (error) {
+    // Network failed, try cache
+    const cachedResponse = await caches.match(request);
+    
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
+    // If it's a POST/PUT request, queue it for background sync
+    if (request.method === 'POST' || request.method === 'PUT') {
+      await queueOfflineAction(request);
+      
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          message: 'Request queued for when you\'re back online',
+          offline: true 
+        }),
+        { 
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+    
+    // Return offline response for GET requests
+    return new Response(
+      JSON.stringify({ 
+        error: 'You are offline and this content is not cached',
+        offline: true 
+      }),
+      { 
+        status: 503,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  }
+}
+
+async function handleLessonRequest(request) {
+  try {
+    const response = await fetch(request);
+    
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAMES.LESSONS);
+      cache.put(request, response.clone());
+    }
+    
+    return response;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || new Response('Lesson not available offline', { status: 503 });
+  }
+}
+
+async function handleMediaRequest(request) {
+  const cachedResponse = await caches.match(request);
+  
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+  
+  try {
+    const response = await fetch(request);
+    
+    if (response.ok) {
+      const cache = await caches.open(
+        request.destination === 'audio' ? CACHE_NAMES.AUDIO : CACHE_NAMES.IMAGES
+      );
+      cache.put(request, response.clone());
+    }
+    
+    return response;
+  } catch (error) {
+    return new Response('Media not available offline', { status: 503 });
+  }
+}
+
+async function queueOfflineAction(request) {
+  try {
+    const body = await request.text();
+    const action = {
+      url: request.url,
+      method: request.method,
+      headers: Object.fromEntries(request.headers.entries()),
+      body: body,
+      timestamp: Date.now()
+    };
+    
+    // Store in IndexedDB for background sync
+    const db = await openDB();
+    const tx = db.transaction(['offline_actions'], 'readwrite');
+    await tx.objectStore('offline_actions').add(action);
+  } catch (error) {
+    console.error('Error queuing offline action:', error);
+  }
+}
+
+async function syncOfflineActions() {
+  try {
+    const db = await openDB();
+    const tx = db.transaction(['offline_actions'], 'readonly');
+    const actions = await tx.objectStore('offline_actions').getAll();
+    
+    for (const action of actions) {
+      try {
+        const response = await fetch(action.url, {
+          method: action.method,
+          headers: action.headers,
+          body: action.body
+        });
+        
+        if (response.ok) {
+          // Remove successful action from queue
+          const deleteTx = db.transaction(['offline_actions'], 'readwrite');
+          await deleteTx.objectStore('offline_actions').delete(action.id);
+        }
+      } catch (error) {
+        console.error('Error syncing action:', error);
+      }
+    }
+  } catch (error) {
+    console.error('Error syncing offline actions:', error);
+  }
+}
+
+async function syncUserProgress() {
+  try {
+    const db = await openDB();
+    const tx = db.transaction(['user_progress'], 'readonly');
+    const progressItems = await tx.objectStore('user_progress')
+      .index('syncStatus')
+      .getAll('pending');
+    
+    for (const progress of progressItems) {
+      try {
+        const response = await fetch('/api/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(progress)
+        });
+        
+        if (response.ok) {
+          // Mark as synced
+          const updateTx = db.transaction(['user_progress'], 'readwrite');
+          await updateTx.objectStore('user_progress').put({
+            ...progress,
+            syncStatus: 'synced'
+          });
+        }
+      } catch (error) {
+        console.error('Error syncing progress:', error);
+      }
+    }
+  } catch (error) {
+    console.error('Error syncing user progress:', error);
+  }
+}
+
+async function syncAnalytics() {
+  try {
+    const db = await openDB();
+    const tx = db.transaction(['analytics'], 'readonly');
+    const events = await tx.objectStore('analytics')
+      .index('synced')
+      .getAll(false);
+    
+    if (events.length > 0) {
+      try {
+        const response = await fetch('/api/analytics/batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ events })
+        });
+        
+        if (response.ok) {
+          // Mark events as synced
+          const updateTx = db.transaction(['analytics'], 'readwrite');
+          for (const event of events) {
+            await updateTx.objectStore('analytics').put({
+              ...event,
+              synced: true
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error syncing analytics:', error);
+      }
+    }
+  } catch (error) {
+    console.error('Error syncing analytics:', error);
+  }
+}
+
+async function cacheLessonContent(lessonId) {
+  try {
+    const cache = await caches.open(CACHE_NAMES.LESSONS);
+    const urls = [
+      `/api/lessons/${lessonId}`,
+      `/api/lessons/${lessonId}/exercises`,
+      `/api/lessons/${lessonId}/audio`
+    ];
+    
+    await cache.addAll(urls);
+    console.log(`Lesson ${lessonId} cached successfully`);
+  } catch (error) {
+    console.error('Error caching lesson content:', error);
+  }
+}
+
+async function clearAllCaches() {
+  try {
+    const cacheNames = await caches.keys();
+    await Promise.all(
+      cacheNames.map(cacheName => caches.delete(cacheName))
+    );
+    console.log('All caches cleared');
+  } catch (error) {
+    console.error('Error clearing caches:', error);
+  }
+}
+
+async function cleanupOldCaches() {
+  try {
+    const cacheNames = await caches.keys();
+    const oldCaches = cacheNames.filter(name => 
+      !Object.values(CACHE_NAMES).includes(name)
+    );
+    
+    await Promise.all(
+      oldCaches.map(cacheName => caches.delete(cacheName))
+    );
+  } catch (error) {
+    console.error('Error cleaning up old caches:', error);
+  }
+}
+
+async function setupPeriodicSync() {
+  try {
+    if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+      // Register periodic sync for user progress
+      await self.registration.sync.register('user-progress');
+      
+      // Register periodic sync for analytics
+      await self.registration.sync.register('analytics');
+    }
+  } catch (error) {
+    console.error('Error setting up periodic sync:', error);
+  }
+}
+
+async function initializeOfflineStorage() {
+  try {
+    await openDB();
+    console.log('Offline storage initialized in service worker');
+  } catch (error) {
+    console.error('Error initializing offline storage:', error);
+  }
+}
+
+async function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('TahitiSpeakOfflineDB', 1);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      
+      if (!db.objectStoreNames.contains('offline_actions')) {
+        const store = db.createObjectStore('offline_actions', { keyPath: 'id', autoIncrement: true });
+        store.createIndex('timestamp', 'timestamp');
+      }
+      
+      if (!db.objectStoreNames.contains('user_progress')) {
+        const store = db.createObjectStore('user_progress', { keyPath: 'id' });
+        store.createIndex('syncStatus', 'syncStatus');
+      }
+      
+      if (!db.objectStoreNames.contains('analytics')) {
+        const store = db.createObjectStore('analytics', { keyPath: 'id' });
+        store.createIndex('synced', 'synced');
+      }
+    };
+  });
+}
+
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    handleApiRequest,
+    handleLessonRequest,
+    handleMediaRequest,
+    syncOfflineActions,
+    syncUserProgress,
+    syncAnalytics
+  };
 }

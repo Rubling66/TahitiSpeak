@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🗣️ Community Discussions
+    url: https://github.com/TahitiSpeak/discussions
+    about: Ask questions, share ideas, and discuss Tahitian language learning with the community
+  - name: 🔒 Security Vulnerabilities
+    url: https://github.com/TahitiSpeak/security/advisories/new
+    about: Report security vulnerabilities privately to our security team
+  - name: 📚 Cultural Content Guidelines
+    url: https://github.com/TahitiSpeak/blob/main/docs/CULTURAL_GUIDELINES.md
+    about: Guidelines for contributing culturally accurate Tahitian content
+  - name: 💬 Discord Community
+    url: https://discord.gg/tahitispeak
+    about: Join our Discord server for real-time discussions and community support
+  - name: 📧 Direct Contact
+    url: mailto:support@tahitispeak.com
+    about: Contact our team directly for urgent matters or partnership inquiries

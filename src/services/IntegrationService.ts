@@ -26,7 +26,7 @@ class IntegrationService implements IntegrationAPI {
   private webhookDeliveries: WebhookDelivery[] = [];
   private ssoSessions: SSOSession[] = [];
   private ltiLaunches: LTILaunch[] = [];
-  private envValidation: any;
+  private envValidation: { isValid: boolean; errors: string[] };
 
   constructor() {
     this.dataService = new DataService();
@@ -44,7 +44,7 @@ class IntegrationService implements IntegrationAPI {
   private getEnvValue(key: string): string | undefined {
     if (typeof window !== 'undefined') {
       // Client-side: Use public environment variables
-      return (window as any).__ENV__?.[key] || process.env[`NEXT_PUBLIC_${key}`];
+      return (window as Record<string, unknown>).__ENV__?.[key] as string || process.env[`NEXT_PUBLIC_${key}`];
     }
     // Server-side: Use all environment variables
     return process.env[key];
@@ -406,7 +406,7 @@ class IntegrationService implements IntegrationAPI {
     await this.dataService.saveData('api-endpoints', this.endpoints);
   }
 
-  async testEndpoint(id: string, parameters: Record<string, any>): Promise<APIResponse> {
+  async testEndpoint(id: string, parameters: Record<string, unknown>): Promise<APIResponse> {
     const endpoint = this.endpoints.find(e => e.id === id);
     if (!endpoint) throw new Error('Endpoint not found');
     
@@ -717,55 +717,60 @@ class IntegrationService implements IntegrationAPI {
     }
   }
 
-  async testLocalAIConnection(): Promise<{ success: boolean; message: string }> {
+  async testOpenAIConnection(): Promise<{ success: boolean; message: string }> {
+    const apiKey = this.getEnvValue('OPENAI_API_KEY');
+    if (!apiKey) {
+      return { success: false, message: 'OpenAI API key not configured' };
+    }
+
     try {
-      const { LocalAIService } = await import('../lib/local-ai/LocalAIService');
-      const localAI = LocalAIService.getInstance();
-      const isConnected = await localAI.testConnection();
+      const response = await fetch('https://api.openai.com/v1/models', {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
       
-      if (isConnected) {
-        return { success: true, message: 'Local AI (Llama 3.1 DeepSeek) connection successful' };
+      if (response.ok) {
+        return { success: true, message: 'OpenAI connection successful' };
       } else {
-        return { success: false, message: 'Local AI connection failed - check if Ollama is running' };
+        return { success: false, message: `OpenAI API error: ${response.status}` };
       }
     } catch (error) {
-      return { success: false, message: `Local AI connection failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
+      return { success: false, message: `OpenAI connection failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
     }
   }
 
-  async testLocalTranslationService(): Promise<{ success: boolean; message: string }> {
+  async testGoogleTranslateConnection(): Promise<{ success: boolean; message: string }> {
+    const apiKey = this.getEnvValue('GOOGLE_TRANSLATE_API_KEY');
+    if (!apiKey) {
+      return { success: false, message: 'Google Translate API key not configured' };
+    }
+
     try {
-      const { LocalAIService } = await import('../lib/local-ai/LocalAIService');
-      const localAI = LocalAIService.getInstance();
+      const response = await fetch(`https://translation.googleapis.com/language/translate/v2/languages?key=${apiKey}`);
       
-      // Test translation functionality
-      const testResult = await localAI.translateText({
-        text: 'Hello',
-        fromLanguage: 'en',
-        toLanguage: 'fr'
-      });
-      
-      if (testResult && testResult.length > 0) {
-        return { success: true, message: 'Local AI translation service working correctly' };
+      if (response.ok) {
+        return { success: true, message: 'Google Translate connection successful' };
       } else {
-        return { success: false, message: 'Local AI translation test failed' };
+        return { success: false, message: `Google Translate API error: ${response.status}` };
       }
     } catch (error) {
-      return { success: false, message: `Local translation service failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
+      return { success: false, message: `Google Translate connection failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
     }
   }
 
   async testAllConnections(): Promise<Record<string, { success: boolean; message: string }>> {
     const results = await Promise.allSettled([
       this.testCanvaConnection(),
-      this.testLocalAIConnection(),
-      this.testLocalTranslationService()
+      this.testOpenAIConnection(),
+      this.testGoogleTranslateConnection()
     ]);
 
     return {
       canva: results[0].status === 'fulfilled' ? results[0].value : { success: false, message: 'Test failed' },
-      localAI: results[1].status === 'fulfilled' ? results[1].value : { success: false, message: 'Test failed' },
-      localTranslation: results[2].status === 'fulfilled' ? results[2].value : { success: false, message: 'Test failed' }
+      openai: results[1].status === 'fulfilled' ? results[1].value : { success: false, message: 'Test failed' },
+      googleTranslate: results[2].status === 'fulfilled' ? results[2].value : { success: false, message: 'Test failed' }
     };
   }
 

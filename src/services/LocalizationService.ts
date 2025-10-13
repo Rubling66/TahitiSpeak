@@ -472,7 +472,12 @@ class LocalizationService implements LocalizationAPI {
     const reviewedKeys = this.translations.filter(t => t.status === 'reviewed' || t.status === 'approved').length;
     const approvedKeys = this.translations.filter(t => t.status === 'approved').length;
 
-    const languageProgress: Record<string, any> = {};
+    const languageProgress: Record<string, {
+      translated: number;
+      reviewed: number;
+      approved: number;
+      total: number;
+    }> = {};
     for (const lang of this.languages) {
       const langTranslations = this.translations.filter(t => t.languageCode === lang.code);
       languageProgress[lang.code] = {
@@ -620,7 +625,13 @@ class LocalizationService implements LocalizationAPI {
     return job;
   }
 
-  async getTranslationQualityReport(languageCode: string, dateRange?: { start: Date; end: Date }): Promise<any> {
+  async getTranslationQualityReport(languageCode: string, dateRange?: { start: Date; end: Date }): Promise<{
+    languageCode: string;
+    qualityScore: number;
+    totalTranslations: number;
+    errorRate: number;
+    commonErrors: string[];
+  }> {
     return {
       languageCode,
       qualityScore: 85,
@@ -630,7 +641,12 @@ class LocalizationService implements LocalizationAPI {
     };
   }
 
-  async getTranslationCostAnalysis(dateRange?: { start: Date; end: Date }): Promise<any> {
+  async getTranslationCostAnalysis(dateRange?: { start: Date; end: Date }): Promise<{
+    totalCost: number;
+    averageCostPerWord: number;
+    costByProvider: Record<string, number>;
+    costByLanguage: Record<string, number>;
+  }> {
     return {
       totalCost: 250.75,
       averageCostPerWord: 0.12,

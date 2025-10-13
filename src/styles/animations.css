@@ -1,0 +1,77 @@
+/* Tropical Animations */
+
+@keyframes wave {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-10px) translateY(-5px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(-3deg); }
+}
+
+.animate-wave {
+  animation: wave 8s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 7s ease-in-out infinite;
+}
+
+/* Hover effects for tropical elements */
+.tropical-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(15, 76, 117, 0.25);
+}
+
+/* Gradient text effects */
+.gradient-text {
+  background: linear-gradient(135deg, #ff6b35, #bb3b0e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Additional tropical hover effects */
+.tropical-button:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.tropical-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+  transition: all 0.3s ease;
+}
+
+/* Tropical glow effects */
+.tropical-glow {
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.tropical-glow:hover {
+  box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+}
+
+/* Accessibility: Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave,
+  .animate-float,
+  .animate-float-delayed {
+    animation: none;
+  }
+  
+  .tropical-card:hover,
+  .tropical-button:hover,
+  .tropical-icon:hover {
+    transform: none;
+  }
+}

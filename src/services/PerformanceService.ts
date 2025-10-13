@@ -1,646 +1,1163 @@
-import { DataService } from './DataService';
-import {
-  SystemMetrics,
-  PerformanceAlert,
-  PerformanceThreshold,
-  ContentPerformance,
-  ContentTrend,
-  PerformanceRecommendation,
-  PerformanceReport,
-  MonitoringDashboard,
-  LogEntry,
-  LogQuery,
-  PerformanceAPI,
-  AlertSeverity,
-  ReportPeriod,
-  LogLevel
-} from '../types/performance';
+export enum PerformanceMetricType {
+  LOAD_TIME = 'load_time',
+  FIRST_CONTENTFUL_PAINT = 'first_contentful_paint',
+  LARGEST_CONTENTFUL_PAINT = 'largest_contentful_paint',
+  FIRST_INPUT_DELAY = 'first_input_delay',
+  CUMULATIVE_LAYOUT_SHIFT = 'cumulative_layout_shift',
+  TIME_TO_INTERACTIVE = 'time_to_interactive',
+  MEMORY_USAGE = 'memory_usage',
+  CPU_USAGE = 'cpu_usage',
+  NETWORK_LATENCY = 'network_latency',
+  BUNDLE_SIZE = 'bundle_size',
+  CACHE_HIT_RATE = 'cache_hit_rate',
+  API_RESPONSE_TIME = 'api_response_time',
+  ERROR_RATE = 'error_rate',
+  THROUGHPUT = 'throughput'
+}
 
-class PerformanceService implements PerformanceAPI {
-  private dataService: DataService;
-  private metricsSubscribers: ((metrics: SystemMetrics) => void)[] = [];
-  private alertSubscribers: ((alert: PerformanceAlert) => void)[] = [];
-  private logSubscribers: ((log: LogEntry) => void)[] = [];
-  private metricsInterval?: NodeJS.Timeout;
+export enum PerformanceThreshold {
+  EXCELLENT = 'excellent',
+  GOOD = 'good',
+  NEEDS_IMPROVEMENT = 'needs_improvement',
+  POOR = 'poor'
+}
+
+export enum OptimizationType {
+  CODE_SPLITTING = 'code_splitting',
+  LAZY_LOADING = 'lazy_loading',
+  IMAGE_OPTIMIZATION = 'image_optimization',
+  CACHING = 'caching',
+  MINIFICATION = 'minification',
+  COMPRESSION = 'compression',
+  CDN = 'cdn',
+  PRELOADING = 'preloading',
+  SERVICE_WORKER = 'service_worker',
+  BUNDLE_ANALYSIS = 'bundle_analysis'
+}
+
+export interface PerformanceMetric {
+  id: string;
+  type: PerformanceMetricType;
+  value: number;
+  unit: string;
+  timestamp: Date;
+  url?: string;
+  userAgent?: string;
+  connectionType?: string;
+  deviceType?: 'mobile' | 'tablet' | 'desktop';
+  threshold: PerformanceThreshold;
+  tags: string[];
+}
+
+export interface PerformanceBudget {
+  id: string;
+  name: string;
+  description: string;
+  metrics: {
+    type: PerformanceMetricType;
+    threshold: number;
+    unit: string;
+  }[];
+  enabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PerformanceReport {
+  id: string;
+  url: string;
+  timestamp: Date;
+  metrics: PerformanceMetric[];
+  score: number;
+  recommendations: PerformanceRecommendation[];
+  budgetViolations: BudgetViolation[];
+  deviceType: 'mobile' | 'tablet' | 'desktop';
+  connectionType: string;
+  userAgent: string;
+}
+
+export interface PerformanceRecommendation {
+  id: string;
+  type: OptimizationType;
+  title: string;
+  description: string;
+  impact: 'low' | 'medium' | 'high';
+  effort: 'low' | 'medium' | 'high';
+  priority: number;
+  estimatedImprovement: string;
+  implementation: string;
+  resources: string[];
+}
+
+export interface BudgetViolation {
+  id: string;
+  budgetId: string;
+  budgetName: string;
+  metricType: PerformanceMetricType;
+  actualValue: number;
+  thresholdValue: number;
+  unit: string;
+  severity: 'warning' | 'error';
+  timestamp: Date;
+}
+
+export interface PerformanceAlert {
+  id: string;
+  type: PerformanceMetricType;
+  threshold: number;
+  operator: 'gt' | 'lt' | 'eq' | 'ne' | 'gte' | 'lte';
+  enabled: boolean;
+  notifications: string[];
+  cooldown: number;
+  lastTriggered?: Date;
+  createdAt: Date;
+}
+
+export interface PerformanceOptimization {
+  id: string;
+  type: OptimizationType;
+  name: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+  progress: number;
+  estimatedCompletion?: Date;
+  actualCompletion?: Date;
+  beforeMetrics?: PerformanceMetric[];
+  afterMetrics?: PerformanceMetric[];
+  impact?: {
+    improvement: number;
+    metric: PerformanceMetricType;
+    unit: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PerformanceAnalytics {
+  timeRange: {
+    start: Date;
+    end: Date;
+  };
+  totalMeasurements: number;
+  averageScore: number;
+  trends: {
+    metric: PerformanceMetricType;
+    trend: 'improving' | 'degrading' | 'stable';
+    change: number;
+    unit: string;
+  }[];
+  topIssues: {
+    metric: PerformanceMetricType;
+    frequency: number;
+    averageValue: number;
+    impact: 'low' | 'medium' | 'high';
+  }[];
+  deviceBreakdown: {
+    device: string;
+    count: number;
+    averageScore: number;
+  }[];
+  pagePerformance: {
+    url: string;
+    visits: number;
+    averageScore: number;
+    issues: number;
+  }[];
+}
+
+export interface PerformanceConfig {
+  sampling: {
+    rate: number;
+    maxSamples: number;
+  };
+  thresholds: {
+    [key in PerformanceMetricType]?: {
+      excellent: number;
+      good: number;
+      needsImprovement: number;
+      poor: number;
+    };
+  };
+  alerts: {
+    enabled: boolean;
+    channels: string[];
+  };
+  reporting: {
+    frequency: 'hourly' | 'daily' | 'weekly';
+    recipients: string[];
+  };
+  optimization: {
+    autoOptimize: boolean;
+    strategies: OptimizationType[];
+  };
+}
+
+class PerformanceService {
+  private metrics: PerformanceMetric[] = [];
+  private budgets: PerformanceBudget[] = [];
+  private reports: PerformanceReport[] = [];
+  private alerts: PerformanceAlert[] = [];
+  private optimizations: PerformanceOptimization[] = [];
+  private config: PerformanceConfig;
 
   constructor() {
-    this.dataService = new DataService();
-    this.initializeSampleData();
-    this.startMetricsCollection();
+    this.config = this.getDefaultConfig();
+    this.loadData();
+    this.initializeDefaultBudgets();
+    this.startPerformanceMonitoring();
   }
 
-  private initializeSampleData(): void {
-    // Only initialize on client-side to avoid SSR issues
-    if (typeof window === 'undefined') return;
+  // Metric Management
+  recordMetric(metric: Omit<PerformanceMetric, 'id' | 'timestamp' | 'threshold'>): string {
+    const id = this.generateId();
+    const threshold = this.calculateThreshold(metric.type, metric.value);
     
-    // Initialize sample thresholds
-    const sampleThresholds: PerformanceThreshold[] = [
-      {
-        id: 'cpu-high',
-        name: 'High CPU Usage',
-        metric: 'cpu.usage',
-        operator: 'gt',
-        value: 80,
-        duration: 300,
-        severity: 'high',
-        enabled: true,
-        actions: [{ type: 'email', target: 'admin@example.com' }],
-        createdAt: new Date()
-      },
-      {
-        id: 'memory-critical',
-        name: 'Critical Memory Usage',
-        metric: 'memory.usage',
-        operator: 'gt',
-        value: 90,
-        duration: 60,
-        severity: 'critical',
-        enabled: true,
-        actions: [{ type: 'email', target: 'admin@example.com' }, { type: 'auto-scale', target: 'memory' }],
-        createdAt: new Date()
-      }
-    ];
+    const newMetric: PerformanceMetric = {
+      ...metric,
+      id,
+      timestamp: new Date(),
+      threshold
+    };
 
-    // Initialize sample dashboards
-    const sampleDashboards: MonitoringDashboard[] = [
-      {
-        id: 'system-overview',
-        name: 'System Overview',
-        description: 'Main system monitoring dashboard',
-        widgets: [
-          {
-            id: 'cpu-widget',
-            type: 'gauge',
-            title: 'CPU Usage',
-            dataSource: 'system',
-            query: 'cpu.usage',
-            visualization: { chartType: 'gauge', thresholds: [70, 85], colors: ['green', 'yellow', 'red'] },
-            position: { x: 0, y: 0 },
-            size: { width: 2, height: 2 }
-          },
-          {
-            id: 'memory-widget',
-            type: 'gauge',
-            title: 'Memory Usage',
-            dataSource: 'system',
-            query: 'memory.usage',
-            visualization: { chartType: 'gauge', thresholds: [70, 85], colors: ['green', 'yellow', 'red'] },
-            position: { x: 2, y: 0 },
-            size: { width: 2, height: 2 }
-          }
-        ],
-        layout: { columns: 12, rows: 8, gap: 16, responsive: true },
-        refreshInterval: 30,
-        permissions: ['admin', 'monitor'],
-        createdAt: new Date()
-      }
-    ];
-
-    localStorage.setItem('performance_thresholds', JSON.stringify(sampleThresholds));
-    localStorage.setItem('performance_dashboards', JSON.stringify(sampleDashboards));
+    this.metrics.push(newMetric);
+    this.checkAlerts(newMetric);
+    this.saveData();
+    
+    return id;
   }
 
-  private startMetricsCollection(): void {
-    this.metricsInterval = setInterval(() => {
-      const metrics = this.generateCurrentMetrics();
-      this.metricsSubscribers.forEach(callback => callback(metrics));
-      this.checkThresholds(metrics);
-    }, 5000); // Collect metrics every 5 seconds
+  getMetrics(filters?: {
+    type?: PerformanceMetricType;
+    timeRange?: { start: Date; end: Date };
+    url?: string;
+    deviceType?: string;
+  }): PerformanceMetric[] {
+    let filtered = [...this.metrics];
+
+    if (filters?.type) {
+      filtered = filtered.filter(m => m.type === filters.type);
+    }
+
+    if (filters?.timeRange) {
+      filtered = filtered.filter(m => 
+        m.timestamp >= filters.timeRange!.start && 
+        m.timestamp <= filters.timeRange!.end
+      );
+    }
+
+    if (filters?.url) {
+      filtered = filtered.filter(m => m.url === filters.url);
+    }
+
+    if (filters?.deviceType) {
+      filtered = filtered.filter(m => m.deviceType === filters.deviceType);
+    }
+
+    return filtered.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
   }
 
-  private generateCurrentMetrics(): SystemMetrics {
-    const now = new Date();
+  // Budget Management
+  createBudget(budget: Omit<PerformanceBudget, 'id' | 'createdAt' | 'updatedAt'>): string {
+    const id = this.generateId();
+    const newBudget: PerformanceBudget = {
+      ...budget,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this.budgets.push(newBudget);
+    this.saveData();
+    
+    return id;
+  }
+
+  updateBudget(id: string, updates: Partial<PerformanceBudget>): boolean {
+    const index = this.budgets.findIndex(b => b.id === id);
+    if (index === -1) return false;
+
+    this.budgets[index] = {
+      ...this.budgets[index],
+      ...updates,
+      updatedAt: new Date()
+    };
+
+    this.saveData();
+    return true;
+  }
+
+  deleteBudget(id: string): boolean {
+    const index = this.budgets.findIndex(b => b.id === id);
+    if (index === -1) return false;
+
+    this.budgets.splice(index, 1);
+    this.saveData();
+    return true;
+  }
+
+  getBudgets(): PerformanceBudget[] {
+    return [...this.budgets];
+  }
+
+  getBudget(id: string): PerformanceBudget | null {
+    return this.budgets.find(b => b.id === id) || null;
+  }
+
+  // Report Generation
+  generateReport(url: string, options?: {
+    deviceType?: 'mobile' | 'tablet' | 'desktop';
+    connectionType?: string;
+  }): PerformanceReport {
+    const id = this.generateId();
+    const timestamp = new Date();
+    
+    // Simulate performance measurement
+    const metrics = this.simulatePerformanceMeasurement(url, options);
+    const score = this.calculatePerformanceScore(metrics);
+    const recommendations = this.generateRecommendations(metrics);
+    const budgetViolations = this.checkBudgetViolations(metrics);
+
+    const report: PerformanceReport = {
+      id,
+      url,
+      timestamp,
+      metrics,
+      score,
+      recommendations,
+      budgetViolations,
+      deviceType: options?.deviceType || 'desktop',
+      connectionType: options?.connectionType || '4g',
+      userAgent: navigator.userAgent
+    };
+
+    this.reports.push(report);
+    
+    // Store individual metrics
+    metrics.forEach(metric => {
+      this.metrics.push(metric);
+    });
+
+    this.saveData();
+    return report;
+  }
+
+  getReports(filters?: {
+    url?: string;
+    timeRange?: { start: Date; end: Date };
+    deviceType?: string;
+  }): PerformanceReport[] {
+    let filtered = [...this.reports];
+
+    if (filters?.url) {
+      filtered = filtered.filter(r => r.url === filters.url);
+    }
+
+    if (filters?.timeRange) {
+      filtered = filtered.filter(r => 
+        r.timestamp >= filters.timeRange!.start && 
+        r.timestamp <= filters.timeRange!.end
+      );
+    }
+
+    if (filters?.deviceType) {
+      filtered = filtered.filter(r => r.deviceType === filters.deviceType);
+    }
+
+    return filtered.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  }
+
+  // Alert Management
+  createAlert(alert: Omit<PerformanceAlert, 'id' | 'createdAt'>): string {
+    const id = this.generateId();
+    const newAlert: PerformanceAlert = {
+      ...alert,
+      id,
+      createdAt: new Date()
+    };
+
+    this.alerts.push(newAlert);
+    this.saveData();
+    
+    return id;
+  }
+
+  updateAlert(id: string, updates: Partial<PerformanceAlert>): boolean {
+    const index = this.alerts.findIndex(a => a.id === id);
+    if (index === -1) return false;
+
+    this.alerts[index] = { ...this.alerts[index], ...updates };
+    this.saveData();
+    return true;
+  }
+
+  deleteAlert(id: string): boolean {
+    const index = this.alerts.findIndex(a => a.id === id);
+    if (index === -1) return false;
+
+    this.alerts.splice(index, 1);
+    this.saveData();
+    return true;
+  }
+
+  getAlerts(): PerformanceAlert[] {
+    return [...this.alerts];
+  }
+
+  // Optimization Management
+  createOptimization(optimization: Omit<PerformanceOptimization, 'id' | 'createdAt' | 'updatedAt'>): string {
+    const id = this.generateId();
+    const newOptimization: PerformanceOptimization = {
+      ...optimization,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this.optimizations.push(newOptimization);
+    this.saveData();
+    
+    return id;
+  }
+
+  updateOptimization(id: string, updates: Partial<PerformanceOptimization>): boolean {
+    const index = this.optimizations.findIndex(o => o.id === id);
+    if (index === -1) return false;
+
+    this.optimizations[index] = {
+      ...this.optimizations[index],
+      ...updates,
+      updatedAt: new Date()
+    };
+
+    this.saveData();
+    return true;
+  }
+
+  getOptimizations(): PerformanceOptimization[] {
+    return [...this.optimizations];
+  }
+
+  startOptimization(id: string): boolean {
+    const optimization = this.optimizations.find(o => o.id === id);
+    if (!optimization || optimization.status !== 'pending') return false;
+
+    optimization.status = 'in_progress';
+    optimization.updatedAt = new Date();
+    
+    // Simulate optimization process
+    this.simulateOptimizationProcess(optimization);
+    
+    this.saveData();
+    return true;
+  }
+
+  // Analytics
+  getAnalytics(timeRange: { start: Date; end: Date }): PerformanceAnalytics {
+    const filteredMetrics = this.getMetrics({ timeRange });
+    const filteredReports = this.getReports({ timeRange });
+
     return {
-      id: `metrics-${now.getTime()}`,
-      timestamp: now,
-      cpu: {
-        usage: Math.random() * 100,
-        cores: 8,
-        loadAverage: [Math.random() * 2, Math.random() * 2, Math.random() * 2],
-        processes: Math.floor(Math.random() * 200) + 100
-      },
-      memory: {
-        total: 16 * 1024 * 1024 * 1024, // 16GB
-        used: Math.floor(Math.random() * 12 * 1024 * 1024 * 1024), // Random used memory
-        free: 0, // Will be calculated
-        cached: Math.floor(Math.random() * 2 * 1024 * 1024 * 1024),
-        usage: 0 // Will be calculated
-      },
-      disk: {
-        total: 1024 * 1024 * 1024 * 1024, // 1TB
-        used: Math.floor(Math.random() * 500 * 1024 * 1024 * 1024),
-        free: 0, // Will be calculated
-        usage: 0, // Will be calculated
-        readOps: Math.floor(Math.random() * 1000),
-        writeOps: Math.floor(Math.random() * 500),
-        readBytes: Math.floor(Math.random() * 1024 * 1024),
-        writeBytes: Math.floor(Math.random() * 512 * 1024)
-      },
-      network: {
-        bytesIn: Math.floor(Math.random() * 1024 * 1024),
-        bytesOut: Math.floor(Math.random() * 1024 * 1024),
-        packetsIn: Math.floor(Math.random() * 10000),
-        packetsOut: Math.floor(Math.random() * 10000),
-        connections: Math.floor(Math.random() * 100),
-        bandwidth: 1000 * 1024 * 1024 // 1Gbps
-      },
-      database: {
-        connections: Math.floor(Math.random() * 50),
-        activeQueries: Math.floor(Math.random() * 20),
-        slowQueries: Math.floor(Math.random() * 5),
-        queryTime: Math.random() * 100,
-        cacheHitRatio: Math.random() * 100,
-        tableSize: Math.floor(Math.random() * 1024 * 1024 * 1024),
-        indexSize: Math.floor(Math.random() * 100 * 1024 * 1024)
-      },
-      application: {
-        activeUsers: Math.floor(Math.random() * 1000),
-        requests: Math.floor(Math.random() * 10000),
-        responseTime: Math.random() * 500,
-        errorRate: Math.random() * 5,
-        throughput: Math.random() * 1000,
-        uptime: Math.floor(Math.random() * 86400 * 30), // Up to 30 days
-        version: '1.0.0'
-      }
+      timeRange,
+      totalMeasurements: filteredMetrics.length,
+      averageScore: this.calculateAverageScore(filteredReports),
+      trends: this.calculateTrends(filteredMetrics),
+      topIssues: this.identifyTopIssues(filteredMetrics),
+      deviceBreakdown: this.calculateDeviceBreakdown(filteredReports),
+      pagePerformance: this.calculatePagePerformance(filteredReports)
     };
   }
 
-  private checkThresholds(metrics: SystemMetrics): void {
-    const thresholds = this.getThresholdsSync();
-    
-    thresholds.forEach(threshold => {
-      if (!threshold.enabled) return;
+  // Configuration
+  updateConfig(updates: Partial<PerformanceConfig>): void {
+    this.config = { ...this.config, ...updates };
+    this.saveData();
+  }
+
+  getConfig(): PerformanceConfig {
+    return { ...this.config };
+  }
+
+  // Real-time Performance Monitoring
+  startRealTimeMonitoring(): void {
+    if ('PerformanceObserver' in window) {
+      // Monitor Core Web Vitals
+      this.observeWebVitals();
       
-      let currentValue: number = 0;
-      const metricPath = threshold.metric.split('.');
+      // Monitor Resource Loading
+      this.observeResourceTiming();
       
-      // Extract metric value based on path
-      if (metricPath[0] === 'cpu' && metricPath[1] === 'usage') {
-        currentValue = metrics.cpu.usage;
-      } else if (metricPath[0] === 'memory' && metricPath[1] === 'usage') {
-        currentValue = (metrics.memory.used / metrics.memory.total) * 100;
-      }
-      // Add more metric extractions as needed
-      
-      const thresholdMet = this.evaluateThreshold(currentValue, threshold.operator, threshold.value);
-      
-      if (thresholdMet) {
-        const alert: PerformanceAlert = {
-          id: `alert-${Date.now()}`,
-          type: metricPath[0] as any,
-          severity: threshold.severity,
-          metric: threshold.metric,
-          threshold: threshold.value,
-          currentValue,
-          message: `${threshold.name}: ${threshold.metric} is ${currentValue.toFixed(2)} (threshold: ${threshold.value})`,
-          timestamp: new Date(),
-          resolved: false,
-          actions: threshold.actions
+      // Monitor Navigation Timing
+      this.observeNavigationTiming();
+    }
+  }
+
+  // Bundle Analysis
+  analyzeBundleSize(): Promise<{
+    totalSize: number;
+    chunks: { name: string; size: number; }[];
+    recommendations: string[];
+  }> {
+    return new Promise((resolve) => {
+      // Simulate bundle analysis
+      setTimeout(() => {
+        const analysis = {
+          totalSize: 2.5 * 1024 * 1024, // 2.5MB
+          chunks: [
+            { name: 'main', size: 1.2 * 1024 * 1024 },
+            { name: 'vendor', size: 800 * 1024 },
+            { name: 'polyfills', size: 300 * 1024 },
+            { name: 'runtime', size: 200 * 1024 }
+          ],
+          recommendations: [
+            'Consider code splitting for vendor libraries',
+            'Implement lazy loading for non-critical components',
+            'Use tree shaking to eliminate unused code',
+            'Compress images and optimize assets'
+          ]
         };
+        resolve(analysis);
+      }, 1000);
+    });
+  }
+
+  // Data Management
+  exportData(): string {
+    const data = {
+      metrics: this.metrics,
+      budgets: this.budgets,
+      reports: this.reports,
+      alerts: this.alerts,
+      optimizations: this.optimizations,
+      config: this.config,
+      exportedAt: new Date().toISOString()
+    };
+    return JSON.stringify(data, null, 2);
+  }
+
+  importData(jsonData: string): boolean {
+    try {
+      const data = JSON.parse(jsonData);
+      
+      if (data.metrics) this.metrics = data.metrics.map(this.deserializeMetric);
+      if (data.budgets) this.budgets = data.budgets.map(this.deserializeBudget);
+      if (data.reports) this.reports = data.reports.map(this.deserializeReport);
+      if (data.alerts) this.alerts = data.alerts.map(this.deserializeAlert);
+      if (data.optimizations) this.optimizations = data.optimizations.map(this.deserializeOptimization);
+      if (data.config) this.config = { ...this.config, ...data.config };
+      
+      this.saveData();
+      return true;
+    } catch (error) {
+      console.error('Failed to import performance data:', error);
+      return false;
+    }
+  }
+
+  // Private Methods
+  private simulatePerformanceMeasurement(
+    url: string, 
+    options?: { deviceType?: string; connectionType?: string }
+  ): PerformanceMetric[] {
+    const baseValues = {
+      [PerformanceMetricType.LOAD_TIME]: { base: 2000, variance: 500 },
+      [PerformanceMetricType.FIRST_CONTENTFUL_PAINT]: { base: 1200, variance: 300 },
+      [PerformanceMetricType.LARGEST_CONTENTFUL_PAINT]: { base: 2500, variance: 600 },
+      [PerformanceMetricType.FIRST_INPUT_DELAY]: { base: 100, variance: 50 },
+      [PerformanceMetricType.CUMULATIVE_LAYOUT_SHIFT]: { base: 0.1, variance: 0.05 },
+      [PerformanceMetricType.TIME_TO_INTERACTIVE]: { base: 3000, variance: 800 }
+    };
+
+    const deviceMultiplier = options?.deviceType === 'mobile' ? 1.5 : 1;
+    const connectionMultiplier = options?.connectionType === '3g' ? 2 : 1;
+
+    return Object.entries(baseValues).map(([type, config]) => {
+      const value = (config.base + (Math.random() - 0.5) * config.variance) * 
+                   deviceMultiplier * connectionMultiplier;
+      
+      return {
+        id: this.generateId(),
+        type: type as PerformanceMetricType,
+        value: Math.max(0, value),
+        unit: this.getMetricUnit(type as PerformanceMetricType),
+        timestamp: new Date(),
+        url,
+        userAgent: navigator.userAgent,
+        connectionType: options?.connectionType || '4g',
+        deviceType: (options?.deviceType as any) || 'desktop',
+        threshold: this.calculateThreshold(type as PerformanceMetricType, value),
+        tags: []
+      };
+    });
+  }
+
+  private calculatePerformanceScore(metrics: PerformanceMetric[]): number {
+    const weights = {
+      [PerformanceMetricType.FIRST_CONTENTFUL_PAINT]: 0.15,
+      [PerformanceMetricType.LARGEST_CONTENTFUL_PAINT]: 0.25,
+      [PerformanceMetricType.FIRST_INPUT_DELAY]: 0.25,
+      [PerformanceMetricType.CUMULATIVE_LAYOUT_SHIFT]: 0.25,
+      [PerformanceMetricType.TIME_TO_INTERACTIVE]: 0.1
+    };
+
+    let totalScore = 0;
+    let totalWeight = 0;
+
+    metrics.forEach(metric => {
+      const weight = weights[metric.type] || 0;
+      if (weight > 0) {
+        const score = this.getMetricScore(metric);
+        totalScore += score * weight;
+        totalWeight += weight;
+      }
+    });
+
+    return totalWeight > 0 ? Math.round(totalScore / totalWeight) : 0;
+  }
+
+  private getMetricScore(metric: PerformanceMetric): number {
+    switch (metric.threshold) {
+      case PerformanceThreshold.EXCELLENT:
+        return 90 + Math.random() * 10;
+      case PerformanceThreshold.GOOD:
+        return 70 + Math.random() * 20;
+      case PerformanceThreshold.NEEDS_IMPROVEMENT:
+        return 40 + Math.random() * 30;
+      case PerformanceThreshold.POOR:
+        return Math.random() * 40;
+      default:
+        return 50;
+    }
+  }
+
+  private generateRecommendations(metrics: PerformanceMetric[]): PerformanceRecommendation[] {
+    const recommendations: PerformanceRecommendation[] = [];
+    
+    metrics.forEach(metric => {
+      if (metric.threshold === PerformanceThreshold.NEEDS_IMPROVEMENT || 
+          metric.threshold === PerformanceThreshold.POOR) {
         
-        this.alertSubscribers.forEach(callback => callback(alert));
-        this.saveAlert(alert);
+        const recommendation = this.getRecommendationForMetric(metric);
+        if (recommendation) {
+          recommendations.push(recommendation);
+        }
+      }
+    });
+
+    return recommendations.sort((a, b) => b.priority - a.priority);
+  }
+
+  private getRecommendationForMetric(metric: PerformanceMetric): PerformanceRecommendation | null {
+    const recommendations = {
+      [PerformanceMetricType.FIRST_CONTENTFUL_PAINT]: {
+        type: OptimizationType.CODE_SPLITTING,
+        title: 'Optimize First Contentful Paint',
+        description: 'Reduce the time it takes for the first content to appear on screen',
+        impact: 'high' as const,
+        effort: 'medium' as const,
+        priority: 90,
+        estimatedImprovement: '20-30% faster FCP',
+        implementation: 'Implement code splitting and optimize critical rendering path',
+        resources: ['Web.dev FCP Guide', 'Critical Resource Hints']
+      },
+      [PerformanceMetricType.LARGEST_CONTENTFUL_PAINT]: {
+        type: OptimizationType.IMAGE_OPTIMIZATION,
+        title: 'Optimize Largest Contentful Paint',
+        description: 'Improve the loading time of the largest content element',
+        impact: 'high' as const,
+        effort: 'medium' as const,
+        priority: 85,
+        estimatedImprovement: '25-40% faster LCP',
+        implementation: 'Optimize images, preload critical resources, and use CDN',
+        resources: ['LCP Optimization Guide', 'Image Optimization Best Practices']
+      },
+      [PerformanceMetricType.FIRST_INPUT_DELAY]: {
+        type: OptimizationType.CODE_SPLITTING,
+        title: 'Reduce First Input Delay',
+        description: 'Minimize the delay between user interaction and browser response',
+        impact: 'high' as const,
+        effort: 'high' as const,
+        priority: 80,
+        estimatedImprovement: '50-70% faster FID',
+        implementation: 'Reduce JavaScript execution time and implement code splitting',
+        resources: ['FID Optimization Guide', 'JavaScript Performance Tips']
+      }
+    };
+
+    const template = recommendations[metric.type];
+    if (!template) return null;
+
+    return {
+      id: this.generateId(),
+      ...template
+    };
+  }
+
+  private checkBudgetViolations(metrics: PerformanceMetric[]): BudgetViolation[] {
+    const violations: BudgetViolation[] = [];
+
+    this.budgets.forEach(budget => {
+      if (!budget.enabled) return;
+
+      budget.metrics.forEach(budgetMetric => {
+        const actualMetric = metrics.find(m => m.type === budgetMetric.type);
+        if (!actualMetric) return;
+
+        if (actualMetric.value > budgetMetric.threshold) {
+          violations.push({
+            id: this.generateId(),
+            budgetId: budget.id,
+            budgetName: budget.name,
+            metricType: budgetMetric.type,
+            actualValue: actualMetric.value,
+            thresholdValue: budgetMetric.threshold,
+            unit: budgetMetric.unit,
+            severity: actualMetric.value > budgetMetric.threshold * 1.5 ? 'error' : 'warning',
+            timestamp: new Date()
+          });
+        }
+      });
+    });
+
+    return violations;
+  }
+
+  private calculateThreshold(type: PerformanceMetricType, value: number): PerformanceThreshold {
+    const thresholds = this.config.thresholds[type];
+    if (!thresholds) return PerformanceThreshold.GOOD;
+
+    if (value <= thresholds.excellent) return PerformanceThreshold.EXCELLENT;
+    if (value <= thresholds.good) return PerformanceThreshold.GOOD;
+    if (value <= thresholds.needsImprovement) return PerformanceThreshold.NEEDS_IMPROVEMENT;
+    return PerformanceThreshold.POOR;
+  }
+
+  private getMetricUnit(type: PerformanceMetricType): string {
+    const units = {
+      [PerformanceMetricType.LOAD_TIME]: 'ms',
+      [PerformanceMetricType.FIRST_CONTENTFUL_PAINT]: 'ms',
+      [PerformanceMetricType.LARGEST_CONTENTFUL_PAINT]: 'ms',
+      [PerformanceMetricType.FIRST_INPUT_DELAY]: 'ms',
+      [PerformanceMetricType.CUMULATIVE_LAYOUT_SHIFT]: 'score',
+      [PerformanceMetricType.TIME_TO_INTERACTIVE]: 'ms',
+      [PerformanceMetricType.MEMORY_USAGE]: 'MB',
+      [PerformanceMetricType.CPU_USAGE]: '%',
+      [PerformanceMetricType.NETWORK_LATENCY]: 'ms',
+      [PerformanceMetricType.BUNDLE_SIZE]: 'KB',
+      [PerformanceMetricType.CACHE_HIT_RATE]: '%',
+      [PerformanceMetricType.API_RESPONSE_TIME]: 'ms',
+      [PerformanceMetricType.ERROR_RATE]: '%',
+      [PerformanceMetricType.THROUGHPUT]: 'req/s'
+    };
+    return units[type] || 'unit';
+  }
+
+  private checkAlerts(metric: PerformanceMetric): void {
+    this.alerts.forEach(alert => {
+      if (!alert.enabled) return;
+      
+      // Check cooldown
+      if (alert.lastTriggered && 
+          Date.now() - alert.lastTriggered.getTime() < alert.cooldown * 1000) {
+        return;
+      }
+
+      if (metric.type === alert.type) {
+        const shouldTrigger = this.evaluateAlertCondition(metric.value, alert.threshold, alert.operator);
+        
+        if (shouldTrigger) {
+          alert.lastTriggered = new Date();
+          this.triggerAlert(alert, metric);
+        }
       }
     });
   }
 
-  private evaluateThreshold(value: number, operator: string, threshold: number): boolean {
+  private evaluateAlertCondition(value: number, threshold: number, operator: string): boolean {
     switch (operator) {
       case 'gt': return value > threshold;
-      case 'lt': return value < threshold;
       case 'gte': return value >= threshold;
+      case 'lt': return value < threshold;
       case 'lte': return value <= threshold;
       case 'eq': return value === threshold;
+      case 'ne': return value !== threshold;
       default: return false;
     }
   }
 
-  private saveAlert(alert: PerformanceAlert): void {
-    if (typeof window === 'undefined') return;
-    const alerts = this.getAlertsSync();
-    alerts.unshift(alert);
-    localStorage.setItem('performance_alerts', JSON.stringify(alerts.slice(0, 1000))); // Keep last 1000 alerts
+  private triggerAlert(alert: PerformanceAlert, metric: PerformanceMetric): void {
+    console.log(`Performance Alert: ${alert.type} - ${metric.value}${metric.unit}`);
+    // In a real implementation, this would send notifications
   }
 
-  private getThresholdsSync(): PerformanceThreshold[] {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem('performance_thresholds');
-    return stored ? JSON.parse(stored) : [];
-  }
-
-  private getAlertsSync(): PerformanceAlert[] {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem('performance_alerts');
-    return stored ? JSON.parse(stored) : [];
-  }
-
-  // System Monitoring
-  async getSystemMetrics(timeRange?: { start: Date; end: Date }): Promise<SystemMetrics[]> {
-    // In a real implementation, this would query a time-series database
-    const metrics: SystemMetrics[] = [];
-    const now = new Date();
-    const start = timeRange?.start || new Date(now.getTime() - 24 * 60 * 60 * 1000); // Last 24 hours
-    const end = timeRange?.end || now;
-    
-    // Generate sample historical data
-    for (let time = start.getTime(); time <= end.getTime(); time += 5 * 60 * 1000) { // Every 5 minutes
-      metrics.push({
-        ...this.generateCurrentMetrics(),
-        id: `metrics-${time}`,
-        timestamp: new Date(time)
-      });
-    }
-    
-    return metrics;
-  }
-
-  async getCurrentSystemStatus(): Promise<SystemMetrics> {
-    return this.generateCurrentMetrics();
-  }
-
-  // Alerts
-  async getAlerts(resolved?: boolean): Promise<PerformanceAlert[]> {
-    const alerts = this.getAlertsSync();
-    if (resolved !== undefined) {
-      return alerts.filter(alert => alert.resolved === resolved);
-    }
-    return alerts;
-  }
-
-  async createAlert(alert: Omit<PerformanceAlert, 'id' | 'timestamp' | 'resolved'>): Promise<PerformanceAlert> {
-    const newAlert: PerformanceAlert = {
-      ...alert,
-      id: `alert-${Date.now()}`,
-      timestamp: new Date(),
-      resolved: false
-    };
-    
-    this.saveAlert(newAlert);
-    return newAlert;
-  }
-
-  async resolveAlert(alertId: string): Promise<PerformanceAlert> {
-    const alerts = this.getAlertsSync();
-    const alertIndex = alerts.findIndex(a => a.id === alertId);
-    
-    if (alertIndex === -1) {
-      throw new Error('Alert not found');
-    }
-    
-    alerts[alertIndex].resolved = true;
-    alerts[alertIndex].resolvedAt = new Date();
-    
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_alerts', JSON.stringify(alerts));
-    }
-    return alerts[alertIndex];
-  }
-
-  // Thresholds
-  async getThresholds(): Promise<PerformanceThreshold[]> {
-    return this.getThresholdsSync();
-  }
-
-  async createThreshold(threshold: Omit<PerformanceThreshold, 'id' | 'createdAt'>): Promise<PerformanceThreshold> {
-    const thresholds = this.getThresholdsSync();
-    const newThreshold: PerformanceThreshold = {
-      ...threshold,
-      id: `threshold-${Date.now()}`,
-      createdAt: new Date()
-    };
-    
-    thresholds.push(newThreshold);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
-    }
-    return newThreshold;
-  }
-
-  async updateThreshold(id: string, threshold: Partial<PerformanceThreshold>): Promise<PerformanceThreshold> {
-    const thresholds = this.getThresholdsSync();
-    const index = thresholds.findIndex(t => t.id === id);
-    
-    if (index === -1) {
-      throw new Error('Threshold not found');
-    }
-    
-    thresholds[index] = { ...thresholds[index], ...threshold, updatedAt: new Date() };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_thresholds', JSON.stringify(thresholds));
-    }
-    return thresholds[index];
-  }
-
-  async deleteThreshold(id: string): Promise<void> {
-    const thresholds = this.getThresholdsSync();
-    const filtered = thresholds.filter(t => t.id !== id);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_thresholds', JSON.stringify(filtered));
-    }
-  }
-
-  // Content Performance
-  async getContentPerformance(contentId?: string): Promise<ContentPerformance[]> {
-    // Generate sample content performance data
-    const sampleContent: ContentPerformance[] = [
-      {
-        contentId: 'course-1',
-        contentType: 'course',
-        title: 'Tahitian Basics',
-        metrics: {
-          views: 1250,
-          completions: 890,
-          completionRate: 71.2,
-          averageTime: 3600,
-          bounceRate: 15.3,
-          engagement: 82.5,
-          rating: 4.6,
-          comments: 45,
-          shares: 23,
-          downloads: 156
-        },
-        trends: this.generateContentTrends(),
-        recommendations: [
-          {
-            id: 'rec-1',
-            type: 'content-optimization',
-            priority: 'medium',
-            title: 'Improve lesson 3 engagement',
-            description: 'Lesson 3 has lower engagement than others',
-            impact: 'Could increase completion rate by 5-10%',
-            effort: 'medium',
-            category: 'Content',
-            actions: [{ type: 'review', description: 'Review lesson content and add interactive elements', automated: false }],
-            createdAt: new Date()
-          }
-        ],
-        lastUpdated: new Date()
-      }
-    ];
-    
-    return contentId ? sampleContent.filter(c => c.contentId === contentId) : sampleContent;
-  }
-
-  private generateContentTrends(): ContentTrend[] {
-    const trends: ContentTrend[] = [];
-    const now = new Date();
-    
-    for (let i = 30; i >= 0; i--) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      trends.push({
-        date,
-        views: Math.floor(Math.random() * 100) + 50,
-        completions: Math.floor(Math.random() * 50) + 20,
-        engagement: Math.random() * 100,
-        rating: Math.random() * 2 + 3 // 3-5 range
-      });
-    }
-    
-    return trends;
-  }
-
-  async getContentTrends(contentId: string, period: ReportPeriod): Promise<ContentTrend[]> {
-    return this.generateContentTrends();
-  }
-
-  async getContentRecommendations(contentId?: string): Promise<PerformanceRecommendation[]> {
-    // Return sample recommendations
-    return [
-      {
-        id: 'rec-1',
-        type: 'content-optimization',
-        priority: 'high',
-        title: 'Optimize video loading times',
-        description: 'Video content is loading slowly, affecting user experience',
-        impact: 'Could reduce bounce rate by 20%',
-        effort: 'low',
-        category: 'Performance',
-        actions: [
-          { type: 'compress', description: 'Compress video files', automated: true, estimatedTime: 30 },
-          { type: 'cdn', description: 'Enable CDN for video delivery', automated: false, estimatedTime: 60 }
-        ],
-        createdAt: new Date()
-      }
-    ];
-  }
-
-  // Reports
-  async getReports(): Promise<PerformanceReport[]> {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem('performance_reports');
-    return stored ? JSON.parse(stored) : [];
-  }
-
-  async generateReport(config: Omit<PerformanceReport, 'id' | 'generatedAt' | 'metrics' | 'charts' | 'insights'>): Promise<PerformanceReport> {
-    const report: PerformanceReport = {
-      ...config,
-      id: `report-${Date.now()}`,
-      generatedAt: new Date(),
-      metrics: {
-        summary: { totalUsers: 1250, totalCourses: 45, avgCompletionRate: 72.5 },
-        comparisons: { userGrowth: 15.3, courseGrowth: 8.7 },
-        trends: { users: [100, 120, 135, 150, 165], courses: [40, 42, 43, 44, 45] },
-        distributions: { deviceTypes: { mobile: 60, desktop: 35, tablet: 5 } }
-      },
-      charts: [
-        {
-          id: 'chart-1',
-          type: 'line',
-          title: 'User Growth',
-          data: [{ date: '2024-01', users: 100 }, { date: '2024-02', users: 120 }],
-          config: { xAxis: 'date', yAxis: 'users', colors: ['#3b82f6'] }
+  private observeWebVitals(): void {
+    // Observe FCP
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (entry.name === 'first-contentful-paint') {
+          this.recordMetric({
+            type: PerformanceMetricType.FIRST_CONTENTFUL_PAINT,
+            value: entry.startTime,
+            unit: 'ms',
+            url: window.location.href,
+            deviceType: this.getDeviceType(),
+            tags: ['web-vitals']
+          });
         }
-      ],
-      insights: [
-        {
-          id: 'insight-1',
-          type: 'trend',
-          title: 'Positive User Growth',
-          description: 'User base has grown consistently over the past 6 months',
-          confidence: 95,
-          impact: 'positive',
-          data: { growthRate: 15.3 }
-        }
-      ]
-    };
-    
-    const reports = await this.getReports();
-    reports.push(report);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_reports', JSON.stringify(reports));
-    }
-    
-    return report;
-  }
+      }
+    }).observe({ entryTypes: ['paint'] });
 
-  async downloadReport(reportId: string, format: 'pdf' | 'excel' | 'json' | 'csv'): Promise<Blob> {
-    const reports = await this.getReports();
-    const report = reports.find(r => r.id === reportId);
-    
-    if (!report) {
-      throw new Error('Report not found');
-    }
-    
-    // In a real implementation, this would generate the actual file
-    const content = JSON.stringify(report, null, 2);
-    return new Blob([content], { type: 'application/json' });
-  }
-
-  // Dashboards
-  async getDashboards(): Promise<MonitoringDashboard[]> {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem('performance_dashboards');
-    return stored ? JSON.parse(stored) : [];
-  }
-
-  async createDashboard(dashboard: Omit<MonitoringDashboard, 'id' | 'createdAt'>): Promise<MonitoringDashboard> {
-    const dashboards = await this.getDashboards();
-    const newDashboard: MonitoringDashboard = {
-      ...dashboard,
-      id: `dashboard-${Date.now()}`,
-      createdAt: new Date()
-    };
-    
-    dashboards.push(newDashboard);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
-    }
-    return newDashboard;
-  }
-
-  async updateDashboard(id: string, dashboard: Partial<MonitoringDashboard>): Promise<MonitoringDashboard> {
-    const dashboards = await this.getDashboards();
-    const index = dashboards.findIndex(d => d.id === id);
-    
-    if (index === -1) {
-      throw new Error('Dashboard not found');
-    }
-    
-    dashboards[index] = { ...dashboards[index], ...dashboard, updatedAt: new Date() };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_dashboards', JSON.stringify(dashboards));
-    }
-    return dashboards[index];
-  }
-
-  async deleteDashboard(id: string): Promise<void> {
-    const dashboards = await this.getDashboards();
-    const filtered = dashboards.filter(d => d.id !== id);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('performance_dashboards', JSON.stringify(filtered));
-    }
-  }
-
-  // Logs
-  async getLogs(query: LogQuery): Promise<LogEntry[]> {
-    // Generate sample log entries
-    const logs: LogEntry[] = [];
-    const now = new Date();
-    
-    for (let i = 0; i < (query.limit || 100); i++) {
-      const timestamp = new Date(now.getTime() - i * 60000); // Every minute
-      logs.push({
-        id: `log-${timestamp.getTime()}`,
-        timestamp,
-        level: ['info', 'warn', 'error'][Math.floor(Math.random() * 3)] as LogLevel,
-        source: ['api', 'frontend', 'database'][Math.floor(Math.random() * 3)],
-        message: `Sample log message ${i}`,
-        metadata: { requestId: `req-${i}`, userId: `user-${Math.floor(Math.random() * 100)}` },
-        tags: ['performance', 'monitoring']
+    // Observe LCP
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      
+      this.recordMetric({
+        type: PerformanceMetricType.LARGEST_CONTENTFUL_PAINT,
+        value: lastEntry.startTime,
+        unit: 'ms',
+        url: window.location.href,
+        deviceType: this.getDeviceType(),
+        tags: ['web-vitals']
       });
-    }
-    
-    return logs;
-  }
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-  async searchLogs(query: string, filters?: Partial<LogQuery>): Promise<LogEntry[]> {
-    const logs = await this.getLogs(filters || {});
-    return logs.filter(log => log.message.toLowerCase().includes(query.toLowerCase()));
-  }
-
-  async exportLogs(query: LogQuery, format: 'json' | 'csv' | 'txt'): Promise<Blob> {
-    const logs = await this.getLogs(query);
-    
-    let content: string;
-    let mimeType: string;
-    
-    switch (format) {
-      case 'json':
-        content = JSON.stringify(logs, null, 2);
-        mimeType = 'application/json';
-        break;
-      case 'csv':
-        const headers = 'timestamp,level,source,message\n';
-        const rows = logs.map(log => `${log.timestamp.toISOString()},${log.level},${log.source},"${log.message}"`).join('\n');
-        content = headers + rows;
-        mimeType = 'text/csv';
-        break;
-      case 'txt':
-        content = logs.map(log => `[${log.timestamp.toISOString()}] ${log.level.toUpperCase()} ${log.source}: ${log.message}`).join('\n');
-        mimeType = 'text/plain';
-        break;
-    }
-    
-    return new Blob([content], { type: mimeType });
-  }
-
-  // Real-time subscriptions
-  subscribeToMetrics(callback: (metrics: SystemMetrics) => void): () => void {
-    this.metricsSubscribers.push(callback);
-    return () => {
-      const index = this.metricsSubscribers.indexOf(callback);
-      if (index > -1) {
-        this.metricsSubscribers.splice(index, 1);
+    // Observe FID
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        this.recordMetric({
+          type: PerformanceMetricType.FIRST_INPUT_DELAY,
+          value: (entry as any).processingStart - entry.startTime,
+          unit: 'ms',
+          url: window.location.href,
+          deviceType: this.getDeviceType(),
+          tags: ['web-vitals']
+        });
       }
-    };
+    }).observe({ entryTypes: ['first-input'] });
   }
 
-  subscribeToAlerts(callback: (alert: PerformanceAlert) => void): () => void {
-    this.alertSubscribers.push(callback);
-    return () => {
-      const index = this.alertSubscribers.indexOf(callback);
-      if (index > -1) {
-        this.alertSubscribers.splice(index, 1);
+  private observeResourceTiming(): void {
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        const resourceEntry = entry as PerformanceResourceTiming;
+        
+        this.recordMetric({
+          type: PerformanceMetricType.NETWORK_LATENCY,
+          value: resourceEntry.responseEnd - resourceEntry.requestStart,
+          unit: 'ms',
+          url: resourceEntry.name,
+          deviceType: this.getDeviceType(),
+          tags: ['resource-timing']
+        });
       }
-    };
+    }).observe({ entryTypes: ['resource'] });
   }
 
-  subscribeToLogs(callback: (log: LogEntry) => void, filters?: Partial<LogQuery>): () => void {
-    this.logSubscribers.push(callback);
-    
-    // Simulate log generation
+  private observeNavigationTiming(): void {
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        const navEntry = entry as PerformanceNavigationTiming;
+        
+        this.recordMetric({
+          type: PerformanceMetricType.LOAD_TIME,
+          value: navEntry.loadEventEnd - navEntry.navigationStart,
+          unit: 'ms',
+          url: window.location.href,
+          deviceType: this.getDeviceType(),
+          tags: ['navigation-timing']
+        });
+      }
+    }).observe({ entryTypes: ['navigation'] });
+  }
+
+  private getDeviceType(): 'mobile' | 'tablet' | 'desktop' {
+    const width = window.innerWidth;
+    if (width < 768) return 'mobile';
+    if (width < 1024) return 'tablet';
+    return 'desktop';
+  }
+
+  private simulateOptimizationProcess(optimization: PerformanceOptimization): void {
+    const duration = 5000 + Math.random() * 10000; // 5-15 seconds
+    const steps = 10;
+    const stepDuration = duration / steps;
+
+    let currentStep = 0;
     const interval = setInterval(() => {
-      const log: LogEntry = {
-        id: `log-${Date.now()}`,
-        timestamp: new Date(),
-        level: ['info', 'warn', 'error'][Math.floor(Math.random() * 3)] as LogLevel,
-        source: ['api', 'frontend', 'database'][Math.floor(Math.random() * 3)],
-        message: `Real-time log message at ${new Date().toISOString()}`,
-        metadata: { requestId: `req-${Date.now()}` },
-        tags: ['real-time']
-      };
-      callback(log);
-    }, 10000); // Every 10 seconds
-    
-    return () => {
-      const index = this.logSubscribers.indexOf(callback);
-      if (index > -1) {
-        this.logSubscribers.splice(index, 1);
+      currentStep++;
+      optimization.progress = (currentStep / steps) * 100;
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        optimization.status = 'completed';
+        optimization.actualCompletion = new Date();
+        
+        // Simulate performance improvement
+        optimization.impact = {
+          improvement: 15 + Math.random() * 25, // 15-40% improvement
+          metric: PerformanceMetricType.LOAD_TIME,
+          unit: 'ms'
+        };
+        
+        this.saveData();
       }
-      clearInterval(interval);
+    }, stepDuration);
+  }
+
+  private calculateAverageScore(reports: PerformanceReport[]): number {
+    if (reports.length === 0) return 0;
+    const sum = reports.reduce((acc, report) => acc + report.score, 0);
+    return Math.round(sum / reports.length);
+  }
+
+  private calculateTrends(metrics: PerformanceMetric[]): PerformanceAnalytics['trends'] {
+    const metricTypes = Object.values(PerformanceMetricType);
+    
+    return metricTypes.map(type => {
+      const typeMetrics = metrics.filter(m => m.type === type);
+      if (typeMetrics.length < 2) {
+        return {
+          metric: type,
+          trend: 'stable' as const,
+          change: 0,
+          unit: this.getMetricUnit(type)
+        };
+      }
+
+      const recent = typeMetrics.slice(0, Math.floor(typeMetrics.length / 2));
+      const older = typeMetrics.slice(Math.floor(typeMetrics.length / 2));
+
+      const recentAvg = recent.reduce((sum, m) => sum + m.value, 0) / recent.length;
+      const olderAvg = older.reduce((sum, m) => sum + m.value, 0) / older.length;
+
+      const change = ((recentAvg - olderAvg) / olderAvg) * 100;
+      const trend = Math.abs(change) < 5 ? 'stable' : 
+                   change < 0 ? 'improving' : 'degrading';
+
+      return {
+        metric: type,
+        trend,
+        change: Math.abs(change),
+        unit: this.getMetricUnit(type)
+      };
+    });
+  }
+
+  private identifyTopIssues(metrics: PerformanceMetric[]): PerformanceAnalytics['topIssues'] {
+    const issues = metrics.filter(m => 
+      m.threshold === PerformanceThreshold.NEEDS_IMPROVEMENT || 
+      m.threshold === PerformanceThreshold.POOR
+    );
+
+    const issueGroups = issues.reduce((acc, metric) => {
+      if (!acc[metric.type]) {
+        acc[metric.type] = [];
+      }
+      acc[metric.type].push(metric);
+      return acc;
+    }, {} as Record<PerformanceMetricType, PerformanceMetric[]>);
+
+    return Object.entries(issueGroups).map(([type, typeMetrics]) => ({
+      metric: type as PerformanceMetricType,
+      frequency: typeMetrics.length,
+      averageValue: typeMetrics.reduce((sum, m) => sum + m.value, 0) / typeMetrics.length,
+      impact: typeMetrics.some(m => m.threshold === PerformanceThreshold.POOR) ? 'high' as const :
+              typeMetrics.length > 5 ? 'medium' as const : 'low' as const
+    })).sort((a, b) => b.frequency - a.frequency);
+  }
+
+  private calculateDeviceBreakdown(reports: PerformanceReport[]): PerformanceAnalytics['deviceBreakdown'] {
+    const deviceGroups = reports.reduce((acc, report) => {
+      if (!acc[report.deviceType]) {
+        acc[report.deviceType] = [];
+      }
+      acc[report.deviceType].push(report);
+      return acc;
+    }, {} as Record<string, PerformanceReport[]>);
+
+    return Object.entries(deviceGroups).map(([device, deviceReports]) => ({
+      device,
+      count: deviceReports.length,
+      averageScore: Math.round(deviceReports.reduce((sum, r) => sum + r.score, 0) / deviceReports.length)
+    }));
+  }
+
+  private calculatePagePerformance(reports: PerformanceReport[]): PerformanceAnalytics['pagePerformance'] {
+    const pageGroups = reports.reduce((acc, report) => {
+      if (!acc[report.url]) {
+        acc[report.url] = [];
+      }
+      acc[report.url].push(report);
+      return acc;
+    }, {} as Record<string, PerformanceReport[]>);
+
+    return Object.entries(pageGroups).map(([url, pageReports]) => ({
+      url,
+      visits: pageReports.length,
+      averageScore: Math.round(pageReports.reduce((sum, r) => sum + r.score, 0) / pageReports.length),
+      issues: pageReports.reduce((sum, r) => sum + r.budgetViolations.length, 0)
+    })).sort((a, b) => b.visits - a.visits);
+  }
+
+  private initializeDefaultBudgets(): void {
+    if (this.budgets.length === 0) {
+      this.createBudget({
+        name: 'Core Web Vitals',
+        description: 'Google Core Web Vitals performance budget',
+        metrics: [
+          { type: PerformanceMetricType.FIRST_CONTENTFUL_PAINT, threshold: 1800, unit: 'ms' },
+          { type: PerformanceMetricType.LARGEST_CONTENTFUL_PAINT, threshold: 2500, unit: 'ms' },
+          { type: PerformanceMetricType.FIRST_INPUT_DELAY, threshold: 100, unit: 'ms' },
+          { type: PerformanceMetricType.CUMULATIVE_LAYOUT_SHIFT, threshold: 0.1, unit: 'score' }
+        ],
+        enabled: true
+      });
+
+      this.createBudget({
+        name: 'Mobile Performance',
+        description: 'Performance budget optimized for mobile devices',
+        metrics: [
+          { type: PerformanceMetricType.LOAD_TIME, threshold: 3000, unit: 'ms' },
+          { type: PerformanceMetricType.BUNDLE_SIZE, threshold: 500, unit: 'KB' },
+          { type: PerformanceMetricType.API_RESPONSE_TIME, threshold: 500, unit: 'ms' }
+        ],
+        enabled: true
+      });
+    }
+  }
+
+  private getDefaultConfig(): PerformanceConfig {
+    return {
+      sampling: {
+        rate: 0.1, // 10% sampling
+        maxSamples: 1000
+      },
+      thresholds: {
+        [PerformanceMetricType.FIRST_CONTENTFUL_PAINT]: {
+          excellent: 1000,
+          good: 1800,
+          needsImprovement: 3000,
+          poor: 5000
+        },
+        [PerformanceMetricType.LARGEST_CONTENTFUL_PAINT]: {
+          excellent: 1200,
+          good: 2500,
+          needsImprovement: 4000,
+          poor: 6000
+        },
+        [PerformanceMetricType.FIRST_INPUT_DELAY]: {
+          excellent: 50,
+          good: 100,
+          needsImprovement: 300,
+          poor: 500
+        },
+        [PerformanceMetricType.CUMULATIVE_LAYOUT_SHIFT]: {
+          excellent: 0.05,
+          good: 0.1,
+          needsImprovement: 0.25,
+          poor: 0.5
+        }
+      },
+      alerts: {
+        enabled: true,
+        channels: ['email', 'slack']
+      },
+      reporting: {
+        frequency: 'daily',
+        recipients: ['admin@example.com']
+      },
+      optimization: {
+        autoOptimize: false,
+        strategies: [
+          OptimizationType.CODE_SPLITTING,
+          OptimizationType.LAZY_LOADING,
+          OptimizationType.IMAGE_OPTIMIZATION,
+          OptimizationType.CACHING
+        ]
+      }
     };
   }
 
-  // Cleanup method
-  destroy(): void {
-    if (this.metricsInterval) {
-      clearInterval(this.metricsInterval);
+  private startPerformanceMonitoring(): void {
+    // Start real-time monitoring if in browser environment
+    if (typeof window !== 'undefined') {
+      this.startRealTimeMonitoring();
     }
-    this.metricsSubscribers.length = 0;
-    this.alertSubscribers.length = 0;
-    this.logSubscribers.length = 0;
   }
+
+  private generateId(): string {
+    return `perf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private saveData(): void {
+    try {
+      const data = {
+        metrics: this.metrics,
+        budgets: this.budgets,
+        reports: this.reports,
+        alerts: this.alerts,
+        optimizations: this.optimizations,
+        config: this.config
+      };
+      localStorage.setItem('performanceService', JSON.stringify(data));
+    } catch (error) {
+      console.error('Failed to save performance data:', error);
+    }
+  }
+
+  private loadData(): void {
+    try {
+      const data = localStorage.getItem('performanceService');
+      if (data) {
+        const parsed = JSON.parse(data);
+        
+        this.metrics = (parsed.metrics || []).map(this.deserializeMetric);
+        this.budgets = (parsed.budgets || []).map(this.deserializeBudget);
+        this.reports = (parsed.reports || []).map(this.deserializeReport);
+        this.alerts = (parsed.alerts || []).map(this.deserializeAlert);
+        this.optimizations = (parsed.optimizations || []).map(this.deserializeOptimization);
+        
+        if (parsed.config) {
+          this.config = { ...this.config, ...parsed.config };
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load performance data:', error);
+    }
+  }
+
+  private deserializeMetric = (data: any): PerformanceMetric => ({
+    ...data,
+    timestamp: new Date(data.timestamp)
+  });
+
+  private deserializeBudget = (data: any): PerformanceBudget => ({
+    ...data,
+    createdAt: new Date(data.createdAt),
+    updatedAt: new Date(data.updatedAt)
+  });
+
+  private deserializeReport = (data: any): PerformanceReport => ({
+    ...data,
+    timestamp: new Date(data.timestamp),
+    metrics: data.metrics.map(this.deserializeMetric)
+  });
+
+  private deserializeAlert = (data: any): PerformanceAlert => ({
+    ...data,
+    createdAt: new Date(data.createdAt),
+    lastTriggered: data.lastTriggered ? new Date(data.lastTriggered) : undefined
+  });
+
+  private deserializeOptimization = (data: any): PerformanceOptimization => ({
+    ...data,
+    createdAt: new Date(data.createdAt),
+    updatedAt: new Date(data.updatedAt),
+    estimatedCompletion: data.estimatedCompletion ? new Date(data.estimatedCompletion) : undefined,
+    actualCompletion: data.actualCompletion ? new Date(data.actualCompletion) : undefined,
+    beforeMetrics: data.beforeMetrics?.map(this.deserializeMetric),
+    afterMetrics: data.afterMetrics?.map(this.deserializeMetric)
+  });
 }
 
-export const performanceService = new PerformanceService();
-export { PerformanceService };
+export default PerformanceService;

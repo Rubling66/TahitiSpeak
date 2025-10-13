@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import {
   TTSConfig,
   TTSRequest,
@@ -205,7 +205,7 @@ export class TTSService {
   /**
    * Get current playback status
    */
-  async getPlaybackStatus(): Promise<any> {
+  async getPlaybackStatus(): Promise<AVPlaybackStatus | null> {
     if (this.sound) {
       try {
         return await this.sound.getStatusAsync();

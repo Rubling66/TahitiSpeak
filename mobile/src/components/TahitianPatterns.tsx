@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
-import Svg, { G, Path, Line, Circle, Ellipse } from 'react-native-svg';
+import { View, ViewStyle } from 'react-native';
+import Svg, { G, Path, Circle, Ellipse, Line } from 'react-native-svg';
 
 interface PatternProps {
   size?: 'sm' | 'md' | 'lg';
   color?: 'primary' | 'sunset' | 'coral' | 'ocean';
-  style?: any;
+  style?: ViewStyle;
 }
 
 // Traditional Tahitian Tapa pattern
@@ -198,7 +198,7 @@ export const SpearPattern: React.FC<PatternProps> = ({
 };
 
 // Composite pattern component
-export const TahitianBorder: React.FC<{ style?: any }> = ({ style = {} }) => {
+export const TahitianBorder: React.FC<{ style?: ViewStyle }> = ({ style = {} }) => {
   return (
     <View style={[{
       flexDirection: 'row',

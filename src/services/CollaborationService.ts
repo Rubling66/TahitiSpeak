@@ -23,7 +23,7 @@ class CollaborationService implements CollaborationAPI {
   private dataService: DataService;
   private websocket: WebSocket | null = null;
   private sessionId: string | null = null;
-  private eventListeners: Map<string, Function[]> = new Map();
+  private eventListeners: Map<string, ((data: unknown) => void)[]> = new Map();
 
   constructor() {
     this.dataService = new LocalDataService();
@@ -41,14 +41,14 @@ class CollaborationService implements CollaborationAPI {
   }
 
   // Event handling for real-time updates
-  on(event: string, callback: Function) {
+  on(event: string, callback: (data: unknown) => void) {
     if (!this.eventListeners.has(event)) {
       this.eventListeners.set(event, []);
     }
     this.eventListeners.get(event)!.push(callback);
   }
 
-  off(event: string, callback: Function) {
+  off(event: string, callback: (data: unknown) => void) {
     const listeners = this.eventListeners.get(event);
     if (listeners) {
       const index = listeners.indexOf(callback);
@@ -58,7 +58,7 @@ class CollaborationService implements CollaborationAPI {
     }
   }
 
-  private emit(event: string, data: any) {
+  private emit(event: string, data: unknown) {
     const listeners = this.eventListeners.get(event);
     if (listeners) {
       listeners.forEach(callback => callback(data));
@@ -336,7 +336,7 @@ class CollaborationService implements CollaborationAPI {
 
   async getMergeRequests(options?: { status?: string; author?: string }): Promise<MergeRequest[]> {
     try {
-      const query: any = {};
+      const query: Record<string, unknown> = {};
       if (options?.status) query.status = options.status;
       if (options?.author) query.authorId = options.author;
       
@@ -453,7 +453,7 @@ class CollaborationService implements CollaborationAPI {
 
   async getComments(contentId: string, versionId?: string): Promise<Comment[]> {
     try {
-      const query: any = { contentId };
+      const query: Record<string, unknown> = { contentId };
       if (versionId) query.versionId = versionId;
       
       const comments = await this.dataService.query('comments', query);
@@ -537,7 +537,7 @@ class CollaborationService implements CollaborationAPI {
 
   async getAnnotations(contentId: string, versionId?: string): Promise<Annotation[]> {
     try {
-      const query: any = { contentId };
+      const query: Record<string, unknown> = { contentId };
       if (versionId) query.versionId = versionId;
       
       const annotations = await this.dataService.query('annotations', query);
@@ -673,7 +673,7 @@ class CollaborationService implements CollaborationAPI {
 
   async getReviewRequests(options?: { status?: string; assignee?: string }): Promise<ReviewRequest[]> {
     try {
-      const query: any = {};
+      const query: Record<string, unknown> = {};
       if (options?.status) query.status = options.status;
       if (options?.assignee) query.assignedTo = { $in: [options.assignee] };
       
@@ -878,7 +878,7 @@ class CollaborationService implements CollaborationAPI {
   // Notifications
   async getNotifications(userId: string, options?: { unread?: boolean }): Promise<Notification[]> {
     try {
-      const query: any = { userId };
+      const query: Record<string, unknown> = { userId };
       if (options?.unread) query.read = false;
       
       const notifications = await this.dataService.query('notifications', query);

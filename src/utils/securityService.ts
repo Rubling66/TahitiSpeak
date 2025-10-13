@@ -189,7 +189,7 @@ class SecurityService {
     return permission ? permission.actions.includes(action) : false;
   }
 
-  public getUserRole(userId: string): UserRole | null {
+  public getUserRole(_userId: string): UserRole | null {
     // In a real implementation, this would fetch from a database
     // For now, return admin role for demo purposes
     return this.roles.find(role => role.id === 'admin') || null;
@@ -304,7 +304,7 @@ class SecurityService {
     try {
       const stored = localStorage.getItem('tahitian-tutor-audit-logs');
       if (stored) {
-        this.auditLogs = JSON.parse(stored).map((log: any) => ({
+        this.auditLogs = JSON.parse(stored).map((log: Omit<AuditLogEntry, 'timestamp'> & { timestamp: string }) => ({
           ...log,
           timestamp: new Date(log.timestamp)
         }));
@@ -341,7 +341,6 @@ class SecurityService {
 
   // Key rotation methods
   public rotateEncryptionKey(): void {
-    const oldKey = this.encryptionKey;
     this.encryptionKey = CryptoJS.lib.WordArray.random(256/8).toString();
     localStorage.setItem('tahitian-tutor-encryption-key', this.encryptionKey);
     

@@ -1,7 +1,6 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AuthProvider } from '@/contexts/AuthContext'
 
 // Mock components
 const AdminDashboard: React.FC = () => (
@@ -134,7 +133,8 @@ jest.mock('next-intl', () => ({
 
 // Mock AuthProvider for testing
 const MockAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const mockAuthValue = {
+  // Mock auth context value
+  const _mockAuthValue = {
     user: { id: '1', email: 'admin@test.com', role: 'admin', name: 'Admin User' },
     isAuthenticated: true,
     isLoading: false,
@@ -163,13 +163,13 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <MockAuthProvider>{children}</MockAuthProvider>
 }
 
-// Mock data
-const mockAdminUser = {
-  id: '1',
-  email: 'admin@example.com',
-  name: 'Admin User',
-  role: 'admin',
-}
+// Mock data - keeping for potential future use
+// const mockAdminUser = {
+//   id: '1',
+//   email: 'admin@example.com',
+//   name: 'Admin User',
+//   role: 'admin',
+// }
 
 const mockUsers = [
   {

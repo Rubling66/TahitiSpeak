@@ -126,8 +126,21 @@ export interface ContentSearch {
   };
 }
 
+export interface ContentItem {
+  id: string;
+  title: string;
+  description: string;
+  contentType: string;
+  difficulty: string;
+  tags?: string[];
+  language: string;
+  status?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export interface ContentSearchResult {
-  content: any[];
+  content: ContentItem[];
   total: number;
   page: number;
   totalPages: number;

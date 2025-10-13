@@ -72,7 +72,7 @@ export const handlers = [
   }),
 
   http.post('/api/auth/register', async ({ request }) => {
-    const userData = await request.json() as Record<string, any>;
+    const userData = await request.json() as Record<string, unknown>;
     return HttpResponse.json({
       user: { ...mockUser, ...(userData || {}) },
       token: 'mock-jwt-token',
@@ -116,7 +116,7 @@ export const handlers = [
   }),
 
   http.post('/api/courses', async ({ request }) => {
-    const courseData = await request.json() as Record<string, any>;
+    const courseData = await request.json() as Record<string, unknown>;
     const newCourse = {
       id: String(mockCourses.length + 1),
       ...(courseData || {}),
@@ -148,7 +148,7 @@ export const handlers = [
 
   // Progress endpoints
   http.post('/api/progress', async ({ request }) => {
-    const progressData = await request.json() as Record<string, any>;
+    const progressData = await request.json() as Record<string, unknown>;
     return HttpResponse.json({
       progress: {
         id: '1',

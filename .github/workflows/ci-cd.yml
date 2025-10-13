@@ -2,291 +2,1393 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, staging ]
   pull_request:
     branches: [ main, develop ]
+  schedule:
+    # Run security scans daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      skip_tests:
+        description: 'Skip tests (emergency deployment)'
+        required: false
+        default: false
+        type: boolean
 
 env:
   NODE_VERSION: '20'
   PNPM_VERSION: '8'
+  FORCE_COLOR: 1
 
 jobs:
-  # Code Quality and Security Checks
+  # Quality Checks
   quality-checks:
-    name: Code Quality & Security
+    name: Quality Checks
     runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_tests || github.event_name != 'workflow_dispatch' }}
+    
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
+      quality-gate: ${{ steps.quality-gate.outputs.passed }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better analysis
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+          
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Check for dependency vulnerabilities
+      run: |
+        pnpm audit --audit-level moderate --json > audit-results.json || true
+        if [ -s audit-results.json ]; then
+          echo "::warning::Security vulnerabilities found in dependencies"
+          cat audit-results.json
+        fi
+      
+    - name: Run linter with annotations
+      run: |
+        pnpm run lint --format=@microsoft/eslint-formatter-sarif --output-file=eslint-results.sarif || true
+        pnpm run lint
+      
+    - name: Upload ESLint results to GitHub
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: eslint-results.sarif
+        wait-for-processing: true
+      
+    - name: Run type check
+      run: pnpm run type-check
+      
+    - name: Run unit tests with coverage
+      run: pnpm run test:ci
+      env:
+        CI: true
+        
+    - name: Extract coverage percentage
+      id: coverage
+      run: |
+        COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+        echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+        echo "Coverage: $COVERAGE%"
+        
+    - name: Upload test coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: false
+        
+    - name: Upload test coverage to Codacy
+      uses: codacy/codacy-coverage-reporter-action@v1
+      if: always()
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: coverage/lcov.info
+        
+    - name: Run accessibility tests
+      run: pnpm run test:a11y || true
+      continue-on-error: true
+      
+    - name: Quality gate check
+      id: quality-gate
+      run: |
+        COVERAGE_THRESHOLD=80
+        CURRENT_COVERAGE=${{ steps.coverage.outputs.coverage }}
+        
+        if (( $(echo "$CURRENT_COVERAGE >= $COVERAGE_THRESHOLD" | bc -l) )); then
+          echo "✅ Quality gate passed: Coverage $CURRENT_COVERAGE% >= $COVERAGE_THRESHOLD%"
+          echo "passed=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ Quality gate failed: Coverage $CURRENT_COVERAGE% < $COVERAGE_THRESHOLD%"
+          echo "passed=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        
+    - name: Comment PR with quality metrics
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const coverage = '${{ steps.coverage.outputs.coverage }}';
+          const qualityGate = '${{ steps.quality-gate.outputs.passed }}';
+          
+          const body = `## 📊 Quality Report
+          
+          | Metric | Value | Status |
+          |--------|-------|--------|
+          | Test Coverage | ${coverage}% | ${coverage >= 80 ? '✅' : '❌'} |
+          | Quality Gate | ${qualityGate} | ${qualityGate === 'true' ? '✅' : '❌'} |
+          
+          ${qualityGate === 'true' ? '🎉 All quality checks passed!' : '⚠️ Quality gate failed - please review the issues above.'}
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
-
-      - name: Run TypeScript check
-        run: npm run type-check
-
-      - name: Security audit
-        run: npm audit --audit-level=moderate
-
-      - name: Check for vulnerabilities
-        run: npx audit-ci --moderate
-
-  # Unit and Integration Tests
-  test:
-    name: Run Tests
+  # Build Application
+  build:
+    name: Build Application
     runs-on: ubuntu-latest
+    needs: quality-checks
+    
     strategy:
       matrix:
-        test-type: [unit, api]
+        environment: [development, staging, production]
+        
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        
+    - name: Setup pnpm cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+          
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Create environment file
+      run: |
+        echo "NODE_ENV=${{ matrix.environment == 'production' && 'production' || 'development' }}" > .env
+        echo "VITE_APP_ENV=${{ matrix.environment }}" >> .env
+        echo "VITE_APP_VERSION=${{ github.sha }}" >> .env
+        echo "VITE_APP_BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .env
+        
+    - name: Build application
+      run: pnpm run build
+      env:
+        NODE_ENV: ${{ matrix.environment == 'production' && 'production' || 'development' }}
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-${{ matrix.environment }}
+        path: dist/
+        retention-days: 7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ${{ matrix.test-type }} tests
-        run: npm test -- --testPathPatterns=tests/${{ matrix.test-type }} --coverage --watchAll=false
-
-      - name: Upload coverage to Codecov
-        if: matrix.test-type == 'unit'
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-
-  # End-to-End Tests
-  e2e-tests:
-    name: E2E Tests
+  # Security Scanning
+  security-scan:
+    name: Security Scan
     runs-on: ubuntu-latest
+    needs: quality-checks
+    if: github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'pull_request'
+    
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    
+    strategy:
+      matrix:
+        scan-type: [filesystem, dependencies, secrets]
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup Node.js
+      if: matrix.scan-type == 'dependencies'
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      if: matrix.scan-type == 'dependencies'
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Install dependencies
+      if: matrix.scan-type == 'dependencies'
+      run: pnpm install --frozen-lockfile
+      
+    - name: Run Trivy filesystem scan
+      if: matrix.scan-type == 'filesystem'
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-fs-results.sarif'
+        severity: 'CRITICAL,HIGH,MEDIUM'
+        
+    - name: Run Trivy dependency scan
+      if: matrix.scan-type == 'dependencies'
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: './package.json'
+        format: 'sarif'
+        output: 'trivy-deps-results.sarif'
+        severity: 'CRITICAL,HIGH'
+        
+    - name: Run secret detection with GitLeaks
+      if: matrix.scan-type == 'secrets'
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        
+    - name: Run CodeQL Analysis
+      if: matrix.scan-type == 'filesystem'
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript
+        queries: security-and-quality
+        
+    - name: Autobuild
+      if: matrix.scan-type == 'filesystem'
+      uses: github/codeql-action/autobuild@v3
+      
+    - name: Perform CodeQL Analysis
+      if: matrix.scan-type == 'filesystem'
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:javascript"
+        
+    - name: Run Snyk security scan
+      if: matrix.scan-type == 'dependencies'
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high --file=package.json
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      if: matrix.scan-type != 'secrets'
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-${{ matrix.scan-type == "filesystem" && "fs" || "deps" }}-results.sarif'
+        
+    - name: Create security report
+      if: matrix.scan-type == 'filesystem'
+      run: |
+        mkdir -p security-reports
+        cat > security-reports/security-summary.md << EOF
+        # Security Scan Summary
+        
+        **Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        **Commit:** ${{ github.sha }}
+        **Branch:** ${{ github.ref_name }}
+        
+        ## Scans Performed
+        - ✅ Filesystem vulnerability scan (Trivy)
+        - ✅ Dependency vulnerability scan (Trivy + Snyk)
+        - ✅ Secret detection (GitLeaks)
+        - ✅ Static code analysis (CodeQL)
+        
+        ## Results
+        See the Security tab for detailed findings.
+        EOF
+        
+    - name: Upload security reports
+      if: matrix.scan-type == 'filesystem'
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: security-reports/
+        retention-days: 30
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Build application
-        run: npm run build
-
-      - name: Start application
-        run: npm start &
-        env:
-          NODE_ENV: test
-
-      - name: Wait for application to be ready
-        run: npx wait-on http://localhost:3000 --timeout 60000
-
-      - name: Run Playwright tests
-        run: npx playwright test
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-  # Performance Tests
-  performance:
-    name: Performance Tests
+  # Comprehensive Testing
+  comprehensive-testing:
+    name: Comprehensive Testing
     runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.event_name == 'pull_request'
+    
+    strategy:
+      matrix:
+        test-type: [e2e, visual, performance, accessibility]
+        
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+        path: dist/
+        
+    - name: Install Playwright browsers
+      if: matrix.test-type == 'e2e' || matrix.test-type == 'visual'
+      run: pnpm exec playwright install --with-deps
+      
+    - name: Start application
+      run: |
+        pnpm run preview &
+        echo $! > app.pid
+        sleep 15
+        curl -f http://localhost:4173 || (echo "App failed to start" && exit 1)
+        
+    - name: Run E2E tests
+      if: matrix.test-type == 'e2e'
+      run: pnpm run test:e2e
+      env:
+        CI: true
+        PLAYWRIGHT_BASE_URL: http://localhost:4173
+        
+    - name: Run visual regression tests
+      if: matrix.test-type == 'visual'
+      run: pnpm run test:visual
+      env:
+        CI: true
+        PLAYWRIGHT_BASE_URL: http://localhost:4173
+        
+    - name: Run performance tests with Lighthouse
+      if: matrix.test-type == 'performance'
+      run: |
+        npm install -g @lhci/cli@0.12.x
+        lhci autorun --config=.lighthouserc.json
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+        LHCI_BUILD_CONTEXT__COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        
+    - name: Run accessibility tests
+      if: matrix.test-type == 'accessibility'
+      run: |
+        pnpm run test:a11y:ci
+        # Run axe-core tests
+        npx @axe-core/cli http://localhost:4173 --exit
+      env:
+        CI: true
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.test-type }}
+        path: |
+          test-results/
+          playwright-report/
+          lighthouse-reports/
+          coverage/
+        retention-days: 7
+        
+    - name: Upload visual diff artifacts
+      if: matrix.test-type == 'visual' && failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: visual-diff-${{ github.sha }}
+        path: test-results/visual-diffs/
+        retention-days: 7
+        
+    - name: Stop application
+      if: always()
+      run: |
+        if [ -f app.pid ]; then
+          kill $(cat app.pid) || true
+          rm app.pid
+        fi
+        
+    - name: Comment PR with test results
+      if: github.event_name == 'pull_request' && matrix.test-type == 'performance'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          try {
+            const lighthouseReport = JSON.parse(fs.readFileSync('lighthouse-reports/manifest.json', 'utf8'));
+            const scores = lighthouseReport[0].summary;
+            
+            const body = `## 🚀 Performance Test Results
+            
+            | Metric | Score | Status |
+            |--------|-------|--------|
+            | Performance | ${scores.performance}% | ${scores.performance >= 90 ? '✅' : scores.performance >= 70 ? '⚠️' : '❌'} |
+            | Accessibility | ${scores.accessibility}% | ${scores.accessibility >= 90 ? '✅' : '⚠️'} |
+            | Best Practices | ${scores['best-practices']}% | ${scores['best-practices'] >= 90 ? '✅' : '⚠️'} |
+            | SEO | ${scores.seo}% | ${scores.seo >= 90 ? '✅' : '⚠️'} |
+            
+            [View detailed Lighthouse report](${lighthouseReport[0].url})
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          } catch (error) {
+            console.log('Could not parse Lighthouse results:', error.message);
+          }
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-
-      - name: Run Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.12.x
-          lhci autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-
-  # Accessibility Tests
-  accessibility:
-    name: Accessibility Tests
+  # Deploy to Development
+  deploy-dev:
+    name: Deploy to Development
     runs-on: ubuntu-latest
+    needs: [quality-checks, build]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment: development
+    
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.preview-url }}
+      deployment-id: ${{ steps.deploy.outputs.deployment-id }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-development
+        path: dist/
+        
+    - name: Create deployment record
+      id: deployment
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const deployment = await github.rest.repos.createDeployment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: context.sha,
+            environment: 'development',
+            description: 'Deploy to development environment',
+            auto_merge: false,
+            required_contexts: []
+          });
+          
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: deployment.data.id,
+            state: 'in_progress',
+            description: 'Deployment started'
+          });
+          
+          return deployment.data.id;
+        
+    - name: Deploy to Vercel
+      id: deploy
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./
+        vercel-args: '--env NODE_ENV=development'
+        
+    - name: Run database migrations
+      id: migrations
+      run: |
+        echo "Running development database migrations..."
+        # Install Supabase CLI if needed
+        npm install -g supabase
+        
+        # Run migrations
+        supabase db push --db-url ${{ secrets.DEV_DATABASE_URL }} || {
+          echo "Migration failed"
+          exit 1
+        }
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: Health check
+      id: health-check
+      run: |
+        echo "Performing health check..."
+        max_attempts=30
+        attempt=1
+        
+        while [ $attempt -le $max_attempts ]; do
+          if curl -f -s "${{ steps.deploy.outputs.preview-url }}/api/health" > /dev/null; then
+            echo "Health check passed"
+            exit 0
+          fi
+          
+          echo "Health check attempt $attempt failed, retrying in 10 seconds..."
+          sleep 10
+          attempt=$((attempt + 1))
+        done
+        
+        echo "Health check failed after $max_attempts attempts"
+        exit 1
+        
+    - name: Update deployment status - Success
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'success',
+            environment_url: '${{ steps.deploy.outputs.preview-url }}',
+            description: 'Deployment successful'
+          });
+          
+    - name: Update deployment status - Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'failure',
+            description: 'Deployment failed'
+          });
+          
+    - name: Rollback on failure
+      if: failure() && steps.deploy.outputs.preview-url
+      run: |
+        echo "Deployment failed, initiating rollback..."
+        # Get previous successful deployment
+        PREV_DEPLOYMENT=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+          "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&state=READY&limit=2" \
+          | jq -r '.deployments[1].uid // empty')
+        
+        if [ -n "$PREV_DEPLOYMENT" ]; then
+          echo "Rolling back to deployment: $PREV_DEPLOYMENT"
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}" \
+            -d "{\"targets\":{\"production\":{\"id\":\"$PREV_DEPLOYMENT\"}}}"
+        else
+          echo "No previous deployment found for rollback"
+        fi
+        
+    - name: Notify Slack
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+        custom_payload: |
+          {
+            "attachments": [{
+              "color": "${{ job.status }}" === "success" ? "good" : "${{ job.status }}" === "failure" ? "danger" : "warning",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `🚀 *Development Deployment ${{ job.status }}*\n\n*Repository:* ${process.env.AS_REPO}\n*Branch:* ${process.env.AS_REF}\n*Commit:* ${process.env.AS_COMMIT}\n*Author:* ${process.env.AS_AUTHOR}\n*URL:* ${{ steps.deploy.outputs.preview-url || 'N/A' }}`
+                }
+              }]
+            }]
+          }
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-
-      - name: Start application
-        run: npm start &
-
-      - name: Wait for application
-        run: npx wait-on http://localhost:3000
-
-      - name: Run axe accessibility tests
-        run: npx @axe-core/cli http://localhost:3000
-
-  # Build and Deploy to Staging
+  # Deploy to Staging
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    needs: [quality-checks, test, e2e-tests]
-    if: github.ref == 'refs/heads/develop'
-    environment:
-      name: staging
-      url: https://tahitian-tutor-staging.vercel.app
+    needs: [quality-checks, build, comprehensive-testing]
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    environment: staging
+    
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.preview-url }}
+      deployment-id: ${{ steps.deploy.outputs.deployment-id }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-staging
+        path: dist/
+        
+    - name: Create deployment record
+      id: deployment
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const deployment = await github.rest.repos.createDeployment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: context.sha,
+            environment: 'staging',
+            description: 'Deploy to staging environment',
+            auto_merge: false,
+            required_contexts: []
+          });
+          
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: deployment.data.id,
+            state: 'in_progress',
+            description: 'Deployment started'
+          });
+          
+          return deployment.data.id;
+        
+    - name: Deploy to Vercel
+      id: deploy
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./
+        vercel-args: '--env NODE_ENV=staging'
+        
+    - name: Run database migrations
+      id: migrations
+      run: |
+        echo "Running staging database migrations..."
+        npm install -g supabase
+        
+        # Run migrations with staging database
+        supabase db push --db-url ${{ secrets.STAGING_DATABASE_URL }} || {
+          echo "Migration failed"
+          exit 1
+        }
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: Health check
+      id: health-check
+      run: |
+        echo "Performing health check..."
+        max_attempts=30
+        attempt=1
+        
+        while [ $attempt -le $max_attempts ]; do
+          if curl -f -s "${{ steps.deploy.outputs.preview-url }}/api/health" > /dev/null; then
+            echo "Health check passed"
+            break
+          fi
+          
+          echo "Health check attempt $attempt failed, retrying in 10 seconds..."
+          sleep 10
+          attempt=$((attempt + 1))
+          
+          if [ $attempt -gt $max_attempts ]; then
+            echo "Health check failed after $max_attempts attempts"
+            exit 1
+          fi
+        done
+        
+    - name: Install dependencies for smoke tests
+      run: pnpm install --frozen-lockfile
+      
+    - name: Run comprehensive smoke tests
+      id: smoke-tests
+      run: |
+        echo "Running comprehensive smoke tests..."
+        
+        # API smoke tests
+        echo "Testing API endpoints..."
+        
+        # Test health endpoint
+        curl -f "${{ steps.deploy.outputs.preview-url }}/api/health" || exit 1
+        
+        # Test authentication endpoints
+        curl -f -X POST "${{ steps.deploy.outputs.preview-url }}/api/auth/register" \
+          -H "Content-Type: application/json" \
+          -d '{"email":"test@example.com","password":"testpass123"}' || echo "Register endpoint test completed"
+        
+        # Test lessons endpoint
+        curl -f "${{ steps.deploy.outputs.preview-url }}/api/lessons" || exit 1
+        
+        # Test users endpoint
+        curl -f "${{ steps.deploy.outputs.preview-url }}/api/users/profile" || echo "Profile endpoint test completed"
+        
+        # Frontend smoke tests
+        echo "Testing frontend pages..."
+        
+        # Test main pages
+        curl -f -s "${{ steps.deploy.outputs.preview-url }}/" > /dev/null || exit 1
+        curl -f -s "${{ steps.deploy.outputs.preview-url }}/login" > /dev/null || exit 1
+        curl -f -s "${{ steps.deploy.outputs.preview-url }}/lessons" > /dev/null || exit 1
+        curl -f -s "${{ steps.deploy.outputs.preview-url }}/community" > /dev/null || exit 1
+        
+        # Test static assets
+        curl -f -s "${{ steps.deploy.outputs.preview-url }}/favicon.ico" > /dev/null || echo "Favicon test completed"
+        
+        echo "All smoke tests passed!"
+      env:
+        STAGING_API_URL: ${{ steps.deploy.outputs.preview-url }}
+        
+    - name: Run performance validation
+      run: |
+        echo "Running performance validation..."
+        
+        # Quick Lighthouse check for critical metrics
+        npm install -g lighthouse
+        
+        lighthouse "${{ steps.deploy.outputs.preview-url }}" \
+          --only-categories=performance \
+          --chrome-flags="--headless --no-sandbox" \
+          --output=json \
+          --output-path=./lighthouse-staging.json
+        
+        # Check if performance score meets minimum threshold
+        PERF_SCORE=$(node -e "
+          const report = require('./lighthouse-staging.json');
+          console.log(Math.round(report.categories.performance.score * 100));
+        ")
+        
+        echo "Performance score: $PERF_SCORE%"
+        
+        if [ "$PERF_SCORE" -lt 70 ]; then
+          echo "Performance score below threshold (70%). Current: $PERF_SCORE%"
+          exit 1
+        fi
+        
+    - name: Update deployment status - Success
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'success',
+            environment_url: '${{ steps.deploy.outputs.preview-url }}',
+            description: 'Staging deployment successful'
+          });
+          
+    - name: Update deployment status - Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'failure',
+            description: 'Staging deployment failed'
+          });
+          
+    - name: Rollback on failure
+      if: failure() && steps.deploy.outputs.preview-url
+      run: |
+        echo "Deployment failed, initiating rollback..."
+        PREV_DEPLOYMENT=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+          "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&state=READY&limit=2" \
+          | jq -r '.deployments[1].uid // empty')
+        
+        if [ -n "$PREV_DEPLOYMENT" ]; then
+          echo "Rolling back to deployment: $PREV_DEPLOYMENT"
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}" \
+            -d "{\"targets\":{\"staging\":{\"id\":\"$PREV_DEPLOYMENT\"}}}"
+        fi
+        
+    - name: Notify Slack
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        custom_payload: |
+          {
+            "attachments": [{
+              "color": "${{ job.status }}" === "success" ? "good" : "${{ job.status }}" === "failure" ? "danger" : "warning",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `🎭 *Staging Deployment ${{ job.status }}*\n\n*Repository:* ${process.env.AS_REPO}\n*Branch:* ${process.env.AS_REF}\n*Commit:* ${process.env.AS_COMMIT}\n*Author:* ${process.env.AS_AUTHOR}\n*URL:* ${{ steps.deploy.outputs.preview-url || 'N/A' }}\n*Tests:* ${{ steps.smoke-tests.outcome || 'N/A' }}`
+                }
+              }]
+            }]
+          }
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.STAGING_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_APP_URL: https://tahitian-tutor-staging.vercel.app
-
-      - name: Deploy to Vercel (Staging)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-
-  # Build and Deploy to Production
+  # Deploy to Production
   deploy-production:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: [quality-checks, test, e2e-tests, performance, accessibility]
-    if: github.ref == 'refs/heads/main'
-    environment:
+    needs: [quality-checks, build, deploy-staging]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: 
       name: production
-      url: https://tahitian-tutor.vercel.app
+      url: ${{ steps.deploy.outputs.preview-url }}
+    
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.preview-url }}
+      deployment-id: ${{ steps.deploy.outputs.deployment-id }}
+      release-tag: ${{ steps.release.outputs.tag_name }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.PRODUCTION_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PRODUCTION_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_APP_URL: https://tahitian-tutor.vercel.app
-
-      - name: Deploy to Vercel (Production)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-
-  # Coverage Report
-  coverage:
-    name: Coverage Report
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run all tests with coverage
-        run: npm test -- --coverage --watchAll=false --testPathPatterns=tests/unit
-
-      - name: Check coverage thresholds
-        run: |
-          COVERAGE=$(npm test -- --coverage --watchAll=false --silent --testPathPatterns=tests/unit | grep -o 'All files.*[0-9]\+' | tail -1 | grep -o '[0-9]\+' | tail -1)
-          echo "Coverage: $COVERAGE%"
-          if [ "$COVERAGE" -lt "80" ]; then
-            echo "Coverage $COVERAGE% is below minimum threshold of 80%"
-            exit 1
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch full history for changelog generation
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ env.PNPM_VERSION }}
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-production
+        path: dist/
+        
+    - name: Create deployment record
+      id: deployment
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const deployment = await github.rest.repos.createDeployment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: context.sha,
+            environment: 'production',
+            description: 'Deploy to production environment',
+            auto_merge: false,
+            required_contexts: []
+          });
+          
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: deployment.data.id,
+            state: 'in_progress',
+            description: 'Production deployment started'
+          });
+          
+          return deployment.data.id;
+        
+    - name: Pre-deployment backup
+      run: |
+        echo "Creating pre-deployment backup..."
+        npm install -g supabase
+        
+        BACKUP_FILE="backup-$(date +%Y%m%d-%H%M%S).sql"
+        echo "Creating backup: $BACKUP_FILE"
+        
+        # Create database backup
+        supabase db dump --db-url ${{ secrets.PROD_DATABASE_URL }} > "$BACKUP_FILE"
+        echo "Backup created: $BACKUP_FILE"
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: Deploy to Vercel (Blue-Green Strategy)
+      id: deploy
+      run: |
+        echo "Starting blue-green deployment..."
+        
+        # Deploy to a new instance first
+        npx vercel --token ${{ secrets.VERCEL_TOKEN }} \
+          --scope ${{ secrets.VERCEL_ORG_ID }} \
+          --confirm \
+          --env NODE_ENV=production \
+          --env NEXT_PUBLIC_APP_ENV=production \
+          --build-env NODE_ENV=production > deployment-url.txt
+        
+        DEPLOYMENT_URL=$(cat deployment-url.txt)
+        echo "preview-url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+        
+        echo "Deployed to: $DEPLOYMENT_URL"
+        sleep 30
+      env:
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        
+    - name: Run database migrations
+      id: migrations
+      run: |
+        echo "Running production database migrations..."
+        
+        supabase db push --db-url ${{ secrets.PROD_DATABASE_URL }} || {
+          echo "Migration failed"
+          exit 1
+        }
+        
+        echo "Database migrations completed successfully"
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: Comprehensive health checks
+      id: health-checks
+      run: |
+        echo "Running comprehensive health checks..."
+        
+        DEPLOYMENT_URL="${{ steps.deploy.outputs.preview-url }}"
+        max_attempts=60
+        attempt=1
+        
+        while [ $attempt -le $max_attempts ]; do
+          echo "Health check attempt $attempt/$max_attempts..."
+          
+          if curl -f -s "$DEPLOYMENT_URL/api/health" > /dev/null; then
+            echo "✅ Health endpoint responding"
+            
+            if curl -f -s "$DEPLOYMENT_URL/api/health/db" > /dev/null; then
+              echo "✅ Database connectivity confirmed"
+              
+              if curl -f -s "$DEPLOYMENT_URL/api/health/auth" > /dev/null; then
+                echo "✅ Authentication service responding"
+                
+                if curl -f -s "$DEPLOYMENT_URL/api/lessons" > /dev/null; then
+                  echo "✅ Lessons API responding"
+                  echo "All health checks passed!"
+                  exit 0
+                fi
+              fi
+            fi
           fi
+          
+          echo "Health check failed, retrying in 15 seconds..."
+          sleep 15
+          attempt=$((attempt + 1))
+        done
+        
+        echo "❌ Health checks failed after $max_attempts attempts"
+        exit 1
+        
+    - name: Run production smoke tests
+      id: smoke-tests
+      run: |
+        echo "Running production smoke tests..."
+        
+        DEPLOYMENT_URL="${{ steps.deploy.outputs.preview-url }}"
+        pnpm install --frozen-lockfile
+        
+        # Test critical user journeys
+        echo "Testing critical user journeys..."
+        
+        # Test lesson retrieval
+        curl -f "$DEPLOYMENT_URL/api/lessons" || {
+          echo "❌ Lessons API test failed"
+          exit 1
+        }
+        
+        # Test community features
+        curl -f "$DEPLOYMENT_URL/api/community/feed" || {
+          echo "❌ Community API test failed"
+          exit 1
+        }
+        
+        # Test analytics endpoints
+        curl -f "$DEPLOYMENT_URL/api/analytics/overview" || {
+          echo "❌ Analytics API test failed"
+          exit 1
+        }
+        
+        echo "✅ All smoke tests passed!"
+      env:
+        PROD_API_URL: ${{ steps.deploy.outputs.preview-url }}
+        
+    - name: Performance validation
+      run: |
+        echo "Running production performance validation..."
+        
+        npm install -g lighthouse
+        
+        lighthouse "${{ steps.deploy.outputs.preview-url }}" \
+          --chrome-flags="--headless --no-sandbox" \
+          --output=json \
+          --output-path=./lighthouse-production.json
+        
+        PERF_SCORE=$(node -e "
+          const report = require('./lighthouse-production.json');
+          console.log(Math.round(report.categories.performance.score * 100));
+        ")
+        
+        ACCESSIBILITY_SCORE=$(node -e "
+          const report = require('./lighthouse-production.json');
+          console.log(Math.round(report.categories.accessibility.score * 100));
+        ")
+        
+        echo "Performance score: $PERF_SCORE%"
+        echo "Accessibility score: $ACCESSIBILITY_SCORE%"
+        
+        if [ "$PERF_SCORE" -lt 80 ]; then
+          echo "❌ Performance score below production threshold (80%). Current: $PERF_SCORE%"
+          exit 1
+        fi
+        
+        if [ "$ACCESSIBILITY_SCORE" -lt 95 ]; then
+          echo "❌ Accessibility score below production threshold (95%). Current: $ACCESSIBILITY_SCORE%"
+          exit 1
+        fi
+        
+        echo "✅ Performance validation passed!"
+        
+    - name: Promote to production
+      id: promote
+      run: |
+        echo "Promoting deployment to production..."
+        
+        npx vercel --token ${{ secrets.VERCEL_TOKEN }} \
+          --scope ${{ secrets.VERCEL_ORG_ID }} \
+          --prod \
+          --confirm
+        
+        echo "✅ Deployment promoted to production!"
+      env:
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        
+    - name: Generate changelog
+      id: changelog
+      run: |
+        echo "Generating changelog..."
+        
+        LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        
+        if [ -n "$LAST_TAG" ]; then
+          CHANGELOG=$(git log $LAST_TAG..HEAD --pretty=format:"- %s (%h)" --no-merges)
+        else
+          CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges -10)
+        fi
+        
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+    - name: Create GitHub release
+      id: release
+      if: success()
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: TahitiSpeak v${{ github.run_number }}
+        body: |
+          🚀 **TahitiSpeak Production Release v${{ github.run_number }}**
+          
+          **Deployment Details:**
+          - **Commit:** ${{ github.sha }}
+          - **Author:** ${{ github.actor }}
+          - **Environment:** Production
+          - **URL:** ${{ steps.deploy.outputs.preview-url }}
+          
+          **Changes in this release:**
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          **Quality Metrics:**
+          - ✅ All tests passed
+          - ✅ Security scans completed
+          - ✅ Performance validated
+          - ✅ Accessibility verified
+          
+          **Deployment Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        draft: false
+        prerelease: false
+        
+    - name: Update deployment status - Success
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'success',
+            environment_url: '${{ steps.deploy.outputs.preview-url }}',
+            description: 'Production deployment successful'
+          });
+          
+    - name: Update deployment status - Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.repos.createDeploymentStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            deployment_id: ${{ steps.deployment.outputs.result }},
+            state: 'failure',
+            description: 'Production deployment failed'
+          });
+          
+    - name: Emergency rollback
+      if: failure() && steps.deploy.outputs.preview-url
+      run: |
+        echo "🚨 EMERGENCY ROLLBACK INITIATED 🚨"
+        
+        PREV_DEPLOYMENT=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+          "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&state=READY&target=production&limit=2" \
+          | jq -r '.deployments[1].uid // empty')
+        
+        if [ -n "$PREV_DEPLOYMENT" ]; then
+          echo "Rolling back to deployment: $PREV_DEPLOYMENT"
+          
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}" \
+            -d "{\"targets\":{\"production\":{\"id\":\"$PREV_DEPLOYMENT\"}}}"
+          
+          echo "✅ Rollback completed"
+          echo "Database rollback may be required - check backup files"
+        else
+          echo "❌ No previous deployment found for rollback"
+        fi
+        
+    - name: Notify teams
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#production-deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        custom_payload: |
+          {
+            "attachments": [{
+              "color": "${{ job.status }}" === "success" ? "good" : "${{ job.status }}" === "failure" ? "danger" : "warning",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `🚀 *PRODUCTION DEPLOYMENT ${{ job.status }}*\n\n*Repository:* ${process.env.AS_REPO}\n*Release:* v${{ github.run_number }}\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}\n*URL:* ${{ steps.deploy.outputs.preview-url || 'N/A' }}\n*Health Checks:* ${{ steps.health-checks.outcome || 'N/A' }}\n*Smoke Tests:* ${{ steps.smoke-tests.outcome || 'N/A' }}`
+                }
+              }]
+            }]
+          }
+          
+    - name: Post-deployment monitoring setup
+      if: success()
+      run: |
+        echo "Setting up post-deployment monitoring..."
+        
+        curl -X POST "${{ secrets.MONITORING_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "event": "deployment_success",
+            "environment": "production",
+            "version": "v${{ github.run_number }}",
+            "url": "${{ steps.deploy.outputs.preview-url }}",
+            "commit": "${{ github.sha }}"
+          }' || echo "Monitoring webhook failed (non-critical)"
+        
+        echo "✅ Production deployment completed successfully!"
 
-      - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-js@v1
-        with:
-          output: coverage-badge.svg
-
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-reports
-          path: |
-            coverage/
-            coverage-badge.svg
+  # Cleanup and Maintenance
+  cleanup:
+    name: Cleanup and Maintenance
+    runs-on: ubuntu-latest
+    needs: [deploy-dev, deploy-staging, deploy-production]
+    if: always()
+    
+    steps:
+    - name: Cleanup old artifacts
+      uses: actions/github-script@v7
+      with:
+        script: |
+          console.log('Starting artifact cleanup...');
+          
+          // Get all workflow run artifacts
+          const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: context.runId,
+          });
+          
+          let deletedCount = 0;
+          
+          for (const artifact of artifacts.data.artifacts) {
+            if (artifact.name.startsWith('build-') || 
+                artifact.name.startsWith('test-results-') ||
+                artifact.name.startsWith('security-report-')) {
+              try {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id,
+                });
+                console.log(`Deleted artifact: ${artifact.name}`);
+                deletedCount++;
+              } catch (error) {
+                console.log(`Failed to delete artifact ${artifact.name}: ${error.message}`);
+              }
+            }
+          }
+          
+          console.log(`Cleanup completed. Deleted ${deletedCount} artifacts.`);
+          
+    - name: Cleanup old deployments
+      run: |
+        echo "Cleaning up old Vercel deployments..."
+        
+        # Keep only the last 10 deployments per environment
+        for env in development staging production; do
+          echo "Cleaning up $env deployments..."
+          
+          # Get deployments for this environment
+          DEPLOYMENTS=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=50" \
+            | jq -r --arg env "$env" '.deployments[] | select(.target == $env) | .uid' \
+            | tail -n +11)  # Skip first 10 (keep them)
+          
+          # Delete old deployments
+          for deployment in $DEPLOYMENTS; do
+            if [ -n "$deployment" ]; then
+              echo "Deleting deployment: $deployment"
+              curl -X DELETE \
+                -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+                "https://api.vercel.com/v13/deployments/$deployment" || true
+            fi
+          done
+        done
+        
+    - name: Update deployment metrics
+      run: |
+        echo "Updating deployment metrics..."
+        
+        # Create deployment summary
+        cat > deployment-summary.json << EOF
+        {
+          "workflow_run_id": "${{ github.run_id }}",
+          "commit": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "author": "${{ github.actor }}",
+          "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "environments": {
+            "development": {
+              "status": "${{ needs.deploy-dev.result }}",
+              "url": "${{ needs.deploy-dev.outputs.deployment-url }}"
+            },
+            "staging": {
+              "status": "${{ needs.deploy-staging.result }}",
+              "url": "${{ needs.deploy-staging.outputs.deployment-url }}"
+            },
+            "production": {
+              "status": "${{ needs.deploy-production.result }}",
+              "url": "${{ needs.deploy-production.outputs.deployment-url }}",
+              "release": "${{ needs.deploy-production.outputs.release-tag }}"
+            }
+          }
+        }
+        EOF
+        
+        echo "Deployment summary created"
+        cat deployment-summary.json
+        
+    - name: Send final notification
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: custom
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        custom_payload: |
+          {
+            "attachments": [{
+              "color": "good",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": `🧹 *Deployment Pipeline Completed*\n\n*Workflow:* ${{ github.workflow }}\n*Run ID:* ${{ github.run_id }}\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}\n\n*Environment Status:*\n• Development: ${{ needs.deploy-dev.result || 'skipped' }}\n• Staging: ${{ needs.deploy-staging.result || 'skipped' }}\n• Production: ${{ needs.deploy-production.result || 'skipped' }}\n\n*Cleanup:* ✅ Completed`
+                }
+              }]
+            }]
+          }

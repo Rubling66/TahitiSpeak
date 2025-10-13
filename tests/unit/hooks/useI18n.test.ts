@@ -4,7 +4,7 @@ jest.mock('../../../src/hooks/useI18n', () => {
   const mockT = jest.fn((key: string, fallback?: string) => fallback || key);
   const mockFormatDate = jest.fn((date: Date) => date.toLocaleDateString());
   const mockFormatNumber = jest.fn((num: number) => num.toString());
-  const mockFormatCurrency = jest.fn((amount: number, currency = 'USD') => `$${amount}`);
+  const mockFormatCurrency = jest.fn((amount: number) => `$${amount}`);
   const mockFormatRelativeTime = jest.fn(() => 'just now');
   const mockPlural = jest.fn((key: string, count: number) => `${key}_${count}`);
   const mockTCommon = jest.fn((key: string) => {
@@ -20,7 +20,7 @@ jest.mock('../../../src/hooks/useI18n', () => {
   const mockGetMarginEnd = jest.fn(() => 'mr');
 
   return {
-    useI18n: jest.fn((namespace?: string) => ({
+    useI18n: jest.fn(() => ({
       locale: 'en',
       setLocale: mockSetLocale,
       t: mockT,
@@ -39,7 +39,7 @@ jest.mock('../../../src/hooks/useI18n', () => {
   };
 });
 
-import { renderHook, act } from '@testing-library/react';
+// Testing utilities not needed for this basic test
 import { useI18n } from '../../../src/hooks/useI18n';
 
 // Mock localStorage

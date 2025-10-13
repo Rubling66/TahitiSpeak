@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Navigation } from './Navigation';
 import { Toaster } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { PageErrorBoundary, SectionErrorBoundary } from '../error/ErrorBoundary';
+import '../../styles/notifications.css';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -17,19 +19,24 @@ export function AppLayout({
   showNavigation = true,
   requireAuth = false 
 }: AppLayoutProps) {
-  const { isLoading, isAuthenticated, refreshToken } = useAuth();
+  const { isLoading, isAuthenticated, refreshTokens, hasRefreshToken } = useAuth();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Attempt to refresh token on app load
-    if (!isAuthenticated && !isLoading) {
-      refreshToken().catch(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    // Attempt to refresh token on app load only if refresh token exists
+    if (!isAuthenticated && !isLoading && hasRefreshToken()) {
+      refreshTokens().catch(() => {
         // Silent fail - user will need to login
       });
     }
-  }, [isAuthenticated, isLoading, refreshToken]);
+  }, [isAuthenticated, isLoading, refreshTokens, hasRefreshToken]);
 
-  // Show loading state during initial authentication check
-  if (isLoading) {
+  // Show loading state during initial authentication check (only on client)
+  if (isClient && isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center space-y-4">
@@ -47,21 +54,39 @@ export function AppLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {showNavigation && <Navigation />}
+      {showNavigation && (
+        <SectionErrorBoundary component="Navigation">
+          <Navigation />
+        </SectionErrorBoundary>
+      )}
       
       <main className={showNavigation ? 'pt-0' : ''}>
-        {children}
+        <PageErrorBoundary component="MainContent">
+          {children}
+        </PageErrorBoundary>
       </main>
 
-      {/* Toast notifications */}
+      {/* Enhanced Toast notifications with custom styling */}
       <Toaster 
         position="top-right"
+        expand={true}
+        richColors={true}
+        closeButton={true}
         toastOptions={{
           duration: 4000,
           style: {
-            background: 'white',
-            border: '1px solid #e5e7eb',
-            color: '#374151',
+            background: 'var(--background)',
+            border: '1px solid var(--border)',
+            color: 'var(--foreground)',
+          },
+          className: 'sonner-toast',
+          actionButtonStyle: {
+            background: 'var(--primary)',
+            color: 'var(--primary-foreground)',
+          },
+          cancelButtonStyle: {
+            background: 'var(--secondary)',
+            color: 'var(--secondary-foreground)',
           },
         }}
       />

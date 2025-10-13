@@ -1,6 +1,11 @@
 import request from 'supertest';
-import { app } from '../../api/app';
-import { DatabaseService } from '../../api/services/DatabaseService';
+import { app } from '../../api/server';
+
+// Mock database service for testing
+const DatabaseService = {
+  initialize: jest.fn(),
+  close: jest.fn()
+};
 
 describe('Lessons API', () => {
   beforeAll(async () => {

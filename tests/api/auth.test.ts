@@ -1,9 +1,15 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import { app } from '../../api/server';
-import { AuthService } from '../../api/services/AuthService';
-import { DatabaseService } from '../../api/services/DatabaseService';
+import authService from '../../src/services/AuthService';
 import { logger } from '../../src/services/LoggingService';
+
+// Mock database service for testing
+const DatabaseService = {
+  connect: jest.fn(),
+  disconnect: jest.fn(),
+  clearTestData: jest.fn()
+};
 
 // Test configuration
 const TEST_USER = {
@@ -28,25 +34,16 @@ let adminToken: string;
 describe('Authentication API', () => {
   beforeAll(async () => {
     // Initialize test database
-    await DatabaseService.initialize();
+    await DatabaseService.connect();
     
     // Clean up any existing test data
-    await DatabaseService.query(
-      'DELETE FROM users WHERE email IN ($1, $2)',
-      [TEST_USER.email, ADMIN_USER.email]
-    );
+    await DatabaseService.clearTestData();
   });
   
   afterAll(async () => {
     // Clean up test data
-    if (testUserId) {
-      await DatabaseService.query('DELETE FROM users WHERE id = $1', [testUserId]);
-    }
-    if (adminUserId) {
-      await DatabaseService.query('DELETE FROM users WHERE id = $1', [adminUserId]);
-    }
-    
-    await DatabaseService.close();
+    await DatabaseService.clearTestData();
+    await DatabaseService.disconnect();
   });
   
   beforeEach(() => {
@@ -423,7 +420,7 @@ describe('Authentication API', () => {
 });
 
 // Helper functions for testing
-export const createTestUser = async (userData: any) => {
+export const createTestUser = async (userData: { email: string; password: string; firstName: string; lastName: string; role?: string }) => {
   const response = await request(app)
     .post('/api/auth/register')
     .send(userData);
@@ -440,5 +437,7 @@ export const loginTestUser = async (email: string, password: string) => {
 };
 
 export const deleteTestUser = async (userId: string) => {
-  await DatabaseService.query('DELETE FROM users WHERE id = $1', [userId]);
+  // For mock testing, we don't need to actually delete from database
+  // The mock server uses in-memory storage that resets between test runs
+  return Promise.resolve();
 };

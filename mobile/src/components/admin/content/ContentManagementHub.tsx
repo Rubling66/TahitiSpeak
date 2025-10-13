@@ -278,7 +278,7 @@ const ContentManagementHub: React.FC<ContentManagementHubProps> = ({ onContentSe
           </div>
           
           <div className="grid gap-4">
-            {searchResults.content.map((content: any) => (
+            {searchResults.content.map((content) => (
               <div
                 key={content.id}
                 className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
@@ -450,7 +450,7 @@ const ContentManagementHub: React.FC<ContentManagementHubProps> = ({ onContentSe
         <div className="flex gap-2">
           <select
             value={bulkAction}
-            onChange={(e) => setBulkAction(e.target.value as any)}
+            onChange={(e) => setBulkAction(e.target.value as 'archive' | 'publish' | 'delete' | 'tag')}
             className="px-3 py-2 border border-gray-300 rounded-lg"
           >
             <option value="archive">Archive</option>
@@ -603,7 +603,7 @@ const ContentManagementHub: React.FC<ContentManagementHubProps> = ({ onContentSe
           ].map(({ id, label, icon: Icon }) => (
             <button
               key={id}
-              onClick={() => setActiveTab(id as any)}
+              onClick={() => setActiveTab(id as 'search' | 'taxonomy' | 'lifecycle' | 'bulk' | 'analytics')}
               className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === id
                   ? 'border-blue-500 text-blue-600'

@@ -188,11 +188,16 @@ export default function ProfileScreen() {
   const levelProgress = getLevelProgress();
   const streakInfo = getStreakInfo();
 
+  interface IconProps {
+    size: number;
+    color: string;
+  }
+
   const ProgressCard = ({ title, value, subtitle, icon: Icon, color }: {
     title: string;
     value: string | number;
     subtitle?: string;
-    icon: any;
+    icon: React.ComponentType<IconProps>;
     color: string;
   }) => (
     <View style={[styles.progressCard, { borderLeftColor: color }]}>
@@ -261,7 +266,7 @@ export default function ProfileScreen() {
               title="Overall Progress"
               value={`${progressPercentage}%`}
               subtitle={`${overallProgress.completedLessons}/${overallProgress.totalLessons} lessons`}
-              icon={({ size, color }: any) => <Ionicons name="checkmark-circle" size={size} color={color} />}
+              icon={({ size, color }: IconProps) => <Ionicons name="checkmark-circle" size={size} color={color} />}
               color="#007AFF"
             />
             
@@ -269,7 +274,7 @@ export default function ProfileScreen() {
               title="Current Level"
               value={levelProgress.current}
               subtitle={`${levelProgress.progress}% to ${levelProgress.next}`}
-              icon={({ size, color }: any) => <Ionicons name="trophy" size={size} color={color} />}
+              icon={({ size, color }: IconProps) => <Ionicons name="trophy" size={size} color={color} />}
               color="#FF9500"
             />
             
@@ -277,7 +282,7 @@ export default function ProfileScreen() {
               title="Study Streak"
               value={`${streakInfo.current} days`}
               subtitle={streakInfo.isActive ? 'Keep it up!' : 'Start studying today'}
-              icon={({ size, color }: any) => <Ionicons name="flame" size={size} color={color} />}
+              icon={({ size, color }: IconProps) => <Ionicons name="flame" size={size} color={color} />}
               color={streakInfo.isActive ? '#FF3B30' : '#8E8E93'}
             />
             
@@ -285,7 +290,7 @@ export default function ProfileScreen() {
               title="Average Score"
               value={`${overallProgress.averageScore}%`}
               subtitle={`${Math.floor(overallProgress.totalTimeSpent / 60)} minutes studied`}
-              icon={({ size, color }: any) => <Ionicons name="trophy" size={size} color={color} />}
+              icon={({ size, color }: IconProps) => <Ionicons name="trophy" size={size} color={color} />}
               color="#34C759"
             />
           </View>

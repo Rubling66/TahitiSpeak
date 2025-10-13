@@ -1,12 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import Svg, { G, Path, Circle } from 'react-native-svg';
 
 interface TahitianDancerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   animate?: boolean;
   color?: 'primary' | 'sunset' | 'coral' | 'ocean';
-  style?: any;
+  style?: ViewStyle;
 }
 
 const TahitianDancer: React.FC<TahitianDancerProps> = ({ 

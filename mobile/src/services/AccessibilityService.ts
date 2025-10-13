@@ -12,6 +12,7 @@ import {
   SCORMPackage
 } from '../types/accessibility';
 import { DataService } from './DataService';
+import { ContentItem } from '../types/content-management';
 
 class AccessibilityService implements AccessibilityAPI {
   private dataService: DataService;
@@ -131,7 +132,7 @@ class AccessibilityService implements AccessibilityAPI {
     return levels.indexOf(ruleLevel) <= levels.indexOf(targetLevel);
   }
 
-  private async checkRule(content: any, rule: AccessibilityRule): Promise<AccessibilityViolation[]> {
+  private async checkRule(content: Record<string, unknown>, rule: AccessibilityRule): Promise<AccessibilityViolation[]> {
     const violations: AccessibilityViolation[] = [];
 
     switch (rule.id) {
@@ -158,7 +159,7 @@ class AccessibilityService implements AccessibilityAPI {
     return violations;
   }
 
-  private async checkImageAltText(content: any): Promise<AccessibilityViolation[]> {
+  private async checkImageAltText(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     const violations: AccessibilityViolation[] = [];
     // Simulate checking for images without alt text
     const images = content.html?.match(/<img[^>]*>/g) || [];
@@ -181,22 +182,22 @@ class AccessibilityService implements AccessibilityAPI {
     return violations;
   }
 
-  private async checkColorContrast(content: any): Promise<AccessibilityViolation[]> {
+  private async checkColorContrast(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     // Simulate color contrast checking
     return [];
   }
 
-  private async checkKeyboardAccess(content: any): Promise<AccessibilityViolation[]> {
+  private async checkKeyboardAccess(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     // Simulate keyboard accessibility checking
     return [];
   }
 
-  private async checkFocusIndicators(content: any): Promise<AccessibilityViolation[]> {
+  private async checkFocusIndicators(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     // Simulate focus indicator checking
     return [];
   }
 
-  private async checkHeadingStructure(content: any): Promise<AccessibilityViolation[]> {
+  private async checkHeadingStructure(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     const violations: AccessibilityViolation[] = [];
     const headings = content.html?.match(/<h[1-6][^>]*>.*?<\/h[1-6]>/g) || [];
     
@@ -221,7 +222,7 @@ class AccessibilityService implements AccessibilityAPI {
     return violations;
   }
 
-  private async checkAriaLabels(content: any): Promise<AccessibilityViolation[]> {
+  private async checkAriaLabels(content: Record<string, unknown>): Promise<AccessibilityViolation[]> {
     // Simulate ARIA label checking
     return [];
   }
@@ -294,7 +295,7 @@ class AccessibilityService implements AccessibilityAPI {
     }
   }
 
-  private generateAriaLabels(content: any): Record<string, string> {
+  private generateAriaLabels(content: ContentItem): Record<string, string> {
     return {
       'main-content': 'Main course content',
       'navigation': 'Course navigation',
@@ -302,7 +303,7 @@ class AccessibilityService implements AccessibilityAPI {
     };
   }
 
-  private extractHeadingStructure(content: any): { level: number; text: string; id: string }[] {
+  private extractHeadingStructure(content: ContentItem): { level: number; text: string; id: string }[] {
     const headings = content.html?.match(/<h[1-6][^>]*>.*?<\/h[1-6]>/g) || [];
     return headings.map((heading: string, index: number) => {
       const level = parseInt(heading.match(/<h([1-6])/)?.[1] || '1');
@@ -311,7 +312,7 @@ class AccessibilityService implements AccessibilityAPI {
     });
   }
 
-  private identifyLandmarks(content: any): { type: string; label: string; selector: string }[] {
+  private identifyLandmarks(content: ContentItem): { type: string; label: string; selector: string }[] {
     return [
       { type: 'main', label: 'Main content', selector: 'main' },
       { type: 'navigation', label: 'Course navigation', selector: 'nav' },
@@ -319,7 +320,7 @@ class AccessibilityService implements AccessibilityAPI {
     ];
   }
 
-  private generateSkipLinks(content: any): { text: string; target: string }[] {
+  private generateSkipLinks(content: ContentItem): { text: string; target: string }[] {
     return [
       { text: 'Skip to main content', target: '#main-content' },
       { text: 'Skip to navigation', target: '#navigation' }

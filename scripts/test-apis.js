@@ -5,6 +5,9 @@
  * Tests connectivity and authentication with third-party APIs
  */
 
+// Load environment variables
+require('dotenv').config();
+
 const https = require('https');
 const http = require('http');
 
@@ -12,7 +15,7 @@ const http = require('http');
 const API_TESTS = {
   localAI: {
     name: 'Local AI (Llama 3.1 DeepSeek)',
-    envKey: 'LOCAL_AI_BASE_URL',
+    envKey: 'LOCAL_AI_ENDPOINT',
     testEndpoint: 'http://localhost:11434/api/tags',
     headers: () => ({
       'Content-Type': 'application/json'
@@ -22,8 +25,39 @@ const API_TESTS = {
     },
   },
   
+  openai: {
+    name: 'OpenAI API',
+    envKey: 'OPENAI_API_KEY',
+    testEndpoint: 'https://api.openai.com/v1/models',
+    headers: (apiKey) => ({
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    }),
+    validator: (response) => {
+      try {
+        const data = JSON.parse(response.data);
+        return data.data && Array.isArray(data.data);
+      } catch {
+        return false;
+      }
+    },
+  },
+  
+  deepseek: {
+    name: 'DeepSeek API',
+    envKey: 'DEEPSEEK_API_KEY',
+    testEndpoint: 'https://api.deepseek.com/v1/models',
+    headers: (apiKey) => ({
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    }),
+    validator: (response) => {
+      return response.statusCode === 200;
+    },
+  },
+  
   googleTranslate: {
-    name: 'Google Translate (Legacy - will be replaced by Local AI)',
+    name: 'Google Translate API',
     envKey: 'GOOGLE_TRANSLATE_API_KEY',
     testEndpoint: 'https://translation.googleapis.com/language/translate/v2/languages',
     headers: (apiKey) => ({
@@ -171,8 +205,8 @@ function checkEnvironmentSetup() {
     'NODE_ENV',
     'NEXTAUTH_SECRET',
     'NEXTAUTH_URL',
-    'LOCAL_AI_BASE_URL',
-    'LOCAL_AI_MODEL_NAME',
+    'LOCAL_AI_ENDPOINT',
+    'LOCAL_AI_MODEL',
   ];
   
   const missing = requiredForProduction.filter(key => !process.env[key]);

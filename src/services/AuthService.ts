@@ -1,7 +1,7 @@
 'use client';
 
 import { jwtDecode } from 'jwt-decode';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // Types
 export interface User {
@@ -86,7 +86,7 @@ const USER_STORAGE_KEY = 'tahitian_tutor_user';
 const REFRESH_THRESHOLD = 5 * 60 * 1000; // 5 minutes before expiry
 
 class AuthService {
-  private supabase: any;
+  private supabase: SupabaseClient | null = null;
   private listeners: Set<(state: AuthState) => void> = new Set();
   private refreshTimer: NodeJS.Timeout | null = null;
   private state: AuthState = {
@@ -416,6 +416,11 @@ class AuthService {
   isTokenExpiringSoon(): boolean {
     if (!this.state.tokens) return false;
     return (this.state.tokens.expiresAt - Date.now()) < REFRESH_THRESHOLD;
+  }
+
+  hasRefreshToken(): boolean {
+    const storedTokens = this.getStoredTokens();
+    return !!(storedTokens?.refreshToken);
   }
 
   getState(): AuthState {

@@ -597,7 +597,7 @@ export function createLocaleFormatter(locale: string): LocaleFormatter {
   return new LocaleFormatter(locale);
 }
 
-export default {
+export const localeFormattingUtils = {
   getLocaleConfig,
   formatDate,
   formatTime,
@@ -615,3 +615,5 @@ export default {
   createLocaleFormatter,
   LOCALE_CONFIGS
 };
+
+export default localeFormattingUtils;

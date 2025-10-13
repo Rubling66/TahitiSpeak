@@ -245,7 +245,7 @@ export const QuickLaunch: React.FC<QuickLaunchProps> = ({
       {/* Trigger Settings */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>⚡ Déclencheurs d'Accès</Text>
+          <Text style={styles.sectionTitle}>⚡ Déclencheurs d&apos;Accès</Text>
           <TouchableOpacity
             style={styles.helpButton}
             onPress={showHotkeyReference}

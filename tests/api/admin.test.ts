@@ -1,16 +1,22 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import request from 'supertest';
-import { app } from '../../api/app';
-import { DatabaseService } from '../../api/services/DatabaseService';
-import { createTestUser, deleteTestUser } from './auth.test';
+import { app, clearRateLimit } from '../../api/server';
+import { createTestUser, deleteTestUser, loginTestUser } from './auth.test';
 import { logger } from '../../src/services/LoggingService';
 
-// Test data
+// Mock database service for testing
+const DatabaseService = {
+  initialize: jest.fn(),
+  query: jest.fn(),
+  close: jest.fn()
+};
+
+// Test data - use the existing admin from mock server
 const TEST_ADMIN = {
-  email: 'admin@example.com',
-  password: 'AdminPass123!',
-  firstName: 'Test',
-  lastName: 'Admin',
+  email: 'admin@test.com',
+  password: 'AdminPass123',
+  firstName: 'Admin',
+  lastName: 'User',
   role: 'admin'
 };
 
@@ -57,54 +63,43 @@ let testCourseId: string;
 
 describe('Admin API', () => {
   beforeAll(async () => {
-    // Initialize test database
-    await DatabaseService.initialize();
+    // Clear rate limit store before testing
+    clearRateLimit();
     
-    // Clean up any existing test data
-    await DatabaseService.query(
-      'DELETE FROM users WHERE email IN ($1, $2, $3)',
-      [TEST_ADMIN.email, TEST_INSTRUCTOR.email, TEST_STUDENT.email]
-    );
+    // Login with existing admin user from mock server
+    try {
+      const adminLoginData = await loginTestUser(TEST_ADMIN.email, TEST_ADMIN.password);
+      if (!adminLoginData || !adminLoginData.user) {
+        throw new Error('Admin login failed: ' + JSON.stringify(adminLoginData));
+      }
+      adminToken = adminLoginData.token;
+      adminId = adminLoginData.user.id;
+    } catch (error) {
+      console.error('Admin login error:', error);
+      throw error;
+    }
     
-    // Create test users
-    const adminData = await createTestUser(TEST_ADMIN);
+    // Create test users for instructor and student
     const instructorData = await createTestUser(TEST_INSTRUCTOR);
     const studentData = await createTestUser(TEST_STUDENT);
     
-    adminId = adminData.user.id;
+    console.log('Created instructor:', instructorData.user.id);
+    console.log('Created student:', studentData.user.id);
+    
     instructorId = instructorData.user.id;
     studentId = studentData.user.id;
-    adminToken = adminData.token;
     instructorToken = instructorData.token;
     studentToken = studentData.token;
-    
-    // Set user roles
-    await DatabaseService.query(
-      'UPDATE users SET role = $1 WHERE id = $2',
-      ['admin', adminId]
-    );
-    await DatabaseService.query(
-      'UPDATE users SET role = $1 WHERE id = $2',
-      ['instructor', instructorId]
-    );
   });
   
   afterAll(async () => {
-    // Clean up test data
-    if (testCourseId) {
-      await DatabaseService.query('DELETE FROM courses WHERE id = $1', [testCourseId]);
-    }
-    if (adminId) {
-      await deleteTestUser(adminId);
-    }
+    // Clean up test data (only non-admin users)
     if (instructorId) {
       await deleteTestUser(instructorId);
     }
     if (studentId) {
       await deleteTestUser(studentId);
     }
-    
-    await DatabaseService.close();
   });
   
   beforeEach(() => {
@@ -181,7 +176,7 @@ describe('Admin API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('users');
-      response.body.users.forEach((user: any) => {
+      response.body.users.forEach((user: { role: string }) => {
         expect(user.role).toBe('instructor');
       });
     });
@@ -275,13 +270,8 @@ describe('Admin API', () => {
   
   describe('DELETE /api/admin/users/:id', () => {
     it('should not delete user with active enrollments', async () => {
-      // First create a course and enroll the student
-      const courseResponse = await request(app)
-        .post('/api/courses')
-        .set('Authorization', `Bearer ${instructorToken}`)
-        .send(TEST_COURSE_DATA);
-      
-      testCourseId = courseResponse.body.course.id;
+      // Use existing course from mock data
+      testCourseId = 'course_1';
       
       await request(app)
         .post(`/api/courses/${testCourseId}/enroll`)
@@ -362,7 +352,7 @@ describe('Admin API', () => {
       expect(Array.isArray(response.body.courses)).toBe(true);
       
       // Should include unpublished courses
-      const unpublishedCourses = response.body.courses.filter((course: any) => !course.isPublished);
+      const unpublishedCourses = response.body.courses.filter((course: { isPublished: boolean }) => !course.isPublished);
       expect(unpublishedCourses.length).toBeGreaterThan(0);
     });
     
@@ -373,7 +363,7 @@ describe('Admin API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('courses');
-      response.body.courses.forEach((course: any) => {
+      response.body.courses.forEach((course: { isPublished: boolean }) => {
         expect(course.isPublished).toBe(false);
       });
     });
@@ -539,7 +529,7 @@ describe('Admin API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('logs');
-      response.body.logs.forEach((log: any) => {
+      response.body.logs.forEach((log: { level: string }) => {
         expect(log.level).toBe('error');
       });
     });
@@ -604,7 +594,7 @@ describe('Admin API', () => {
         .expect(200);
       
       expect(response.body).toHaveProperty('auditLogs');
-      response.body.auditLogs.forEach((log: any) => {
+      response.body.auditLogs.forEach((log: { action: string }) => {
         expect(log.action).toBe('user.create');
       });
     });

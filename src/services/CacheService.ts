@@ -168,7 +168,7 @@ export class CacheService {
   /**
    * Cache translation data
    */
-  cacheTranslation(locale: string, namespace: string, data: Record<string, any>): void {
+  cacheTranslation(locale: string, namespace: string, data: Record<string, unknown>): void {
     const key = `translation:${locale}:${namespace}`;
     CacheManager.getInstance().set(key, {
       data,
@@ -180,7 +180,7 @@ export class CacheService {
   /**
    * Get cached translation data
    */
-  getCachedTranslation(locale: string, namespace: string): Record<string, any> | null {
+  getCachedTranslation(locale: string, namespace: string): Record<string, unknown> | null {
     const key = `translation:${locale}:${namespace}`;
     const cached = CacheManager.getInstance().get(key);
     
@@ -201,7 +201,7 @@ export class CacheService {
   /**
    * Cache API response
    */
-  cacheApiResponse(endpoint: string, data: any, ttl: number = 5 * 60 * 1000): void {
+  cacheApiResponse(endpoint: string, data: unknown, ttl: number = 5 * 60 * 1000): void {
     const key = `api:${endpoint}`;
     CacheManager.getInstance().set(key, {
       data,
@@ -213,7 +213,7 @@ export class CacheService {
   /**
    * Get cached API response
    */
-  getCachedApiResponse(endpoint: string): any | null {
+  getCachedApiResponse(endpoint: string): unknown | null {
     const key = `api:${endpoint}`;
     const cached = CacheManager.getInstance().get(key);
     
@@ -255,8 +255,8 @@ export class CacheService {
    */
   async getStats(): Promise<{
     memory: CacheStats;
-    indexedDB: any;
-    browser: any;
+    indexedDB: unknown;
+    browser: { used: number; quota: number };
   }> {
     try {
       const memoryStats = CacheManager.getInstance().getStats();

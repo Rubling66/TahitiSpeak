@@ -137,7 +137,7 @@ export const useProgress = (): UseProgressReturn => {
   const getLevelProgress = useCallback(() => {
     const { level, completedLessons, averageScore } = overallProgress;
     
-    let current = level;
+    const current = level;
     let next = 'Advanced';
     let progress = 0;
     

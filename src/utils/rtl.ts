@@ -122,7 +122,7 @@ export function getRTLTextAlignClass(locale: string, align: 'left' | 'right' | '
 /**
  * Apply RTL transformations to CSS-in-JS styles
  */
-export function applyRTLStyles(locale: string, styles: Record<string, any>): Record<string, any> {
+export function applyRTLStyles(locale: string, styles: Record<string, unknown>): Record<string, unknown> {
   if (!isRTLLocale(locale)) {
     return styles;
   }
@@ -190,8 +190,6 @@ export function formatBidiText(text: string, locale: string): string {
   const isRTL = isRTLLocale(locale);
   
   // Add Unicode BiDi control characters
-  const LTR_MARK = '\u200E'; // Left-to-Right Mark
-  const RTL_MARK = '\u200F'; // Right-to-Left Mark
   const LTR_EMBED = '\u202A'; // Left-to-Right Embedding
   const RTL_EMBED = '\u202B'; // Right-to-Left Embedding
   const POP_DIRECTIONAL = '\u202C'; // Pop Directional Formatting
@@ -321,7 +319,7 @@ export class RTLUtils {
     return formatBidiText(text, this.locale);
   }
   
-  applyStyles(styles: Record<string, any>): Record<string, any> {
+  applyStyles(styles: Record<string, unknown>): Record<string, unknown> {
     return applyRTLStyles(this.locale, styles);
   }
   
@@ -357,7 +355,7 @@ export function logRTLConfig(locale: string): void {
   });
 }
 
-export default {
+export const rtlUtils = {
   isRTLLocale,
   isBidiLocale,
   getTextDirection,
@@ -376,3 +374,5 @@ export default {
   useRTL,
   logRTLConfig
 };
+
+export default rtlUtils;

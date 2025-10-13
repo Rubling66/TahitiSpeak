@@ -10,7 +10,7 @@ export interface PerformanceMetric {
   unit: string;
   timestamp: number;
   category: 'web-vitals' | 'api' | 'database' | 'custom';
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 export interface ErrorLog {
@@ -23,7 +23,7 @@ export interface ErrorLog {
   sessionId?: string;
   url?: string;
   userAgent?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 export interface SystemMetrics {
@@ -53,6 +53,8 @@ class PerformanceMonitoringService {
   private maxErrors = 500;
   private sessionId: string;
   private isClient: boolean;
+  private observers: PerformanceObserver[] = [];
+  private eventListeners: Array<{ element: EventTarget; event: string; handler: EventListener }> = [];
 
   constructor() {
     this.sessionId = this.generateSessionId();
@@ -72,7 +74,7 @@ class PerformanceMonitoringService {
     this.observeWebVitals();
     
     // Monitor unhandled errors
-    window.addEventListener('error', (event) => {
+    const errorHandler = (event: ErrorEvent) => {
       this.logError({
         message: event.message,
         stack: event.error?.stack,
@@ -84,10 +86,12 @@ class PerformanceMonitoringService {
           type: 'javascript-error',
         },
       });
-    });
+    };
+    window.addEventListener('error', errorHandler);
+    this.eventListeners.push({ element: window, event: 'error', handler: errorHandler });
 
     // Monitor unhandled promise rejections
-    window.addEventListener('unhandledrejection', (event) => {
+    const rejectionHandler = (event: PromiseRejectionEvent) => {
       this.logError({
         message: `Unhandled Promise Rejection: ${event.reason}`,
         level: 'error',
@@ -96,10 +100,12 @@ class PerformanceMonitoringService {
           reason: event.reason,
         },
       });
-    });
+    };
+    window.addEventListener('unhandledrejection', rejectionHandler);
+    this.eventListeners.push({ element: window, event: 'unhandledrejection', handler: rejectionHandler });
 
     // Monitor page visibility changes
-    document.addEventListener('visibilitychange', () => {
+    const visibilityHandler = () => {
       this.recordMetric({
         name: 'page_visibility',
         value: document.hidden ? 0 : 1,
@@ -110,7 +116,9 @@ class PerformanceMonitoringService {
           visibilityState: document.visibilityState,
         },
       });
-    });
+    };
+    document.addEventListener('visibilitychange', visibilityHandler);
+    this.eventListeners.push({ element: document, event: 'visibilitychange', handler: visibilityHandler });
   }
 
   private observeWebVitals(): void {
@@ -121,7 +129,7 @@ class PerformanceMonitoringService {
       try {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const lastEntry = entries[entries.length - 1] as any;
+          const lastEntry = entries[entries.length - 1] as PerformanceEntry & { startTime: number };
           
           this.recordMetric({
             name: 'largest_contentful_paint',
@@ -131,6 +139,7 @@ class PerformanceMonitoringService {
           });
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+        this.observers.push(lcpObserver);
       } catch (error) {
         console.warn('LCP observation failed:', error);
       }
@@ -139,7 +148,7 @@ class PerformanceMonitoringService {
       try {
         const fidObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          entries.forEach((entry: any) => {
+          entries.forEach((entry: PerformanceEntry & { processingStart: number; startTime: number }) => {
             this.recordMetric({
               name: 'first_input_delay',
               value: entry.processingStart - entry.startTime,
@@ -149,6 +158,7 @@ class PerformanceMonitoringService {
           });
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
+        this.observers.push(fidObserver);
       } catch (error) {
         console.warn('FID observation failed:', error);
       }
@@ -159,7 +169,7 @@ class PerformanceMonitoringService {
           let clsValue = 0;
           const entries = list.getEntries();
           
-          entries.forEach((entry: any) => {
+          entries.forEach((entry: PerformanceEntry & { value: number; hadRecentInput: boolean }) => {
             if (!entry.hadRecentInput) {
               clsValue += entry.value;
             }
@@ -173,6 +183,7 @@ class PerformanceMonitoringService {
           });
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
+        this.observers.push(clsObserver);
       } catch (error) {
         console.warn('CLS observation failed:', error);
       }
@@ -203,6 +214,24 @@ class PerformanceMonitoringService {
     if (this.isClient) {
       this.recordMetric({
         name: 'session_start',
+        value: 1,
+        unit: 'count',
+        category: 'custom',
+        metadata: {
+          sessionId: this.sessionId,
+          timestamp: Date.now(),
+        },
+      });
+    }
+  }
+
+  /**
+   * End the current monitoring session
+   */
+  endSession(): void {
+    if (this.isClient) {
+      this.recordMetric({
+        name: 'session_end',
         value: 1,
         unit: 'count',
         category: 'custom',
@@ -427,6 +456,35 @@ class PerformanceMonitoringService {
     this.errors = this.errors.filter(e => e.timestamp > cutoff);
   }
 
+  /**
+   * Destroy the service and clean up all resources
+   */
+  destroy(): void {
+    // Disconnect all PerformanceObservers
+    this.observers.forEach(observer => {
+      try {
+        observer.disconnect();
+      } catch (error) {
+        console.warn('Error disconnecting PerformanceObserver:', error);
+      }
+    });
+    this.observers = [];
+
+    // Remove all event listeners
+    this.eventListeners.forEach(({ element, event, handler }) => {
+      try {
+        element.removeEventListener(event, handler);
+      } catch (error) {
+        console.warn('Error removing event listener:', error);
+      }
+    });
+    this.eventListeners = [];
+
+    // Clear all data
+    this.metrics = [];
+    this.errors = [];
+  }
+
   private generateId(): string {
     return `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
@@ -453,11 +511,14 @@ export const performanceMonitoring = new PerformanceMonitoringService();
 export function usePerformanceMonitoring() {
   return {
     startSession: performanceMonitoring.startSession.bind(performanceMonitoring),
+    endSession: performanceMonitoring.endSession.bind(performanceMonitoring),
     recordMetric: performanceMonitoring.recordMetric.bind(performanceMonitoring),
     logError: performanceMonitoring.logError.bind(performanceMonitoring),
     measureApiCall: performanceMonitoring.measureApiCall.bind(performanceMonitoring),
     getSystemMetrics: performanceMonitoring.getSystemMetrics.bind(performanceMonitoring),
     getMetrics: performanceMonitoring.getMetrics.bind(performanceMonitoring),
     getErrors: performanceMonitoring.getErrors.bind(performanceMonitoring),
+    cleanup: performanceMonitoring.cleanup.bind(performanceMonitoring),
+    destroy: performanceMonitoring.destroy.bind(performanceMonitoring),
   };
 }

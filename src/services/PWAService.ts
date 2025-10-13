@@ -36,6 +36,8 @@ class PWAService {
   private installPrompt: PWAInstallPrompt | null = null;
   private updateAvailable = false;
   private listeners: Map<string, Set<Function>> = new Map();
+  private eventHandlers: { [key: string]: EventListener } = {};
+  private updateCheckInterval: NodeJS.Timeout | null = null;
 
   constructor(config: PWAServiceConfig = {}) {
     this.config = {
@@ -62,7 +64,7 @@ class PWAService {
 
       // Check for updates periodically
       if (this.config.updateCheckInterval) {
-        setInterval(() => {
+        this.updateCheckInterval = setInterval(() => {
           this.checkForUpdates();
         }, this.config.updateCheckInterval);
       }
@@ -111,35 +113,43 @@ class PWAService {
   }
 
   private setupEventListeners(): void {
+    // Store event handlers for cleanup
+    this.eventHandlers = {
+      beforeinstallprompt: (event: Event) => {
+        event.preventDefault();
+        this.installPrompt = event as any;
+        this.emit('installable', { canInstall: true });
+      },
+      appinstalled: () => {
+        this.installPrompt = null;
+        this.emit('installed', { isInstalled: true });
+      },
+      online: () => {
+        this.emit('online', { isOnline: true });
+      },
+      offline: () => {
+        this.emit('offline', { isOnline: false });
+      },
+      message: (event: MessageEvent) => {
+        this.handleServiceWorkerMessage(event.data);
+      }
+    };
+
     // Listen for install prompt
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault();
-      this.installPrompt = event as any;
-      this.emit('installable', { canInstall: true });
-    });
+    window.addEventListener('beforeinstallprompt', this.eventHandlers.beforeinstallprompt);
 
     // Listen for app installed
-    window.addEventListener('appinstalled', () => {
-      this.installPrompt = null;
-      this.emit('installed', { isInstalled: true });
-    });
+    window.addEventListener('appinstalled', this.eventHandlers.appinstalled);
 
     // Listen for online/offline status
-    window.addEventListener('online', () => {
-      this.emit('online', { isOnline: true });
-    });
-
-    window.addEventListener('offline', () => {
-      this.emit('offline', { isOnline: false });
-    });
+    window.addEventListener('online', this.eventHandlers.online);
+    window.addEventListener('offline', this.eventHandlers.offline);
 
     // Listen for service worker messages
-    navigator.serviceWorker?.addEventListener('message', (event) => {
-      this.handleServiceWorkerMessage(event.data);
-    });
+    navigator.serviceWorker?.addEventListener('message', this.eventHandlers.message);
   }
 
-  private handleServiceWorkerMessage(data: any): void {
+  private handleServiceWorkerMessage(data: { type: string; payload?: unknown }): void {
     switch (data.type) {
       case 'CACHE_UPDATED':
         this.emit('cacheUpdated', data);
@@ -344,7 +354,7 @@ class PWAService {
     }
   }
 
-  private emit(event: string, data?: any): void {
+  private emit(event: string, data?: unknown): void {
     const eventListeners = this.listeners.get(event);
     if (eventListeners) {
       eventListeners.forEach(callback => {
@@ -394,7 +404,34 @@ class PWAService {
 
   // Cleanup
   destroy(): void {
+    // Clear all event listeners
     this.listeners.clear();
+    
+    // Remove window event listeners
+    if (this.eventHandlers.beforeinstallprompt) {
+      window.removeEventListener('beforeinstallprompt', this.eventHandlers.beforeinstallprompt);
+    }
+    if (this.eventHandlers.appinstalled) {
+      window.removeEventListener('appinstalled', this.eventHandlers.appinstalled);
+    }
+    if (this.eventHandlers.online) {
+      window.removeEventListener('online', this.eventHandlers.online);
+    }
+    if (this.eventHandlers.offline) {
+      window.removeEventListener('offline', this.eventHandlers.offline);
+    }
+    if (this.eventHandlers.message && navigator.serviceWorker) {
+      navigator.serviceWorker.removeEventListener('message', this.eventHandlers.message);
+    }
+    
+    // Clear update check interval
+    if (this.updateCheckInterval) {
+      clearInterval(this.updateCheckInterval);
+      this.updateCheckInterval = null;
+    }
+    
+    // Clear event handlers
+    this.eventHandlers = {};
     
     if (this.registration) {
       // Unregister service worker if needed

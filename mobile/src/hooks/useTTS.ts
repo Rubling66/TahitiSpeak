@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Alert } from 'react-native';
 import { ttsService, TTSService } from '../services/TTSService';
 import SubscriptionService from '../services/SubscriptionService';
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import {
   TTSState,
   TTSLanguage,
@@ -65,7 +65,7 @@ export function useTTS(options: UseTTSOptions = {}): UseTTSReturn {
 
   // Refs
   const serviceRef = useRef<TTSService>(ttsService);
-  const playbackStatusRef = useRef<any>(null);
+  const playbackStatusRef = useRef<AVPlaybackStatus | null>(null);
 
   // Supported languages
   const supportedLanguages: TTSLanguage[] = ['french', 'english'];

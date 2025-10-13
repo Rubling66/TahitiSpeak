@@ -287,7 +287,7 @@ export default function TTSTestComponent({ onUpgradePress }: TTSTestComponentPro
           </Text>
           <View style={styles.codeBlock}>
             <Text style={styles.codeText}>pip install coqui-tts</Text>
-            <Text style={styles.codeText}>tts-server --model_name "tts_models/fr/mai/tacotron2-DDC" --port 5002</Text>
+            <Text style={styles.codeText}>tts-server --model_name &quot;tts_models/fr/mai/tacotron2-DDC&quot; --port 5002</Text>
           </View>
         </View>
       )}

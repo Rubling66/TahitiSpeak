@@ -10,7 +10,7 @@ export interface LogEntry {
   userId?: string;
   sessionId?: string;
   requestId?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean | null>;
   stack?: string;
   userAgent?: string;
   url?: string;
@@ -110,7 +110,7 @@ class LoggingService {
   private createLogEntry(
     level: LogLevel,
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, string | number | boolean | null>,
     error?: Error
   ): LogEntry {
     const entry: LogEntry = {
@@ -167,7 +167,7 @@ class LoggingService {
 
     // Check for request ID in headers or metadata
     if (typeof window !== 'undefined') {
-      const requestId = (window as any).__REQUEST_ID__;
+      const requestId = (window as Record<string, unknown>).__REQUEST_ID__;
       if (requestId) {
         context.requestId = requestId;
       }
@@ -408,11 +408,11 @@ export function useLogger() {
 }
 
 // Higher-order function for API logging
-export function withLogging<T extends (...args: any[]) => any>(
+export function withLogging<T extends (...args: unknown[]) => unknown>(
   fn: T,
   category: string
 ): T {
-  return ((...args: any[]) => {
+  return ((...args: Parameters<T>) => {
     const start = Date.now();
     const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
@@ -427,7 +427,7 @@ export function withLogging<T extends (...args: any[]) => any>(
       // Handle promises
       if (result && typeof result.then === 'function') {
         return result
-          .then((data: any) => {
+          .then((data: unknown) => {
             const duration = Date.now() - start;
             logger.info(`${category} completed`, {
               requestId,
@@ -436,7 +436,7 @@ export function withLogging<T extends (...args: any[]) => any>(
             });
             return data;
           })
-          .catch((error: any) => {
+          .catch((error: unknown) => {
             const duration = Date.now() - start;
             logger.error(`${category} failed`, {
               requestId,
