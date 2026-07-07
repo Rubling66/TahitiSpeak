@@ -1,5 +1,6 @@
 import { EmailService } from '../EmailService';
 import { supabase } from '../../../api/config/supabase';
+import { isMaintenanceMode } from '../../utils/maintenance';
 
 export interface AutomationTrigger {
   id: string;
@@ -182,6 +183,12 @@ export class EmailAutomation {
   }
 
   async processEvent(eventType: string, eventData: any) {
+    if (isMaintenanceMode()) {
+      if (eventData?.user?.id) {
+        await this.logAutomationExecution(eventType, eventData.user.id, 'skipped', 'maintenance');
+      }
+      return;
+    }
     const matchingRules = Array.from(this.rules.values()).filter(
       rule => rule.trigger.event === eventType && rule.trigger.isActive
     );
@@ -327,6 +334,7 @@ export class EmailAutomation {
   // Batch processing for scheduled automations
   async processDailyReminders() {
     try {
+      if (isMaintenanceMode()) return;
       // Get users who should receive daily reminders
       const { data: users, error } = await supabase
         .from('user_profiles')
@@ -367,6 +375,7 @@ export class EmailAutomation {
 
   async processWeeklyDigests() {
     try {
+      if (isMaintenanceMode()) return;
       // Get users who should receive weekly digests
       const { data: users, error } = await supabase
         .from('user_profiles')

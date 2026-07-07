@@ -1,5 +1,6 @@
 // DataService.ts - Core data service for the application
 import { reportError } from '../utils/errorHandler';
+import { isMaintenanceMode } from '../utils/maintenance';
 
 export interface DataServiceConfig {
   apiUrl?: string;
@@ -137,6 +138,9 @@ export class DataService {
     const context = `GET ${endpoint}`;
     
     try {
+      if (isMaintenanceMode() && endpoint.startsWith('/')) {
+        return { data: {} as T, success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       if (this.config.enableRetry && !requestOptions?.skipErrorReporting) {
         return await this.executeWithRetry(async () => {
           const url = this.buildUrl(endpoint, options);
@@ -167,6 +171,9 @@ export class DataService {
     const context = `POST ${endpoint}`;
     
     try {
+      if (isMaintenanceMode()) {
+        return { data: {} as T, success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       if (this.config.enableRetry && !requestOptions?.skipErrorReporting) {
         return await this.executeWithRetry(async () => {
           const response = await this.fetchWithTimeout(`${this.baseUrl}${endpoint}`, {
@@ -197,6 +204,9 @@ export class DataService {
     const context = `PUT ${endpoint}`;
     
     try {
+      if (isMaintenanceMode()) {
+        return { data: {} as T, success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       if (this.config.enableRetry && !requestOptions?.skipErrorReporting) {
         return await this.executeWithRetry(async () => {
           const response = await this.fetchWithTimeout(`${this.baseUrl}${endpoint}`, {
@@ -227,6 +237,9 @@ export class DataService {
     const context = `DELETE ${endpoint}`;
     
     try {
+      if (isMaintenanceMode()) {
+        return { data: {} as T, success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       if (this.config.enableRetry && !requestOptions?.skipErrorReporting) {
         return await this.executeWithRetry(async () => {
           const response = await this.fetchWithTimeout(`${this.baseUrl}${endpoint}`, {
@@ -295,6 +308,9 @@ export class DataService {
     const context = `UPLOAD ${endpoint}`;
     
     try {
+      if (isMaintenanceMode()) {
+        return { data: {}, success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       const formData = new FormData();
       formData.append('file', file);
       
@@ -324,6 +340,9 @@ export class DataService {
     const context = `BATCH ${operations.length} operations`;
     
     try {
+      if (isMaintenanceMode()) {
+        return { data: [] as T[], success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       const promises = operations.map(op => {
         switch (op.method.toLowerCase()) {
           case 'get':

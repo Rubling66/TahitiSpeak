@@ -1,6 +1,7 @@
 import { supabase } from '../../../api/config/supabase';
 import { EmailProviderManager } from './EmailProviders';
 import { QueuedEmail, EmailEvent } from '../EmailService';
+import { isMaintenanceMode } from '../../utils/maintenance';
 
 export interface QueueProcessorConfig {
   batchSize: number;
@@ -42,6 +43,10 @@ export class EmailQueueProcessor {
   }
 
   async start() {
+    if (isMaintenanceMode()) {
+      console.log('Maintenance mode enabled, email queue processor will not start');
+      return;
+    }
     if (this.isProcessing) {
       console.log('Email queue processor is already running');
       return;
@@ -84,6 +89,9 @@ export class EmailQueueProcessor {
   }
 
   async processQueue() {
+    if (isMaintenanceMode()) {
+      return;
+    }
     if (!this.isProcessing || this.activeJobs.size >= this.config.maxConcurrentJobs) {
       return;
     }

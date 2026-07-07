@@ -2,6 +2,7 @@
 
 import { SWRConfiguration } from 'swr';
 import { toast } from 'sonner';
+import { isMaintenanceMode } from '../utils/maintenance';
 
 // Enhanced fetcher with error handling and retry logic
 export const fetcher = async (url: string, options?: RequestInit) => {
@@ -9,6 +10,9 @@ export const fetcher = async (url: string, options?: RequestInit) => {
   const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
   try {
+    if (isMaintenanceMode() && typeof url === 'string' && url.startsWith('/api')) {
+      throw new Error('Service unavailable (maintenance mode)');
+    }
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,

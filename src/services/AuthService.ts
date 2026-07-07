@@ -2,6 +2,7 @@
 
 import { jwtDecode } from 'jwt-decode';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { isMaintenanceMode } from '../utils/maintenance';
 
 // Types
 export interface User {
@@ -162,6 +163,9 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<{ success: boolean; error?: string }> {
     try {
+      if (isMaintenanceMode()) {
+        return { success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       this.setState({ ...this.state, isLoading: true, error: null });
 
       const response = await fetch('/api/auth/login', {
@@ -209,6 +213,9 @@ class AuthService {
 
   async register(data: RegisterData): Promise<{ success: boolean; error?: string }> {
     try {
+      if (isMaintenanceMode()) {
+        return { success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       this.setState({ ...this.state, isLoading: true, error: null });
 
       const response = await fetch('/api/auth/register', {
@@ -264,6 +271,9 @@ class AuthService {
 
   async resetPassword(data: ResetPasswordData): Promise<{ success: boolean; error?: string }> {
     try {
+      if (isMaintenanceMode()) {
+        return { success: false, error: 'Service unavailable (maintenance mode)' };
+      }
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: {
@@ -289,6 +299,9 @@ class AuthService {
     try {
       if (!this.state.tokens) {
         throw new Error('Not authenticated');
+      }
+      if (isMaintenanceMode()) {
+        return { success: false, error: 'Service unavailable (maintenance mode)' };
       }
 
       const response = await fetch('/api/auth/change-password', {
@@ -317,6 +330,9 @@ class AuthService {
     try {
       if (!this.state.tokens || !this.state.user) {
         throw new Error('Not authenticated');
+      }
+      if (isMaintenanceMode()) {
+        return { success: false, error: 'Service unavailable (maintenance mode)' };
       }
 
       const response = await fetch('/api/auth/profile', {
@@ -351,6 +367,9 @@ class AuthService {
 
   async refreshTokens(): Promise<boolean> {
     try {
+      if (isMaintenanceMode()) {
+        return false;
+      }
       const storedTokens = this.getStoredTokens();
       if (!storedTokens?.refreshToken) {
         throw new Error('No refresh token available');
@@ -529,6 +548,7 @@ class AuthService {
   private async verifySession(): Promise<void> {
     try {
       if (!this.state.tokens) return;
+      if (isMaintenanceMode()) return;
 
       const response = await fetch('/api/auth/verify', {
         method: 'GET',

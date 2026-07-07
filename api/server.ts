@@ -52,6 +52,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Maintenance mode middleware
+app.use((req, res, next) => {
+  const maintenance = process.env.MAINTENANCE_MODE === 'true';
+  if (maintenance && req.path !== '/health') {
+    return res.status(503).json({ error: 'Service unavailable', maintenance: true });
+  }
+  next();
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({
@@ -277,9 +286,12 @@ async function initializeServices() {
     await initializeEmailTemplates();
     console.log('Email templates initialized');
     
-    // Start email queue processor
-    await emailQueueProcessor.start();
-    console.log('Email queue processor started');
+    if (process.env.MAINTENANCE_MODE !== 'true') {
+      await emailQueueProcessor.start();
+      console.log('Email queue processor started');
+    } else {
+      console.log('Maintenance mode enabled, skipping queue processor start');
+    }
     
     console.log('All email services initialized successfully');
   } catch (error) {
