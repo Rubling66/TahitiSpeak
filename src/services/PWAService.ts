@@ -166,7 +166,7 @@ class PWAService {
     try {
       await this.installPrompt.prompt();
       const choiceResult = await this.installPrompt.userChoice;
-      
+
       if (choiceResult.outcome === 'accepted') {
         console.log('[PWA] App installation accepted');
         this.installPrompt = null;
@@ -204,7 +204,7 @@ class PWAService {
     if (waitingWorker) {
       // Tell the waiting service worker to skip waiting
       waitingWorker.postMessage({ type: 'SKIP_WAITING' });
-      
+
       // Reload the page to activate the new service worker
       window.location.reload();
     }
@@ -264,7 +264,7 @@ class PWAService {
       for (const name of cacheNames) {
         const cache = await caches.open(name);
         const keys = await cache.keys();
-        
+
         cacheInfos.push({
           name,
           size: keys.length,
@@ -307,13 +307,25 @@ class PWAService {
   }
 
   getStatus(): PWAStatus {
+    // Return safe defaults during SSR
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      return {
+        isSupported: false,
+        isInstalled: false,
+        isInstallable: false,
+        isOnline: true,
+        serviceWorkerRegistered: false,
+        notificationsEnabled: false
+      };
+    }
+
     return {
       isSupported: 'serviceWorker' in navigator,
       isInstalled: window.matchMedia('(display-mode: standalone)').matches,
       isInstallable: !!this.installPrompt,
       isOnline: navigator.onLine,
       serviceWorkerRegistered: !!this.registration,
-      notificationsEnabled: Notification.permission === 'granted'
+      notificationsEnabled: typeof Notification !== 'undefined' && Notification.permission === 'granted'
     };
   }
 
@@ -383,7 +395,7 @@ class PWAService {
   // Cleanup
   destroy(): void {
     this.listeners.clear();
-    
+
     if (this.registration) {
       // Unregister service worker if needed
       // this.registration.unregister();
@@ -405,6 +417,9 @@ export function usePWA() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
+
     // Update status periodically
     const updateStatus = () => {
       setStatus(pwaService.getStatus());
@@ -452,7 +467,7 @@ export function usePWA() {
     applyUpdate: () => pwaService.applyUpdate(),
     checkForUpdates: () => pwaService.checkForUpdates(),
     requestNotificationPermission: () => pwaService.requestNotificationPermission(),
-    showNotification: (title: string, options?: NotificationOptions) => 
+    showNotification: (title: string, options?: NotificationOptions) =>
       pwaService.showNotification(title, options),
     getCacheInfo: () => pwaService.getCacheInfo(),
     clearCache: (cacheName?: string) => pwaService.clearCache(cacheName),

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
-import { LoggingService } from '../services/LoggingService';
+import { logger } from '../services/LoggingService';
 
 // Progress Context Types
 interface ProgressData {
@@ -59,11 +59,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         }
       });
 
-      LoggingService.info('Progress updated', { courseId, lessonId, progress });
+      logger.info('Progress updated', { courseId, lessonId, progress });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update progress';
       setError(errorMessage);
-      LoggingService.error('Failed to update progress', { courseId, lessonId, error: errorMessage });
+      logger.error('Failed to update progress', { courseId, lessonId, error: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -97,11 +97,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setError(null);
 
       setUserProgress(prev => prev.filter(p => p.courseId !== courseId));
-      LoggingService.info('Course progress reset', { courseId });
+      logger.info('Course progress reset', { courseId });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to reset progress';
       setError(errorMessage);
-      LoggingService.error('Failed to reset progress', { courseId, error: errorMessage });
+      logger.error('Failed to reset progress', { courseId, error: errorMessage });
     } finally {
       setIsLoading(false);
     }

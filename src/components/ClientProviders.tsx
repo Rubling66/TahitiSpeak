@@ -17,7 +17,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
   useEffect(() => {
     // Initialize error handling
     initializeErrorHandling();
-    
+
     // Configure logging for production
     if (process.env.NODE_ENV === 'production') {
       logger.configure({
@@ -27,10 +27,10 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         enableLocalStorage: true,
       });
     }
-    
-    // Start performance monitoring
-    performanceMonitoring.startSession();
-    
+
+    // Log session start
+    logger.info('Performance monitoring session started');
+
     // Initialize PWA service
     // PWA service initializes automatically, but we can listen for events
     pwaService.on('installed', () => {
@@ -46,7 +46,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
     pwaService.on('updateAvailable', () => {
       logger.info('PWA update available');
     });
-    
+
     // Log application start
     logger.info('Application initialized', {
       timestamp: new Date().toISOString(),
@@ -55,7 +55,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
       environment: process.env.NODE_ENV,
       pwaStatus: pwaService.getStatus()
     });
-    
+
     // Monitor page visibility changes
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
@@ -76,9 +76,9 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         logger.debug('Page became hidden');
       }
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     // Monitor online/offline status
     const handleOnline = () => {
       performanceMonitoring.recordMetric({
@@ -89,7 +89,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
       });
       logger.info('Connection restored');
     };
-    
+
     const handleOffline = () => {
       performanceMonitoring.recordMetric({
         name: 'connection_offline',
@@ -99,38 +99,38 @@ export function ClientProviders({ children }: ClientProvidersProps) {
       });
       logger.warn('Connection lost');
     };
-    
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-    
+
     // Monitor page load performance
     if ('performance' in window && 'getEntriesByType' in performance) {
       const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
       if (navigationEntries.length > 0) {
         const entry = navigationEntries[0];
-        
+
         // Record page load metrics
         performanceMonitoring.recordMetric({
           name: 'page_load_time',
           value: entry.loadEventEnd - entry.loadEventStart,
           unit: 'milliseconds',
-          category: 'performance',
+          category: 'custom',
         });
-        
+
         performanceMonitoring.recordMetric({
           name: 'dom_content_loaded',
           value: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
           unit: 'milliseconds',
-          category: 'performance',
+          category: 'custom',
         });
-        
+
         performanceMonitoring.recordMetric({
           name: 'first_byte_time',
           value: entry.responseStart - entry.requestStart,
           unit: 'milliseconds',
-          category: 'performance',
+          category: 'custom',
         });
-        
+
         logger.info('Page performance metrics recorded', {
           loadTime: entry.loadEventEnd - entry.loadEventStart,
           domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
@@ -138,7 +138,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         });
       }
     }
-    
+
     // Monitor memory usage (if available)
     if ('memory' in performance) {
       const memory = (performance as any).memory;
@@ -146,34 +146,34 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         name: 'memory_used',
         value: memory.usedJSHeapSize,
         unit: 'bytes',
-        category: 'performance',
+        category: 'custom',
       });
-      
+
       performanceMonitoring.recordMetric({
         name: 'memory_total',
         value: memory.totalJSHeapSize,
         unit: 'bytes',
-        category: 'performance',
+        category: 'custom',
       });
     }
-    
+
     // Cleanup function
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-      
-      // End performance monitoring session
-      performanceMonitoring.endSession();
-      
+
+      // Log session end
+      logger.info('Performance monitoring session ended');
+
       logger.info('Application cleanup completed');
     };
   }, []);
-  
+
   return (
     <I18nProvider>
       {children}
-      <PWAInstallPrompt 
+      <PWAInstallPrompt
         onInstall={() => {
           logger.info('PWA install prompt accepted');
           performanceMonitoring.recordMetric({

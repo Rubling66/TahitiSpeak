@@ -1,6 +1,6 @@
 import React from 'react';
-import { LoggingService } from './LoggingService';
-import { PerformanceMonitoringService } from './PerformanceMonitoringService';
+import { logger } from './LoggingService';
+import { performanceMonitoring } from './PerformanceMonitoringService';
 
 // Types and Interfaces
 export interface Permission {
@@ -249,7 +249,7 @@ class RBACService {
 
   public createRole(role: Role): void {
     this.roles.set(role.id, role);
-    LoggingService.log('info', 'Role created', { roleId: role.id, roleName: role.name });
+    logger.log('info', 'Role created', { roleId: role.id, roleName: role.name });
   }
 
   public updateRole(roleId: string, updates: Partial<Role>): boolean {
@@ -260,7 +260,7 @@ class RBACService {
     this.roles.set(roleId, updatedRole);
     this.clearUserCaches(); // Clear caches when roles change
     
-    LoggingService.log('info', 'Role updated', { roleId, updates });
+    logger.log('info', 'Role updated', { roleId, updates });
     return true;
   }
 
@@ -268,7 +268,7 @@ class RBACService {
     const deleted = this.roles.delete(roleId);
     if (deleted) {
       this.clearUserCaches();
-      LoggingService.log('info', 'Role deleted', { roleId });
+      logger.log('info', 'Role deleted', { roleId });
     }
     return deleted;
   }
@@ -284,7 +284,7 @@ class RBACService {
 
   public createPermission(permission: Permission): void {
     this.permissions.set(permission.id, permission);
-    LoggingService.log('info', 'Permission created', { permissionId: permission.id });
+    logger.log('info', 'Permission created', { permissionId: permission.id });
   }
 
   // User Permission Resolution
@@ -307,7 +307,7 @@ class RBACService {
   private resolveUserPermissions(user: User): Permission[] {
     const role = this.getRole(user.role);
     if (!role) {
-      LoggingService.log('warn', 'User has invalid role', { userId: user.id, role: user.role });
+      logger.log('warn', 'User has invalid role', { userId: user.id, role: user.role });
       return [];
     }
 
@@ -349,7 +349,7 @@ class RBACService {
       const result = this.evaluateAccess(context, userPermissions);
       
       // Log access check
-      LoggingService.log('debug', 'Access check performed', {
+      logger.log('debug', 'Access check performed', {
         userId: context.user.id,
         resource: context.resource,
         action: context.action,
@@ -360,7 +360,7 @@ class RBACService {
       return result;
     } finally {
       const duration = performance.now() - startTime;
-      PerformanceMonitoringService.recordMetric({
+      performanceMonitoring.recordMetric({
         name: 'rbac_access_check_duration',
         value: duration,
         unit: 'milliseconds',
