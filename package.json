@@ -8,7 +8,13 @@
   },
   "homepage": "https://github.com/Rubling66/TahitiSpeak",
   "author": "Rubling66",
-  "keywords": ["tahitian", "language-learning", "education", "nextjs", "react"],
+  "keywords": [
+    "tahitian",
+    "language-learning",
+    "education",
+    "nextjs",
+    "react"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Rubling66/TahitiSpeak/issues"
@@ -59,6 +65,7 @@
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-select": "^2.2.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
     "jsonwebtoken": "^9.0.2",
@@ -80,8 +87,9 @@
     "@lhci/cli": "^0.13.0",
     "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.1.5",
-    "@testing-library/react": "^14.1.2",
+    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.8",
     "@types/node": "^20",
