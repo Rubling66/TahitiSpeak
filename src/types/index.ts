@@ -7,6 +7,8 @@ export type MediaKind = 'image' | 'audio' | 'video';
 
 export interface TitleTriplet {
   fr: string;
+  /** Compatibility alias used by some admin pages */
+  french?: string;
   tah?: string;
   en?: string;
 }
@@ -17,11 +19,16 @@ export interface VocabItem {
   en?: string;
   ipaFr?: string;
   ipaTah?: string;
+  ipaEn?: string;
   partOfSpeech?: string;
   note?: string;
   audioMediaId?: number;
   isCore?: boolean;
   sortOrder?: number;
+  id?: string | number;
+  audio?: string | number;
+  tahitian?: string;
+  english?: string;
 }
 
 export interface Exercise {
@@ -34,9 +41,12 @@ export interface Exercise {
 }
 
 export interface LessonSection {
+  id?: string | number;
   kind: SectionKind;
   title: string;
   contentMd?: string;
+  /** Alias for contentMd used by some admin UIs */
+  content?: string;
   vocab?: VocabItem[];
   exercises?: Exercise[];
   sortOrder?: number;
@@ -48,8 +58,17 @@ export interface Lesson {
   level: LessonLevel;
   title: TitleTriplet;
   summary: string;
+  /** Alias for summary / longer copy used by admin preview */
+  description?: string;
   durationMin?: number;
+  /** Alias for durationMin (minutes) */
+  duration?: number;
   sections: LessonSection[];
+  /** Flat vocab list used by some admin pages (prefer sections[].vocab) */
+  vocabulary?: VocabItem[];
+  /** Flat exercise list used by some admin pages (prefer sections[].exercises) */
+  exercises?: Exercise[];
+  objectives?: string[];
   tags?: string[];
   version?: number;
   heroMediaId?: number;
@@ -61,17 +80,32 @@ export interface Lesson {
 export interface UserProgress {
   userId: number;
   lessonId: number;
+  /** Some UIs key progress by slug instead of numeric id */
+  lessonSlug?: string;
   sectionKind: SectionKind;
   completed: boolean;
   score: number;
+  overallScore?: number;
   attempts: number;
   updatedAt: number;
+  lastAccessedAt?: number | string | Date;
+  completedAt?: number | string | Date;
+  timeSpent?: number;
+  timeSpentSeconds?: number;
+  achievements?: string[];
+  sectionProgress?: Record<string, unknown>;
 }
 
 export interface MediaAsset {
   id: number;
   kind: MediaKind;
+  /** Alias for kind used by admin media UIs */
+  type?: MediaKind | string;
   filePath: string;
+  /** Public/resolved URL alias for filePath */
+  url?: string;
+  filename?: string;
+  size?: number;
   alt?: string;
   durationMs?: number;
   rights?: string;
@@ -83,6 +117,11 @@ export interface User {
   nickname?: string;
   createdAt?: number;
   lastSeenAt?: number;
+  avatarUrl?: string;
+  avatar?: string;
+  location?: string;
+  language?: string;
+  timezone?: string;
 }
 
 export interface Tag {
@@ -109,6 +148,7 @@ export interface TabNavigationProps {
   activeTab: SectionKind;
   onTabChange: (tab: SectionKind) => void;
   completedSections: Set<SectionKind>;
+  customTabs?: Array<{ id: string; label: string; kind?: SectionKind }>;
 }
 
 export interface ProgressDrawerProps {
@@ -237,6 +277,20 @@ export interface CourseMetadata {
 export interface Course extends CourseMetadata {
   lessons: Lesson[];
   mediaAssets: MediaAsset[];
+  /** Alias for estimatedDuration used by some admin pages */
+  duration?: number;
+}
+
+
+/** Course snapshot for admin version history (mock-friendly) */
+export interface CourseVersion {
+  id: number;
+  courseId: number;
+  version: number;
+  data: Course;
+  createdAt: number | Date | string;
+  createdBy?: number | string;
+  notes?: string;
 }
 
 export interface BulkImportJob {

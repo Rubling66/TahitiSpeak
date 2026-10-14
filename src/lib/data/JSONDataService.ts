@@ -814,6 +814,24 @@ export class JSONDataService extends DataService {
     }
   }
 
+  async saveData(collection: string, data: unknown): Promise<void> {
+    // Local-first stub: persist under app settings / memory for integrations
+    try {
+      const key = `collection:${collection}`;
+      await this.updateAppSetting(key, JSON.stringify(data));
+    } catch (e) {
+      console.warn('saveData stub failed for', collection, e);
+    }
+  }
+
+  async getAllLessons(): Promise<Lesson[]> {
+    return this.getLessons();
+  }
+
+  async getAllCourses(): Promise<Course[]> {
+    return this.getCourses();
+  }
+
   async createCourseVersion(courseId: number, version: number): Promise<void> {
     await this.ensureInitialized();
     try {

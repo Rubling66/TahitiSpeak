@@ -58,6 +58,10 @@ export abstract class DataService {
   abstract searchCourses(query: string): Promise<Course[]>;
   abstract getAdminStats(): Promise<AdminDashboardStats>;
   abstract getActivityLogs(limit?: number): Promise<AdminActivityLog[]>;
+  /** Generic collection write used by IntegrationService */
+  abstract saveData(collection: string, data: unknown): Promise<void>;
+  /** Alias for getCourses() used by AnalyticsService */
+  abstract getAllCourses(): Promise<Course[]>;
   abstract createCourseVersion(courseId: number, version: number): Promise<void>;
   abstract restoreCourseVersion(courseId: number, version: number): Promise<Course>;
 }
@@ -568,6 +572,18 @@ export class LocalDataService extends DataService {
     const stored = localStorage.getItem('admin_activity_logs');
     const logs: AdminActivityLog[] = stored ? JSON.parse(stored) : [];
     return logs.slice(0, limit).sort((a, b) => b.timestamp - a.timestamp);
+  }
+
+  async saveData(collection: string, data: unknown): Promise<void> {
+    try {
+      localStorage.setItem('collection_' + collection, JSON.stringify(data));
+    } catch (e) {
+      console.warn('saveData stub failed', collection, e);
+    }
+  }
+
+  async getAllCourses(): Promise<Course[]> {
+    return this.getCourses();
   }
 
   async createCourseVersion(courseId: number, version: number): Promise<void> {

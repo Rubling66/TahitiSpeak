@@ -6,6 +6,8 @@ export interface EnvValidationResult {
   invalidKeys: string[];
   warnings: string[];
   errors: string[];
+  productionReady?: boolean;
+  missing?: string[];
 }
 
 export interface ApiKeyConfig {
