@@ -46,6 +46,19 @@ export interface SystemMetrics {
   };
 }
 
+export type RecordMetricInput = Omit<PerformanceMetric, 'id' | 'timestamp' | 'unit' | 'category'> &
+  Partial<Pick<PerformanceMetric, 'timestamp' | 'unit' | 'category'>> & {
+    tags?: Record<string, string>;
+  };
+
+export interface RecordErrorInput {
+  name?: string;
+  message: string;
+  stack?: string;
+  timestamp?: number;
+  context?: Record<string, any>;
+}
+
 class PerformanceMonitoringService {
   private metrics: PerformanceMetric[] = [];
   private errors: ErrorLog[] = [];
@@ -197,11 +210,15 @@ class PerformanceMonitoringService {
   /**
    * Record a performance metric
    */
-  recordMetric(metric: Omit<PerformanceMetric, 'id' | 'timestamp'>): void {
+  recordMetric(metric: RecordMetricInput): void {
+    const { tags, ...rest } = metric;
     const fullMetric: PerformanceMetric = {
       id: this.generateId(),
       timestamp: Date.now(),
-      ...metric,
+      unit: 'count',
+      category: 'custom',
+      ...rest,
+      metadata: tags ? { ...(rest.metadata || {}), tags } : rest.metadata,
     };
 
     this.metrics.push(fullMetric);
@@ -214,6 +231,18 @@ class PerformanceMonitoringService {
     // Send to analytics if configured
     this.sendMetricToAnalytics(fullMetric);
   }
+  /**
+   * Legacy error shape used by hooks (name/message/context); forwards to logError.
+   */
+  recordError(error: RecordErrorInput): void {
+    this.logError({
+      message: error.name ? `${error.name}: ${error.message}` : error.message,
+      stack: error.stack,
+      level: 'error',
+      metadata: error.context,
+    });
+  }
+
 
   /**
    * Log an error with context

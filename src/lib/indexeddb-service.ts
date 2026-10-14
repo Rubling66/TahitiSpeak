@@ -1,7 +1,7 @@
 // IndexedDB Service for Offline Data Storage
 // Handles user progress, lesson data, and offline synchronization
 
-import { UserProgress, Lesson, MediaAsset } from './types';
+import { UserProgress, Lesson, MediaAsset } from '@/types';
 
 interface DBSchema {
   lessons: {

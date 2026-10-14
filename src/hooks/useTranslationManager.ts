@@ -310,7 +310,7 @@ export function useTranslationManager(
       lastModified: state.lastUpdated,
       source: 'dynamic'
     };
-  }, [key, locale, state.lastUpdated]);
+  }, [locale, state.lastUpdated]);
 
   // Auto-load default namespace on mount
   useEffect(() => {

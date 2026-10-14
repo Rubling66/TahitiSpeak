@@ -326,6 +326,11 @@ class LoggingService {
   }
 
   // Public logging methods
+  public log(level: 'debug' | 'info' | 'warn' | 'error' | 'fatal', message: string, metadata?: Record<string, any>, error?: Error) {
+    if (level === 'error' || level === 'fatal') return this[level](message, metadata, error);
+    return this[level](message, metadata);
+  }
+
   public debug(message: string, metadata?: Record<string, any>) {
     if (!this.shouldLog('debug')) return;
     const entry = this.createLogEntry('debug', message, metadata);

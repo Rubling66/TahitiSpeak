@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthorization } from '../../hooks/useAuthorization';
-import { Card, CardContent } from '../ui/card';
-import { Button } from '../ui/button';
+import { Card, CardContent } from '../ui/Card';
+import { Button } from '../ui/Button';
 import { Loader2, Lock, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 

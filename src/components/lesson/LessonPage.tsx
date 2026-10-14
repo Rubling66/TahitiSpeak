@@ -215,3 +215,4 @@ const LessonPage: React.FC<LessonPageProps> = ({
 };
 
 export default LessonPage;
+export { LessonPage };

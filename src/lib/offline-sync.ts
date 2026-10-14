@@ -30,7 +30,7 @@ class OfflineSyncService {
   private syncInterval: NodeJS.Timeout | null = null;
 
   constructor() {
-    this.dataService = new JSONDataService();
+    this.dataService = JSONDataService.getInstance();
     this.setupEventListeners();
     this.loadSyncStatus();
   }

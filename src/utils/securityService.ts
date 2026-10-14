@@ -360,4 +360,4 @@ class SecurityService {
 }
 
 export const securityService = SecurityService.getInstance();
-export default Security
+export default SecurityService;

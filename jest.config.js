@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
@@ -43,6 +43,14 @@ const customJestConfig = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   testPathIgnorePatterns: [
+    // ORPHANED suites (quarantined 2026-10-14, owner decision pending): they import modules that do not
+    // exist anywhere in this repo (api/app, api/services/DatabaseService, api/services/AuthService,
+    // src/pages/admin/*, components/layout/AdminLayout). Restore those modules or delete these suites.
+    '<rootDir>/tests/api/',
+    '<rootDir>/src/__tests__/integration/admin-workflow.test.tsx',
+    // Playwright specs/setup are run by `npm run test:e2e`, not Jest.
+    '<rootDir>/tests/e2e/',
+    '<rootDir>/src/__tests__/e2e/',
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/web-build/'

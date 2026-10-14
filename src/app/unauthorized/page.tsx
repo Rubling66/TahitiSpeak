@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Card, CardContent } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
+import { Card, CardContent } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
 import { AlertTriangle, Home, ArrowLeft } from 'lucide-react';
 import { PublicLayout } from '@/components/layout/AppLayout';
 

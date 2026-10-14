@@ -16,7 +16,7 @@ import {
   Network,
   Play,
   Plus,
-  Refresh,
+  RefreshCw as Refresh,
   Search,
   Settings,
   TrendingUp,

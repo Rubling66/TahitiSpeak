@@ -314,3 +314,9 @@ export function logEnvironmentStatus(): void {
     });
   });
 }
+
+// Aliases used by IntegrationService (names it was written against).
+export const validateEnvironmentVariables = validateEnvironment;
+export function getApiKeyConfig(): Record<string, ApiKeyConfig> {
+  return API_KEY_CONFIGS;
+}
