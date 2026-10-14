@@ -31,7 +31,7 @@ export default function CourseVersionsPage() {
   const [isCreatingVersion, setIsCreatingVersion] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
 
-  const courseId = parseInt(params.id as string);
+  const courseId = parseInt((params?.id ?? '') as string);
 
   useEffect(() => {
     loadCourseAndVersions();

@@ -30,6 +30,8 @@ class PerformanceService implements PerformanceAPI {
   }
 
   private initializeSampleData(): void {
+    // SSR/prerender guard: sample data lives in localStorage (browser only)
+    if (typeof window === 'undefined') return;
     // Initialize sample thresholds
     const sampleThresholds: PerformanceThreshold[] = [
       {

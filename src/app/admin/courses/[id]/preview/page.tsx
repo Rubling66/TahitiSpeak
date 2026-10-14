@@ -25,7 +25,7 @@ export default function CoursePreviewPage() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [previewMode, setPreviewMode] = useState<'student' | 'admin'>('student');
 
-  const courseId = parseInt(params.id as string);
+  const courseId = parseInt((params?.id ?? '') as string);
 
   useEffect(() => {
     loadCourse();

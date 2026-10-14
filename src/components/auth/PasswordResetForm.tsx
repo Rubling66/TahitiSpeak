@@ -36,8 +36,8 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
 
   // Check if we have a token in the URL (from email link)
   React.useEffect(() => {
-    const token = searchParams.get('token');
-    const email = searchParams.get('email');
+    const token = searchParams?.get('token') ?? null;
+    const email = searchParams?.get('email') ?? null;
     
     if (token && email) {
       setFormData(prev => ({ ...prev, token, email }));
