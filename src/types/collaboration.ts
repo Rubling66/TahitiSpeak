@@ -62,7 +62,7 @@ export interface Comment {
   versionId: string;
   authorId: string;
   text: string;
-  type: 'general' | 'suggestion' | 'question' | 'approval' | 'rejection';
+  type: 'general' | 'suggestion' | 'question' | 'approval' | 'rejection' | 'issue';
   status: 'open' | 'resolved' | 'closed';
   priority: 'low' | 'medium' | 'high' | 'critical';
   position?: {
@@ -454,3 +454,5 @@ export interface CollaborationAPI {
   updateUserPermissions(userId: string, permissions: Permission[]): Promise<void>;
   checkPermission(userId: string, resource: string, action: string): Promise<boolean>;
 }
+/** Compat accessors for CollaborationHub */
+export type CollaborationItem = (MergeRequest | ReviewRequest) & { title?: string; description?: string };

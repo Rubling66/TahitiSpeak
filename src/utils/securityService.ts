@@ -167,7 +167,7 @@ class SecurityService {
         filteredLogs = filteredLogs.filter(log => log.action === filters.action);
       }
       if (filters.resource) {
-        filteredLogs = filteredLogs.filter(log => log.resource.includes(filters.resource));
+        filteredLogs = filteredLogs.filter(log => (log.resource || "").includes(filters.resource || ""));
       }
       if (filters.startDate) {
         filteredLogs = filteredLogs.filter(log => log.timestamp >= filters.startDate!);

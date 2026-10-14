@@ -92,7 +92,7 @@ class GlobalErrorHandler {
   private handleResourceError(event: Event) {
     const target = event.target as HTMLElement;
     
-    if (!target || target === window) {
+    if (!target || target  === (window as unknown)) {
       return;
     }
 
@@ -263,7 +263,7 @@ class GlobalErrorHandler {
     performanceMonitoring.logError({
       message: report.error.message,
       stack: report.error.stack,
-      level: logLevel,
+      level: (logLevel === 'fatal' ? 'error' : logLevel) as 'debug' | 'info' | 'warn' | 'error',
       metadata: {
         errorId: report.context.errorId,
         category: report.category,

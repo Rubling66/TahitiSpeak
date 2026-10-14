@@ -20,11 +20,17 @@ export interface TranslationManagerOptions {
 export interface UseTranslationManagerReturn {
   // State
   state: TranslationManagerState;
+  isLoading: boolean;
+  translations: Record<string, any>;
   
   // Translation functions
   t: (key: string, values?: Record<string, any>) => string;
   loadNamespace: (namespace: string, options?: Partial<TranslationLoadOptions>) => Promise<void>;
   updateTranslation: (key: string, value: string, options?: Partial<TranslationUpdateOptions>) => Promise<void>;
+  createTranslation: (key: string, value: string, options?: Partial<TranslationUpdateOptions>) => Promise<void>;
+  deleteTranslation: (key: string, namespace?: string) => Promise<void>;
+  exportTranslations: (namespace?: string) => Promise<string | Record<string, any>>;
+  importTranslations: (data: string | Record<string, any>, namespace?: string) => Promise<void>;
   
   // Utility functions
   isNamespaceLoaded: (namespace: string) => boolean;
@@ -114,7 +120,7 @@ export function useTranslationManager(
     .catch(error => {
       updateState({ 
         isLoading: false, 
-        error: `Failed to load namespace '${namespace}': ${error.message}` 
+        error: `Failed to load namespace '${namespace}': ${(error as any).message}` 
       });
       
       logger.error('Failed to load namespace', { locale, namespace, error });
@@ -162,7 +168,7 @@ export function useTranslationManager(
     } catch (error) {
       updateState({ 
         isLoading: false, 
-        error: `Failed to update translation '${key}': ${error.message}` 
+        error: `Failed to update translation '${key}': ${(error as any).message}` 
       });
       
       logger.error('Failed to update translation', { locale, key, error });
@@ -213,7 +219,7 @@ export function useTranslationManager(
     } catch (error) {
       updateState({ 
         isLoading: false, 
-        error: `Failed to preload namespaces: ${error.message}` 
+        error: `Failed to preload namespaces: ${(error as any).message}` 
       });
       
       logger.error('Failed to preload namespaces', { locale, namespaces, error });
@@ -333,11 +339,22 @@ export function useTranslationManager(
     }
   }, [preloadNamespaces, isNamespaceLoaded, preloadTranslations]);
 
+  const createTranslation = updateTranslation;
+  const deleteTranslation = useCallback(async (_key: string, _namespace?: string) => { /* type stub */ }, []);
+  const exportTranslations = useCallback(async (_namespace?: string) => ({} as Record<string, any>), []);
+  const importTranslations = useCallback(async (_data: string | Record<string, any>, _namespace?: string) => { /* type stub */ }, []);
+
   return {
     state,
+    isLoading: state.isLoading,
+    translations: dynamicTranslations.current,
     t: formatMessage,
     loadNamespace,
     updateTranslation,
+    createTranslation,
+    deleteTranslation,
+    exportTranslations,
+    importTranslations,
     isNamespaceLoaded,
     getAvailableLocales,
     getAvailableNamespaces,

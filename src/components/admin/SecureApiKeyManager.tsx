@@ -169,7 +169,7 @@ const SecureApiKeyManager: React.FC = () => {
       }
       
       // Test the connection based on key type
-      let testResult = false;
+      let testResult: boolean | { success: boolean; message: string } = false;
       if (keyName.includes('OPENAI')) {
         testResult = await integrationService.testOpenAIConnection(actualKey);
       } else if (keyName.includes('CANVA')) {
@@ -185,13 +185,13 @@ const SecureApiKeyManager: React.FC = () => {
         k.name === keyName 
           ? { 
               ...k, 
-              status: testResult ? 'active' : 'error' as const,
+              status: (typeof testResult === 'object' ? testResult.success : testResult) ? 'active' : 'error' as const,
               lastTested: new Date()
             }
           : k
       ));
       
-      toast.success(testResult ? 'Connection test successful' : 'Connection test failed');
+      toast.success((typeof testResult === 'object' ? testResult.success : testResult) ? 'Connection test successful' : 'Connection test failed');
     } catch (error) {
       setApiKeys(prev => prev.map(k => 
         k.name === keyName 

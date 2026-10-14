@@ -215,9 +215,7 @@ export class AuthBridge {
    */
   public hasAdminAccess(): boolean {
     const authState = authService.getState();
-    return authState.isAuthenticated && 
-           authState.user && 
-           this.isAdminUser(authState.user);
+    return !!(authState.isAuthenticated && authState.user && this.isAdminUser(authState.user));
   }
 
   /**

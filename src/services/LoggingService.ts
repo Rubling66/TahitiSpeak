@@ -202,7 +202,7 @@ class LoggingService {
       performanceMonitoring.logError({
         message: entry.message,
         stack: entry.stack,
-        level: entry.level,
+        level: (entry.level === 'fatal' ? 'error' : entry.level) as 'debug' | 'info' | 'warn' | 'error',
         metadata: {
           ...entry.metadata,
           sessionId: entry.sessionId,
@@ -326,7 +326,7 @@ class LoggingService {
   }
 
   // Public logging methods
-  public log(level: 'debug' | 'info' | 'warn' | 'error' | 'fatal', message: string, metadata?: Record<string, any>, error?: Error) {
+  public log(level: 'debug' | 'info' | 'warn' | 'error' | 'fatal' | 'fatal', message: string, metadata?: Record<string, any>, error?: Error) {
     if (level === 'error' || level === 'fatal') return this[level](message, metadata, error);
     return this[level](message, metadata);
   }

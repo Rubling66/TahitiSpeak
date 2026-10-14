@@ -8,8 +8,13 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'instructor' | 'student';
+  role: 'admin' | 'instructor' | 'student' | string;
   avatar?: string;
+  avatarUrl?: string;
+  bio?: string;
+  location?: string;
+  language?: string;
+  timezone?: string;
   preferences?: UserPreferences;
   createdAt: string;
   updatedAt: string;
@@ -54,7 +59,10 @@ export interface RegisterData {
 }
 
 export interface ResetPasswordData {
-  email: string;
+  email?: string;
+  token?: string;
+  password?: string;
+  newPassword?: string;
 }
 
 export interface ChangePasswordData {

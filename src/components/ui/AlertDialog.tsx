@@ -57,9 +57,10 @@ const AlertDialogTrigger: React.FC<AlertDialogTriggerProps> = ({
   const { onOpenChange } = context;
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    const childProps = children.props as { className?: string };
+    return React.cloneElement(children as React.ReactElement<any>, {
       onClick: () => onOpenChange(true),
-      className: cn(children.props.className, className)
+      className: cn(childProps.className, className)
     });
   }
 
@@ -183,13 +184,15 @@ const AlertDialogFooter: React.FC<AlertDialogFooterProps> = ({
 interface AlertDialogActionProps {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
+  disabled?: boolean;
 }
 
 const AlertDialogAction: React.FC<AlertDialogActionProps> = ({
   children,
   className,
-  onClick
+  onClick,
+  disabled
 }) => {
   const context = useContext(AlertDialogContext);
   if (!context) {
@@ -207,6 +210,7 @@ const AlertDialogAction: React.FC<AlertDialogActionProps> = ({
     <button
       type="button"
       onClick={handleClick}
+      disabled={disabled}
       className={cn(
         'inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
         className

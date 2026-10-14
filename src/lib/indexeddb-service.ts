@@ -315,7 +315,7 @@ class IndexedDBService {
         }
         
         const index = store.index('synced');
-        const request = index.getAll(false);
+        const request = index.getAll();
 
         request.onsuccess = () => {
           resolve(request.result || []);

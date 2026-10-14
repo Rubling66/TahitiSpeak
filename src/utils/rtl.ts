@@ -292,8 +292,31 @@ export class RTLUtils {
   constructor(locale: string) {
     this.locale = locale;
   }
+
+  /** Callable alias used by useI18n (getter also exists) */
+  isRTL(): boolean {
+    return isRTLLocale(this.locale);
+  }
+
+  getTextDirection(): 'ltr' | 'rtl' {
+    return getTextDirection(this.locale);
+  }
+
+  getRTLStyles(): Record<string, any> {
+    return createRTLCSSProperties(this.locale);
+  }
+
+  applyRTLStyles(elementOrStyles?: HTMLElement | Record<string, any>): Record<string, any> | void {
+    if (elementOrStyles && typeof (elementOrStyles as HTMLElement).style !== 'undefined') {
+      const el = elementOrStyles as HTMLElement;
+      const props = createRTLCSSProperties(this.locale);
+      Object.assign(el.style, props);
+      return;
+    }
+    return this.applyStyles((elementOrStyles as Record<string, any>) || {});
+  }
   
-  get isRTL(): boolean {
+  get isRTLFlag(): boolean {
     return isRTLLocale(this.locale);
   }
   

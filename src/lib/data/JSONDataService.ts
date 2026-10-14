@@ -120,7 +120,7 @@ export class JSONDataService extends DataService {
         lessons = lessons.filter(lesson => {
           if (filters.level && lesson.level !== filters.level) return false;
           if (filters.tags && filters.tags.length > 0) {
-            const hasMatchingTag = filters.tags.some(tag => lesson.tags.includes(tag));
+            const hasMatchingTag = filters.tags.some(tag => (lesson.tags || []).includes(tag));
             if (!hasMatchingTag) return false;
           }
           return true;
@@ -775,8 +775,8 @@ export class JSONDataService extends DataService {
         return !query || 
           course.title.en.toLowerCase().includes(query.toLowerCase()) ||
           course.title.fr.toLowerCase().includes(query.toLowerCase()) ||
-          course.title.tah.toLowerCase().includes(query.toLowerCase()) ||
-          course.description.toLowerCase().includes(query.toLowerCase());
+          course.title.tah?.toLowerCase().includes(query.toLowerCase()) ||
+          String(typeof course.description === "string" ? course.description : (course.description as any)?.en || "").toLowerCase().includes(query.toLowerCase());
       });
     } catch (error) {
       throw new DataServiceError('RETRIEVE_ERROR', 'Failed to search courses', error);

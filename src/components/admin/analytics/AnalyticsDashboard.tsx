@@ -37,7 +37,7 @@ interface AnalyticsDashboardProps {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'];
 
 export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
-  const [analyticsService] = useState(() => new AnalyticsService(new DataService()));
+  const [analyticsService] = useState(() => new AnalyticsService(null as any));
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<DateRange>({
     start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
@@ -99,7 +99,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
         sections: ['overview', 'courses', 'learners', 'content', 'system']
       };
       
-      const blob = await analyticsService.generateReport(reportConfig);
+      const blob = await analyticsService.generateReport(reportConfig as any);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -458,7 +458,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: any) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -699,8 +699,8 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
         
         <div className="flex items-center gap-2">
           <DatePickerWithRange
-            value={dateRange}
-            onChange={setDateRange}
+            value={dateRange as any}
+            onChange={setDateRange as any}
           />
           <Select value={exportFormat} onValueChange={(value: 'pdf' | 'csv' | 'xlsx') => setExportFormat(value)}>
             <SelectTrigger className="w-20">

@@ -1,3 +1,20 @@
+/** Ambient stub for browsers without SpeechGrammarList typings */
+declare var SpeechGrammarList: {
+  prototype: SpeechGrammarList;
+  new (): SpeechGrammarList;
+};
+interface SpeechGrammar {
+  src: string;
+  weight: number;
+}
+interface SpeechGrammarList {
+  readonly length: number;
+  addFromString(string: string, weight?: number): void;
+  addFromURI(src: string, weight?: number): void;
+  item(index: number): SpeechGrammar;
+  [index: number]: SpeechGrammar;
+}
+
 // Web Speech API service for pronunciation practice and feedback
 
 interface SpeechRecognitionEvent extends Event {
@@ -41,7 +58,6 @@ declare global {
     webkitSpeechRecognition: {
       new (): SpeechRecognition;
     };
-    speechSynthesis: SpeechSynthesis;
   }
 }
 

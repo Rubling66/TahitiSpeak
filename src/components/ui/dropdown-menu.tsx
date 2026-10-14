@@ -16,13 +16,15 @@ interface DropdownMenuContentProps {
   className?: string;
   align?: 'start' | 'center' | 'end';
   forceMount?: boolean;
+  style?: React.CSSProperties;
 }
 
 interface DropdownMenuItemProps {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
   asChild?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 interface DropdownMenuLabelProps {
@@ -150,6 +152,6 @@ export function DropdownMenuLabel({ children, className = '' }: DropdownMenuLabe
   );
 }
 
-export function DropdownMenuSeparator() {
-  return <div className="-mx-1 my-1 h-px bg-gray-200" />;
+export function DropdownMenuSeparator({ className, style }: { className?: string; style?: React.CSSProperties } = {}) {
+  return <div className={`-mx-1 my-1 h-px bg-gray-200 ${className || ""}`} style={style} />;
 }

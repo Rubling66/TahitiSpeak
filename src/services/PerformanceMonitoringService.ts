@@ -9,7 +9,7 @@ export interface PerformanceMetric {
   value: number;
   unit: string;
   timestamp: number;
-  category: 'web-vitals' | 'api' | 'database' | 'custom';
+  category: 'web-vitals' | 'api' | 'database' | 'custom' | 'performance' | 'error';
   metadata?: Record<string, any>;
 }
 

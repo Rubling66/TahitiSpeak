@@ -137,7 +137,7 @@ export default function MediaUpload({
 
     // Create media asset
     const asset: MediaAsset = {
-      id: fileId,
+      id: Number(fileId) || (fileId as any),
       type: getFileType(file),
       url: URL.createObjectURL(file),
       filename: file.name,

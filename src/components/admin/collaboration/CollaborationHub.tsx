@@ -215,7 +215,7 @@ const CollaborationHub: React.FC<CollaborationHubProps> = ({
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <h4 className="font-medium">{version.title}</h4>
+                  <h4 className="font-medium">{(version as any).title}</h4>
                   <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(version.status)}`}>
                     {version.status}
                   </span>
@@ -275,7 +275,7 @@ const CollaborationHub: React.FC<CollaborationHubProps> = ({
                     {branch.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">{branch.description}</p>
+                <p className="text-sm text-gray-600 mt-1">{(branch as any).description}</p>
                 <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
                   <span>Created by {branch.createdBy}</span>
                   <span>{new Date(branch.createdAt).toLocaleDateString()}</span>
@@ -312,7 +312,7 @@ const CollaborationHub: React.FC<CollaborationHubProps> = ({
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <h4 className="font-medium">{item.title || `Review Request ${item.id}`}</h4>
+                  <h4 className="font-medium">{(item as any).title || `Review Request ${item.id}`}</h4>
                   <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(item.status)}`}>
                     {item.status}
                   </span>
@@ -326,7 +326,7 @@ const CollaborationHub: React.FC<CollaborationHubProps> = ({
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-600 mt-1">{item.description || 'No description'}</p>
+                <p className="text-sm text-gray-600 mt-1">{(item as any).description || 'No description'}</p>
                 <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
                   <span>By {'authorId' in item ? item.authorId : 'requestedBy' in item ? item.requestedBy : 'Unknown'}</span>
                   <span>{new Date(item.createdAt).toLocaleDateString()}</span>

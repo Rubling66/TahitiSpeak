@@ -41,7 +41,7 @@ class IntegrationService implements IntegrationAPI {
     }
   }
 
-  private getEnvValue(key: string): string | undefined {
+  getEnvValue(key: string): string | undefined {
     if (typeof window !== 'undefined') {
       // Client-side: Use public environment variables
       return (window as any).__ENV__?.[key] || process.env[`NEXT_PUBLIC_${key}`];
@@ -692,7 +692,7 @@ class IntegrationService implements IntegrationAPI {
   }
 
   // API Connection Testing Methods
-  async testCanvaConnection(): Promise<{ success: boolean; message: string }> {
+  async testCanvaConnection(_key?: string): Promise<{ success: boolean; message: string }> {
     const apiKey = this.getEnvValue('CANVA_API_KEY');
     if (!apiKey) {
       return { success: false, message: 'Canva API key not configured' };
@@ -717,7 +717,7 @@ class IntegrationService implements IntegrationAPI {
     }
   }
 
-  async testOpenAIConnection(): Promise<{ success: boolean; message: string }> {
+  async testOpenAIConnection(_key?: string): Promise<{ success: boolean; message: string }> {
     const apiKey = this.getEnvValue('OPENAI_API_KEY');
     if (!apiKey) {
       return { success: false, message: 'OpenAI API key not configured' };
@@ -741,7 +741,7 @@ class IntegrationService implements IntegrationAPI {
     }
   }
 
-  async testGoogleTranslateConnection(): Promise<{ success: boolean; message: string }> {
+  async testGoogleTranslateConnection(_key?: string): Promise<{ success: boolean; message: string }> {
     const apiKey = this.getEnvValue('GOOGLE_TRANSLATE_API_KEY');
     if (!apiKey) {
       return { success: false, message: 'Google Translate API key not configured' };
@@ -785,12 +785,12 @@ class IntegrationService implements IntegrationAPI {
 
   isProductionReady(): boolean {
     const validation = this.getEnvironmentValidationStatus();
-    return validation.isValid && validation.productionReady;
+    return !!(validation.isValid && validation.productionReady);
   }
 
   getMissingRequiredKeys(): string[] {
     const validation = this.getEnvironmentValidationStatus();
-    return validation.missing.filter(key => {
+    return (validation.missing || []).filter(key => {
       const config = getApiKeyConfig()[key];
       return config?.required;
     });

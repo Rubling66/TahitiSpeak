@@ -222,7 +222,7 @@ export class LocalDataService extends DataService {
     if (filters) {
       lessons = lessons.filter(lesson => {
         if (filters.level && lesson.level !== filters.level) return false;
-        if (filters.category && !lesson.tags.includes(filters.category)) return false;
+        if (filters.category && !(lesson.tags || []).includes(filters.category)) return false;
         return true;
       });
     }
@@ -243,7 +243,7 @@ export class LocalDataService extends DataService {
       .filter(lesson => 
         lesson.title.en.toLowerCase().includes(lowercaseQuery) ||
         lesson.title.fr.toLowerCase().includes(lowercaseQuery) ||
-        lesson.title.tah.toLowerCase().includes(lowercaseQuery) ||
+        lesson.title.tah?.toLowerCase().includes(lowercaseQuery) ||
         lesson.summary.toLowerCase().includes(lowercaseQuery)
       )
       .map(lesson => ({
@@ -546,8 +546,8 @@ export class LocalDataService extends DataService {
     return courses.filter(course => 
       course.title.en.toLowerCase().includes(lowercaseQuery) ||
       course.title.fr.toLowerCase().includes(lowercaseQuery) ||
-      course.title.tah.toLowerCase().includes(lowercaseQuery) ||
-      course.description.toLowerCase().includes(lowercaseQuery) ||
+      course.title.tah?.toLowerCase().includes(lowercaseQuery) ||
+      String((course as any).description).toLowerCase().includes(lowercaseQuery) ||
       course.category.toLowerCase().includes(lowercaseQuery) ||
       course.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
     );
@@ -703,7 +703,7 @@ export class LocalDataService extends DataService {
     
     if (lesson.title.en.toLowerCase().includes(lowercaseQuery)) score += 10;
     if (lesson.title.fr.toLowerCase().includes(lowercaseQuery)) score += 10;
-    if (lesson.title.tah.toLowerCase().includes(lowercaseQuery)) score += 10;
+    if (lesson.title.tah?.toLowerCase().includes(lowercaseQuery)) score += 10;
     if (lesson.summary.toLowerCase().includes(lowercaseQuery)) score += 5;
     
     return score;

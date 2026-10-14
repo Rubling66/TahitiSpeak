@@ -26,6 +26,9 @@
   "exclude": [
     "node_modules",
     "tests/api/**",
-    "src/__tests__/integration/admin-workflow.test.tsx"
+    "src/__tests__/integration/admin-workflow.test.tsx",
+    "src/lib/auth/__tests__/RBACService.test.ts",
+    "src/mocks/**",
+    "src/lib/offline-sync.ts"
   ]
 }

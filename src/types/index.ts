@@ -1,7 +1,7 @@
 // Core type definitions for Tahitian French Tutor
 
 export type LessonLevel = 'Beginner' | 'Intermediate' | 'Advanced';
-export type SectionKind = 'Objectives' | 'Vocabulary' | 'Practice' | 'Culture' | 'Assessment' | 'Review';
+export type SectionKind = 'Objectives' | 'Vocabulary' | 'Practice' | 'Culture' | 'Assessment' | 'Review' | string;
 export type ExerciseType = 'MCQ' | 'Match' | 'Ordering' | 'Dictation' | 'Pronunciation' | 'FillBlank' | 'Roleplay';
 export type MediaKind = 'image' | 'audio' | 'video';
 
@@ -10,13 +10,15 @@ export interface TitleTriplet {
   /** Compatibility alias used by some admin pages */
   french?: string;
   tah?: string;
-  en?: string;
+  en: string;
 }
 
 export interface VocabItem {
   fr: string;
   tah?: string;
   en?: string;
+  english?: string;
+  tahitian?: string;
   ipaFr?: string;
   ipaTah?: string;
   ipaEn?: string;
@@ -27,8 +29,6 @@ export interface VocabItem {
   sortOrder?: number;
   id?: string | number;
   audio?: string | number;
-  tahitian?: string;
-  english?: string;
 }
 
 export interface Exercise {
@@ -53,13 +53,13 @@ export interface LessonSection {
 }
 
 export interface Lesson {
-  id?: number;
+  id?: number | string;
   slug: string;
   level: LessonLevel;
   title: TitleTriplet;
   summary: string;
-  /** Alias for summary / longer copy used by admin preview */
-  description?: string;
+  /** Alias for summary / longer copy used by admin preview (string or localized triplet) */
+  description?: string | TitleTriplet;
   durationMin?: number;
   /** Alias for durationMin (minutes) */
   duration?: number;
@@ -82,7 +82,7 @@ export interface UserProgress {
   lessonId: number;
   /** Some UIs key progress by slug instead of numeric id */
   lessonSlug?: string;
-  sectionKind: SectionKind;
+  sectionKind?: SectionKind;
   completed: boolean;
   score: number;
   overallScore?: number;
@@ -98,10 +98,10 @@ export interface UserProgress {
 
 export interface MediaAsset {
   id: number;
-  kind: MediaKind;
+  kind?: MediaKind;
   /** Alias for kind used by admin media UIs */
   type?: MediaKind | string;
-  filePath: string;
+  filePath?: string;
   /** Public/resolved URL alias for filePath */
   url?: string;
   filename?: string;
@@ -110,6 +110,7 @@ export interface MediaAsset {
   durationMs?: number;
   rights?: string;
   sha256?: string;
+  uploadedAt?: number | string | Date;
 }
 
 export interface User {
@@ -138,7 +139,7 @@ export interface AppSetting {
 // Component Props Types
 export interface LessonHeaderProps {
   lesson: Lesson;
-  currentLanguage: 'fr' | 'tah' | 'en';
+  currentLanguage: 'fr' | 'tah' | 'en' | 'french' | 'tahitian' | 'english' | string;
   onLanguageToggle: (lang: 'fr' | 'tah' | 'en') => void;
   onStartLesson: () => void;
 }
@@ -148,20 +149,22 @@ export interface TabNavigationProps {
   activeTab: SectionKind;
   onTabChange: (tab: SectionKind) => void;
   completedSections: Set<SectionKind>;
-  customTabs?: Array<{ id: string; label: string; kind?: SectionKind }>;
+  customTabs?: Array<{ id: string; label: string; kind?: SectionKind; icon?: React.ReactNode; count?: number }>;
 }
 
 export interface ProgressDrawerProps {
   lesson: Lesson;
-  userProgress: UserProgress[];
-  streak: number;
-  isOpen: boolean;
-  onToggle: () => void;
+  userProgress?: UserProgress[] | UserProgress | null;
+  streak?: number;
+  isOpen?: boolean;
+  onToggle?: () => void;
+  onClose?: () => void;
+  [key: string]: any;
 }
 
 export interface VocabularyTabProps {
   vocab: VocabItem[];
-  currentLanguage: 'fr' | 'tah' | 'en';
+  currentLanguage: 'fr' | 'tah' | 'en' | 'french' | 'tahitian' | 'english' | string;
   onPlayAudio: (audioId: number) => void;
   onAddToPhrasebook: (item: VocabItem) => void;
 }
@@ -257,9 +260,9 @@ export interface AdminUser extends User {
 }
 
 export interface CourseMetadata {
-  id?: number;
+  id?: number | string;
   title: TitleTriplet;
-  description: string;
+  description: string | TitleTriplet;
   level: LessonLevel;
   category: string;
   tags: string[];
@@ -302,7 +305,7 @@ export interface BulkImportJob {
   errors: string[];
   createdAt: number;
   completedAt?: number;
-  createdBy: number;
+  createdBy?: number;
 }
 
 export interface AdminDashboardStats {
@@ -311,7 +314,7 @@ export interface AdminDashboardStats {
   totalUsers: number;
   publishedCourses: number;
   draftCourses: number;
-  activeUsers: number;
+  activeUsers?: number;
   recentActivity: AdminActivity[];
 }
 

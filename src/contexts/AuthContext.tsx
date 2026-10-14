@@ -29,9 +29,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Auth Provider Component
 export function AuthProvider({ children }: { children: ReactNode }) {
   const auth = useAuth();
+  // Compatibility shim: UseAuthReturn shape differs slightly (refreshTokens vs refreshToken)
+  const value = {
+    ...auth,
+    refreshToken: async () => { await auth.refreshTokens(); },
+  } as unknown as AuthContextType;
 
   return (
-    <AuthContext.Provider value={auth}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

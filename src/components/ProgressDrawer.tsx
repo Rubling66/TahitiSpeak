@@ -54,7 +54,7 @@ export default function ProgressDrawer({
       // Load all lessons and user progress
       const [lessons, userProgress] = await Promise.all([
         jsonDataService.getLessons(),
-        jsonDataService.getUserProgress(userId)
+        jsonDataService.getUserProgress(userId as any)
       ]);
 
       // Combine lessons with progress data

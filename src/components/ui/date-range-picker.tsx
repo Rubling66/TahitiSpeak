@@ -6,26 +6,33 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/Button"
 
 export interface DateRange {
-  from: Date | undefined
+  from?: Date | undefined
   to?: Date | undefined
+  start?: Date | undefined
+  end?: Date | undefined
 }
 
 interface DatePickerWithRangeProps {
   className?: string
   date?: DateRange
+  value?: DateRange
   onDateChange?: (date: DateRange | undefined) => void
+  onChange?: (date: DateRange | undefined) => void
 }
 
 export function DatePickerWithRange({
   className,
   date,
+  value,
   onDateChange,
+  onChange,
 }: DatePickerWithRangeProps) {
-  const [selectedDate, setSelectedDate] = React.useState<DateRange | undefined>(date)
+  const [selectedDate, setSelectedDate] = React.useState<DateRange | undefined>(date ?? value)
 
   const handleDateChange = (newDate: DateRange | undefined) => {
     setSelectedDate(newDate)
     onDateChange?.(newDate)
+    onChange?.(newDate)
   }
 
   return (
