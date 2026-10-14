@@ -77,7 +77,8 @@ describe('LoginForm', () => {
     
     render(<LoginForm />);
     
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+    // /sign in/i matches both the subtitle and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/sign in/i)[0]).toBeInTheDocument();
   });
 
   it('handles form submission', async () => {
@@ -88,7 +89,8 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     
     // Basic test - just check if component renders without errors
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+    // /sign in/i matches both the subtitle and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/sign in/i)[0]).toBeInTheDocument();
   });
 
   it('shows loading state during submission', () => {
@@ -97,6 +99,7 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     
     // Component should render even in loading state
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+    // /sign in/i matches both the subtitle and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/sign in/i)[0]).toBeInTheDocument();
   });
 });

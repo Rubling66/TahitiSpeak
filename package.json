@@ -43,7 +43,7 @@
     "test:api": "jest --testPathPattern=tests/api",
     "test:integration": "jest --testPathPattern=tests/integration",
     "test:all": "npm run test:unit && npm run test:api",
-    "test:ci": "jest --coverage --watchAll=false --testPathPattern=tests/unit",
+    "test:ci": "jest --coverage --watchAll=false",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:performance": "lhci autorun",

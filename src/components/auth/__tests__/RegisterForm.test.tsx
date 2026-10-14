@@ -30,7 +30,7 @@ jest.mock('next/navigation', () => {
 
 // Mock useAuth hook
 const mockUseAuth = jest.fn();
-jest.mock('../../hooks/useAuth', () => ({
+jest.mock('../../../hooks/useAuth', () => ({
   useAuth: () => mockUseAuth(),
 }));
 
@@ -77,7 +77,8 @@ describe('RegisterForm', () => {
     
     render(<RegisterForm />);
     
-    expect(screen.getByText(/create account/i)).toBeInTheDocument();
+    // /create account/i matches both the heading and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/create account/i)[0]).toBeInTheDocument();
   });
 
   it('handles form submission', async () => {
@@ -88,7 +89,8 @@ describe('RegisterForm', () => {
     render(<RegisterForm />);
     
     // Basic test - just check if component renders without errors
-    expect(screen.getByText(/create account/i)).toBeInTheDocument();
+    // /create account/i matches both the heading and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/create account/i)[0]).toBeInTheDocument();
   });
 
   it('shows loading state during submission', () => {
@@ -97,6 +99,7 @@ describe('RegisterForm', () => {
     render(<RegisterForm />);
     
     // Component should render even in loading state
-    expect(screen.getByText(/create account/i)).toBeInTheDocument();
+    // /create account/i matches both the heading and the submit button; assert at least one renders.
+    expect(screen.getAllByText(/create account/i)[0]).toBeInTheDocument();
   });
 });
