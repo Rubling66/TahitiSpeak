@@ -21,12 +21,11 @@ const customJestConfig = {
     '<rootDir>/tests/**/*.test.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'
   ],
-  // COVERAGE SCOPE + TEMPORARY RATCHET (2026-10-14 ~6:45 PM ET, owner decision pending).
-  // Before: collectCoverageFrom was all of src/** while test:ci ran only tests/unit, so the 70% gate read
-  // ~0.12% and could never pass. Now coverage is measured only over the in-repo modules that have a live
-  // (non-quarantined) suite, and test:ci runs every non-quarantined suite. Measured 2026-10-14 on that scope:
-  // stmts 24.78 / branches 14.13 / funcs 19.23 / lines 25.5. The thresholds below are a RATCHET at that
-  // floor (not the target). Target stays 70% global: raise these as real tests land; never lower them.
+  // COVERAGE SCOPE + TEMPORARY RATCHET (updated 2026-10-15 ~6:40 PM ET).
+  // Scope: in-repo modules with a live (non-quarantined) suite. test:ci runs every non-quarantined suite.
+  // Measured 2026-10-14: stmts 24.78 / branches 14.13 / funcs 19.23 / lines 25.5 (useI18n self-mocked → 0%).
+  // Measured 2026-10-15 ~6:40 PM ET after real useI18n suite: stmts 36 / branches 14.13 / funcs 40.76 / lines 35.92.
+  // Thresholds are a RATCHET at the measured floor (not the 70% target). Raise as real tests land; never lower.
   // Add a module here only together with a suite that exercises it.
   collectCoverageFrom: [
     'src/components/ui/LanguageSwitcher.tsx',
@@ -40,9 +39,9 @@ const customJestConfig = {
   coverageThreshold: {
     global: {
       branches: 14,
-      functions: 19,
-      lines: 25,
-      statements: 24
+      functions: 40,
+      lines: 35,
+      statements: 35
     }
   },
   coverageReporters: ['text', 'lcov', 'html'],
