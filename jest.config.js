@@ -1,4 +1,4 @@
-const nextJest = require('next/jest')
+﻿const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
@@ -60,13 +60,12 @@ const customJestConfig = {
     '<rootDir>/src/__tests__/integration/admin-workflow.test.tsx',
     // DRIFT suites (quarantined 2026-10-14 ~6:40 PM ET, owner decision pending): written against a
     // Supabase-backed API / admin UI that this repo does not implement. No product logic was invented.
-    //  - RBACService + PerformanceService: mock @supabase/supabase-js, but src/services/RBACService.tsx and
+    //  - RBACService: mock @supabase/supabase-js, but src/services/RBACService.tsx and
     //    src/lib/services/PerformanceService.ts never call Supabase (41x "RBACService is not a constructor").
     //  - AdminDashboardPage: imports src/lib/auth/RBACService, which does not exist.
     //  - auth-workflow + tests/integration/*: UI/text expectations (copy, roles, labels, admin CRUD flows)
     //    no longer match the in-repo components. Rewrite against current UI or delete.
     '<rootDir>/src/lib/auth/__tests__/RBACService.test.ts',
-    '<rootDir>/src/lib/services/__tests__/PerformanceService.test.ts',
     '<rootDir>/src/app/admin/dashboard/__tests__/AdminDashboardPage.test.tsx',
     '<rootDir>/src/__tests__/integration/auth-workflow.test.tsx',
     '<rootDir>/tests/integration/',
