@@ -21,10 +21,11 @@ const customJestConfig = {
     '<rootDir>/tests/**/*.test.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'
   ],
-  // COVERAGE SCOPE + TEMPORARY RATCHET (updated 2026-10-16 ~11:45 AM ET).
+  // COVERAGE SCOPE + TEMPORARY RATCHET (updated 2026-10-16 ~12:45 PM ET).
   // Scope: in-repo modules with a live (non-quarantined) suite. test:ci runs every non-quarantined suite.
   // Measured 2026-10-16 ~10:40 AM ET after LanguageSwitcher suite: stmts 44.6 / branches 28.62 / funcs 52.3 / lines 44.32.
   // Measured 2026-10-16 ~11:45 AM ET after real LoginForm suite: stmts 47.81 / branches 33.21 / funcs 56.15 / lines 47.27.
+  // Measured 2026-10-16 ~12:45 PM ET after real RegisterForm suite: stmts 57.58 / branches 49.11 / funcs 64.61 / lines 56.29.
   // Thresholds are a RATCHET at the measured floor (not the 70% target). Raise as real tests land; never lower.
   // Add a module here only together with a suite that exercises it.
   collectCoverageFrom: [
@@ -38,10 +39,10 @@ const customJestConfig = {
   ],
   coverageThreshold: {
     global: {
-      branches: 33,
-      functions: 56,
-      lines: 47,
-      statements: 47
+      branches: 49,
+      functions: 64,
+      lines: 56,
+      statements: 57
     }
   },
   coverageReporters: ['text', 'lcov', 'html'],
