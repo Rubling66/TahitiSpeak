@@ -1,5 +1,10 @@
 # TahitiSpeak
 
+## Content
+
+The records a caller can mean are defined in `src/content.ts`. That file is the contract. It names the records and their fields.
+
+
 Web app for learning French and Tahitian. Not a dconsult shop product.
 
 ## Features in this repository
