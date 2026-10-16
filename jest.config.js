@@ -30,6 +30,7 @@ const customJestConfig = {
   // Measured 2026-10-16 ~2:45 PM ET after real AuthService suite: stmts 92.71 / branches 91.87 / funcs 87.69 / lines 93.77.
   // Scope widened 2026-10-16 ~5:40 PM ET: + src/utils/envValidation.ts with a real 40-test suite (module alone 100/98.48/100/100).
   // Measured 2026-10-16 ~5:45 PM ET with envValidation in scope: stmts 93.63 / branches 93.12 / funcs 89.93 / lines 94.57.
+  // Measured 2026-10-16 ~6:45 PM ET after real AdminLayout suite (21 tests, module 100/100/100/100): stmts 95.54 / branches 94.84 / funcs 93.08 / lines 96.61.
   // Thresholds are a RATCHET at the measured floor (not the 70% target). Raise as real tests land; never lower.
   // Add a module here only together with a suite that exercises it.
   collectCoverageFrom: [
@@ -44,10 +45,10 @@ const customJestConfig = {
   ],
   coverageThreshold: {
     global: {
-      branches: 93,
-      functions: 89,
-      lines: 94,
-      statements: 93
+      branches: 94,
+      functions: 93,
+      lines: 96,
+      statements: 95
     }
   },
   coverageReporters: ['text', 'lcov', 'html'],
