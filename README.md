@@ -1,21 +1,17 @@
-# TahitiSpeak 🌺
+# TahitiSpeak
 
-**Interactive Tahitian Language Learning Platform**
+Web app for learning French and Tahitian. Not a dconsult shop product.
 
-TahitiSpeak is a comprehensive web application designed to help users learn the beautiful Tahitian language through interactive lessons, pronunciation practice, and cultural immersion. Experience the beauty of Polynesian language and culture in a modern, engaging web application.
+## Features in this repository
 
-## ✨ Features
-
-- **Interactive Lessons**: Structured learning modules with progressive difficulty
-- **Pronunciation Practice**: Audio-based learning with speech recognition
-- **Cultural Context**: Learn language through Tahitian culture and traditions
-- **Progress Tracking**: Monitor your learning journey with detailed analytics
-- **Multi-language Support**: Interface available in English, French, and Tahitian
-- **Offline Capability**: Continue learning even without internet connection
-- **Admin Dashboard**: Content management and user analytics
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Authentication System**: JWT-based authentication with role-based access control
-- **Comprehensive Testing**: Unit, integration, and E2E tests with CI/CD pipeline
+- Lessons with progressive modules
+- Pronunciation practice through the Web Speech API
+- English, French, and Tahitian interface strings (`next-intl`)
+- Offline page via the service worker
+- Admin screens for content and keys
+- JWT authentication
+- Jest and Playwright tests
+- GitHub Actions workflows
 
 ## 🚀 Getting Started
 
@@ -60,7 +56,7 @@ npm run dev
 - **Internationalization**: next-intl
 - **Audio Processing**: Web Audio API
 - **PWA**: Service Workers, Workbox
-- **CI/CD**: GitHub Actions, SonarCloud, Codecov
+- **CI**: GitHub Actions. Codecov is wired. The SonarCloud project key in `setup-github.md` is still a placeholder. The production deploy job in `ci.yml` is a comment stub.
 - **Analytics**: Custom performance monitoring
 
 ## 📱 Progressive Web App
@@ -68,7 +64,6 @@ npm run dev
 TahitiSpeak is built as a PWA, offering:
 - Offline functionality
 - App-like experience on mobile devices
-- Push notifications for learning reminders
 - Fast loading with service worker caching
 ## Available Scripts
 
@@ -133,14 +128,12 @@ tests/
 
 ## CI/CD Pipeline
 
-The project includes a comprehensive CI/CD pipeline with:
+Workflows in this repository:
 
-- **Automated Testing**: All test suites run on every PR
-- **Code Coverage**: Coverage reports with Codecov
-- **Quality Gates**: SonarCloud analysis
-- **Security Audits**: Automated dependency scanning
-- **Bundle Analysis**: Size monitoring and optimization
-- **Automated Deployment**: Production deployment on main branch
+- Jest and Playwright are scripted
+- Codecov upload is wired in GitHub Actions
+- SonarCloud is referenced, and `setup-github.md` still has a placeholder project key
+- `ci.yml` has a production deploy job whose body is a comment, not a host deploy
 
 ## Contributing
 
