@@ -1,4 +1,4 @@
-﻿const nextJest = require('next/jest')
+const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
@@ -38,10 +38,10 @@ const customJestConfig = {
   ],
   coverageThreshold: {
     global: {
-      branches: 14,
-      functions: 40,
-      lines: 35,
-      statements: 35
+      branches: 28,
+      functions: 52,
+      lines: 44,
+      statements: 44
     }
   },
   coverageReporters: ['text', 'lcov', 'html'],
