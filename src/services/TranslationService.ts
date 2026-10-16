@@ -360,5 +360,6 @@ class TranslationService {
   }
 }
 
+export { TranslationService };
 export const translationService = new TranslationService();
 export default translationService;

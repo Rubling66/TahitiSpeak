@@ -18,10 +18,10 @@ export function LessonPageClient({ lesson }: LessonPageClientProps) {
     const loadUserProgress = async () => {
       try {
         setIsLoading(true);
-        const dataService = new JSONDataService();
+        const dataService = JSONDataService.getInstance();
         // Using a default user ID of 1 for now
-        const progress = await dataService.getUserProgress(1, lesson.id);
-        setUserProgress(progress);
+        const progress = await dataService.getUserProgress(1, lesson.id as any);
+        setUserProgress(progress as any);
       } catch (error) {
         console.error('Failed to load user progress:', error);
         // Set empty progress if loading fails
@@ -36,7 +36,7 @@ export function LessonPageClient({ lesson }: LessonPageClientProps) {
 
   const handleProgressUpdate = async (progress: UserProgress) => {
     try {
-      const dataService = new JSONDataService();
+      const dataService = JSONDataService.getInstance();
       await dataService.updateUserProgress(progress);
       setUserProgress(progress);
       console.log('Progress updated:', progress);

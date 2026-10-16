@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+// Next.js app: no react-router. Passthrough wrapper keeps the existing render helpers unchanged.
+const BrowserRouter = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 import { LoginForm } from '../../components/auth/LoginForm';
 import { RegisterForm } from '../../components/auth/RegisterForm';
 import { UserProfile } from '../../components/auth/UserProfile';

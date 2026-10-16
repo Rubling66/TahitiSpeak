@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import { Button } from '../ui/Button';
+import { Input } from '../ui/Input';
 import { Label } from '../ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { Alert, AlertDescription } from '../ui/alert';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/Card';
+import { Alert, AlertDescription } from '../ui/Alert';
 import { Eye, EyeOff, Loader2, Mail, Lock, ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -36,8 +36,8 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
 
   // Check if we have a token in the URL (from email link)
   React.useEffect(() => {
-    const token = searchParams.get('token');
-    const email = searchParams.get('email');
+    const token = searchParams?.get('token') ?? null;
+    const email = searchParams?.get('email') ?? null;
     
     if (token && email) {
       setFormData(prev => ({ ...prev, token, email }));

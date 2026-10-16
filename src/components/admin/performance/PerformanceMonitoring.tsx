@@ -16,7 +16,7 @@ import {
   Network,
   Play,
   Plus,
-  Refresh,
+  RefreshCw as Refresh,
   Search,
   Settings,
   TrendingUp,
@@ -180,7 +180,7 @@ const PerformanceMonitoring: React.FC = () => {
   };
 
   const formatPercentage = (value: number): string => {
-    return `${value.toFixed(1)}%`;
+    return `${(Number(value)||0).toFixed(1)}%`;
   };
 
   const getSeverityColor = (severity: AlertSeverity): string => {
@@ -360,7 +360,7 @@ const PerformanceMonitoring: React.FC = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+                    <Tooltip formatter={(value) => `${(Number(value)||0).toFixed(1)}%`} />
                     <Bar dataKey="value" fill="#3b82f6" />
                   </BarChart>
                 </ResponsiveContainer>

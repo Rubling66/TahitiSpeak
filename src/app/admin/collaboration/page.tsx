@@ -7,7 +7,7 @@ import CollaborationHub from '@/components/admin/collaboration/CollaborationHub'
 export default function CollaborationPage() {
   return (
     <AdminLayout>
-      <CollaborationHub />
+      <CollaborationHub contentId="default" currentVersionId="default" />
     </AdminLayout>
   );
 }

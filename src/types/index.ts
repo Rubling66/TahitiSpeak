@@ -1,27 +1,34 @@
 // Core type definitions for Tahitian French Tutor
 
 export type LessonLevel = 'Beginner' | 'Intermediate' | 'Advanced';
-export type SectionKind = 'Objectives' | 'Vocabulary' | 'Practice' | 'Culture' | 'Assessment' | 'Review';
+export type SectionKind = 'Objectives' | 'Vocabulary' | 'Practice' | 'Culture' | 'Assessment' | 'Review' | string;
 export type ExerciseType = 'MCQ' | 'Match' | 'Ordering' | 'Dictation' | 'Pronunciation' | 'FillBlank' | 'Roleplay';
 export type MediaKind = 'image' | 'audio' | 'video';
 
 export interface TitleTriplet {
   fr: string;
+  /** Compatibility alias used by some admin pages */
+  french?: string;
   tah?: string;
-  en?: string;
+  en: string;
 }
 
 export interface VocabItem {
   fr: string;
   tah?: string;
   en?: string;
+  english?: string;
+  tahitian?: string;
   ipaFr?: string;
   ipaTah?: string;
+  ipaEn?: string;
   partOfSpeech?: string;
   note?: string;
   audioMediaId?: number;
   isCore?: boolean;
   sortOrder?: number;
+  id?: string | number;
+  audio?: string | number;
 }
 
 export interface Exercise {
@@ -34,22 +41,34 @@ export interface Exercise {
 }
 
 export interface LessonSection {
+  id?: string | number;
   kind: SectionKind;
   title: string;
   contentMd?: string;
+  /** Alias for contentMd used by some admin UIs */
+  content?: string;
   vocab?: VocabItem[];
   exercises?: Exercise[];
   sortOrder?: number;
 }
 
 export interface Lesson {
-  id?: number;
+  id?: number | string;
   slug: string;
   level: LessonLevel;
   title: TitleTriplet;
   summary: string;
+  /** Alias for summary / longer copy used by admin preview (string or localized triplet) */
+  description?: string | TitleTriplet;
   durationMin?: number;
+  /** Alias for durationMin (minutes) */
+  duration?: number;
   sections: LessonSection[];
+  /** Flat vocab list used by some admin pages (prefer sections[].vocab) */
+  vocabulary?: VocabItem[];
+  /** Flat exercise list used by some admin pages (prefer sections[].exercises) */
+  exercises?: Exercise[];
+  objectives?: string[];
   tags?: string[];
   version?: number;
   heroMediaId?: number;
@@ -61,21 +80,37 @@ export interface Lesson {
 export interface UserProgress {
   userId: number;
   lessonId: number;
-  sectionKind: SectionKind;
+  /** Some UIs key progress by slug instead of numeric id */
+  lessonSlug?: string;
+  sectionKind?: SectionKind;
   completed: boolean;
   score: number;
+  overallScore?: number;
   attempts: number;
   updatedAt: number;
+  lastAccessedAt?: number | string | Date;
+  completedAt?: number | string | Date;
+  timeSpent?: number;
+  timeSpentSeconds?: number;
+  achievements?: string[];
+  sectionProgress?: Record<string, unknown>;
 }
 
 export interface MediaAsset {
   id: number;
-  kind: MediaKind;
-  filePath: string;
+  kind?: MediaKind;
+  /** Alias for kind used by admin media UIs */
+  type?: MediaKind | string;
+  filePath?: string;
+  /** Public/resolved URL alias for filePath */
+  url?: string;
+  filename?: string;
+  size?: number;
   alt?: string;
   durationMs?: number;
   rights?: string;
   sha256?: string;
+  uploadedAt?: number | string | Date;
 }
 
 export interface User {
@@ -83,6 +118,11 @@ export interface User {
   nickname?: string;
   createdAt?: number;
   lastSeenAt?: number;
+  avatarUrl?: string;
+  avatar?: string;
+  location?: string;
+  language?: string;
+  timezone?: string;
 }
 
 export interface Tag {
@@ -99,7 +139,7 @@ export interface AppSetting {
 // Component Props Types
 export interface LessonHeaderProps {
   lesson: Lesson;
-  currentLanguage: 'fr' | 'tah' | 'en';
+  currentLanguage: 'fr' | 'tah' | 'en' | 'french' | 'tahitian' | 'english' | string;
   onLanguageToggle: (lang: 'fr' | 'tah' | 'en') => void;
   onStartLesson: () => void;
 }
@@ -109,19 +149,22 @@ export interface TabNavigationProps {
   activeTab: SectionKind;
   onTabChange: (tab: SectionKind) => void;
   completedSections: Set<SectionKind>;
+  customTabs?: Array<{ id: string; label: string; kind?: SectionKind; icon?: React.ReactNode; count?: number }>;
 }
 
 export interface ProgressDrawerProps {
   lesson: Lesson;
-  userProgress: UserProgress[];
-  streak: number;
-  isOpen: boolean;
-  onToggle: () => void;
+  userProgress?: UserProgress[] | UserProgress | null;
+  streak?: number;
+  isOpen?: boolean;
+  onToggle?: () => void;
+  onClose?: () => void;
+  [key: string]: any;
 }
 
 export interface VocabularyTabProps {
   vocab: VocabItem[];
-  currentLanguage: 'fr' | 'tah' | 'en';
+  currentLanguage: 'fr' | 'tah' | 'en' | 'french' | 'tahitian' | 'english' | string;
   onPlayAudio: (audioId: number) => void;
   onAddToPhrasebook: (item: VocabItem) => void;
 }
@@ -217,9 +260,9 @@ export interface AdminUser extends User {
 }
 
 export interface CourseMetadata {
-  id?: number;
+  id?: number | string;
   title: TitleTriplet;
-  description: string;
+  description: string | TitleTriplet;
   level: LessonLevel;
   category: string;
   tags: string[];
@@ -237,6 +280,20 @@ export interface CourseMetadata {
 export interface Course extends CourseMetadata {
   lessons: Lesson[];
   mediaAssets: MediaAsset[];
+  /** Alias for estimatedDuration used by some admin pages */
+  duration?: number;
+}
+
+
+/** Course snapshot for admin version history (mock-friendly) */
+export interface CourseVersion {
+  id: number;
+  courseId: number;
+  version: number;
+  data: Course;
+  createdAt: number | Date | string;
+  createdBy?: number | string;
+  notes?: string;
 }
 
 export interface BulkImportJob {
@@ -248,7 +305,7 @@ export interface BulkImportJob {
   errors: string[];
   createdAt: number;
   completedAt?: number;
-  createdBy: number;
+  createdBy?: number;
 }
 
 export interface AdminDashboardStats {
@@ -257,7 +314,7 @@ export interface AdminDashboardStats {
   totalUsers: number;
   publishedCourses: number;
   draftCourses: number;
-  activeUsers: number;
+  activeUsers?: number;
   recentActivity: AdminActivity[];
 }
 

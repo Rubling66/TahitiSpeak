@@ -55,4 +55,4 @@ async function cleanupTestData(page: any) {
   }
 }
 
-export default globalT
+export default globalTeardown;

@@ -120,7 +120,7 @@ export class JSONDataService extends DataService {
         lessons = lessons.filter(lesson => {
           if (filters.level && lesson.level !== filters.level) return false;
           if (filters.tags && filters.tags.length > 0) {
-            const hasMatchingTag = filters.tags.some(tag => lesson.tags.includes(tag));
+            const hasMatchingTag = filters.tags.some(tag => (lesson.tags || []).includes(tag));
             if (!hasMatchingTag) return false;
           }
           return true;
@@ -775,8 +775,8 @@ export class JSONDataService extends DataService {
         return !query || 
           course.title.en.toLowerCase().includes(query.toLowerCase()) ||
           course.title.fr.toLowerCase().includes(query.toLowerCase()) ||
-          course.title.tah.toLowerCase().includes(query.toLowerCase()) ||
-          course.description.toLowerCase().includes(query.toLowerCase());
+          course.title.tah?.toLowerCase().includes(query.toLowerCase()) ||
+          String(typeof course.description === "string" ? course.description : (course.description as any)?.en || "").toLowerCase().includes(query.toLowerCase());
       });
     } catch (error) {
       throw new DataServiceError('RETRIEVE_ERROR', 'Failed to search courses', error);
@@ -812,6 +812,24 @@ export class JSONDataService extends DataService {
     } catch (error) {
       throw new DataServiceError('RETRIEVE_ERROR', 'Failed to get activity logs', error);
     }
+  }
+
+  async saveData(collection: string, data: unknown): Promise<void> {
+    // Local-first stub: persist under app settings / memory for integrations
+    try {
+      const key = `collection:${collection}`;
+      await this.updateAppSetting(key, JSON.stringify(data));
+    } catch (e) {
+      console.warn('saveData stub failed for', collection, e);
+    }
+  }
+
+  async getAllLessons(): Promise<Lesson[]> {
+    return this.getLessons();
+  }
+
+  async getAllCourses(): Promise<Course[]> {
+    return this.getCourses();
   }
 
   async createCourseVersion(courseId: number, version: number): Promise<void> {

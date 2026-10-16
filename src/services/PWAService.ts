@@ -73,7 +73,7 @@ class PWAService {
       }
 
       console.log('[PWA] Service initialized successfully');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Failed to initialize:', error);
     }
   }
@@ -104,7 +104,7 @@ class PWAService {
         }
       });
 
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Service Worker registration failed:', error);
       throw error;
     }
@@ -175,7 +175,7 @@ class PWAService {
         console.log('[PWA] App installation dismissed');
         return false;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Install failed:', error);
       return false;
     }
@@ -189,7 +189,7 @@ class PWAService {
     try {
       await this.registration.update();
       return this.updateAvailable;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Update check failed:', error);
       return false;
     }
@@ -227,7 +227,7 @@ class PWAService {
     try {
       const permission = await Notification.requestPermission();
       return permission === 'granted';
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Notification permission request failed:', error);
       return false;
     }
@@ -242,7 +242,7 @@ class PWAService {
       throw new Error('Notification permission not granted');
     }
 
-    const defaultOptions: NotificationOptions = {
+    const defaultOptions: any = {
       icon: '/icons/icon-192x192.png',
       badge: '/icons/badge-72x72.png',
       vibrate: [100, 50, 100],
@@ -273,7 +273,7 @@ class PWAService {
       }
 
       return cacheInfos;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Failed to get cache info:', error);
       return [];
     }
@@ -301,7 +301,7 @@ class PWAService {
       if (this.registration?.active) {
         this.registration.active.postMessage({ type: 'CLEAR_CACHE', cacheName });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Failed to clear cache:', error);
     }
   }
@@ -350,7 +350,7 @@ class PWAService {
       eventListeners.forEach(callback => {
         try {
           callback(data);
-        } catch (error) {
+        } catch (error: unknown) {
           console.error(`[PWA] Error in event listener for '${event}':`, error);
         }
       });
@@ -368,7 +368,7 @@ class PWAService {
       await (this.registration as any).sync.register(tag);
       console.log(`[PWA] Background sync registered: ${tag}`);
       return true;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('[PWA] Background sync registration failed:', error);
       return false;
     }
@@ -385,7 +385,7 @@ class PWAService {
       await (navigator as any).share(data);
       return true;
     } catch (error) {
-      if (error.name !== 'AbortError') {
+      if ((error as Error).name !== 'AbortError') {
         console.error('[PWA] Share failed:', error);
       }
       return false;

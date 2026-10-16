@@ -20,7 +20,7 @@ const LessonsPage: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState<LessonLevel | 'all'>('all');
   const [selectedTag, setSelectedTag] = useState<string | 'all'>('all');
 
-  const dataService = new JSONDataService();
+  const dataService = JSONDataService.getInstance();
 
   useEffect(() => {
     loadLessons();

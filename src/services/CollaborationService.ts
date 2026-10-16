@@ -110,7 +110,7 @@ class CollaborationService implements CollaborationAPI {
   async getVersions(contentId: string, options?: { limit?: number; offset?: number }): Promise<ContentVersion[]> {
     try {
       const query = { contentId };
-      const versions = await this.dataService.query('content_versions', query, {
+      const versions = await (this.dataService.query as any)('content_versions', query, {
         limit: options?.limit || 50,
         offset: options?.offset || 0,
         orderBy: 'createdAt',
@@ -725,7 +725,7 @@ class CollaborationService implements CollaborationAPI {
 
       await this.dataService.update('review_requests', requestId, updatedRequest);
       this.emit('review:submitted', { requestId, feedback });
-      return updatedRequest;
+      return updatedRequest as any;
     } catch (error) {
       console.error('Error submitting review:', error);
       throw new Error('Failed to submit review');

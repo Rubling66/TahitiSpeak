@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Badge } from '@/components/ui/Badge';
+import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff, Shield, Key, Activity, Users, RotateCcw, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
@@ -169,7 +169,7 @@ const SecureApiKeyManager: React.FC = () => {
       }
       
       // Test the connection based on key type
-      let testResult = false;
+      let testResult: boolean | { success: boolean; message: string } = false;
       if (keyName.includes('OPENAI')) {
         testResult = await integrationService.testOpenAIConnection(actualKey);
       } else if (keyName.includes('CANVA')) {
@@ -185,13 +185,13 @@ const SecureApiKeyManager: React.FC = () => {
         k.name === keyName 
           ? { 
               ...k, 
-              status: testResult ? 'active' : 'error' as const,
+              status: (typeof testResult === 'object' ? testResult.success : testResult) ? 'active' : 'error' as const,
               lastTested: new Date()
             }
           : k
       ));
       
-      toast.success(testResult ? 'Connection test successful' : 'Connection test failed');
+      toast.success((typeof testResult === 'object' ? testResult.success : testResult) ? 'Connection test successful' : 'Connection test failed');
     } catch (error) {
       setApiKeys(prev => prev.map(k => 
         k.name === keyName 

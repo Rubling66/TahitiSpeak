@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   generateEtags: true,
   
   // Performance optimizations
-  swcMinify: true,
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'recharts'],

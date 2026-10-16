@@ -150,4 +150,4 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
 };
 
 export default Progress;
-export { CircularProgress };
+export { Progress, CircularProgress };

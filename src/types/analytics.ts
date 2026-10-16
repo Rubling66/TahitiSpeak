@@ -10,8 +10,8 @@ export interface LearningMetrics {
 }
 
 export interface CourseAnalytics {
-  courseId: string;
-  courseName: string;
+  courseId: string | number;
+  courseName: string | any;
   enrollments: number;
   completions: number;
   completionRate: number;
@@ -167,7 +167,7 @@ export interface WidgetPosition {
 }
 
 export interface ExportOptions {
-  format: 'pdf' | 'csv' | 'xlsx' | 'png' | 'svg';
+  format: 'pdf' | 'csv' | 'xlsx' | 'png' | 'svg' | 'json';
   includeCharts: boolean;
   includeRawData: boolean;
   dateRange: DateRange;

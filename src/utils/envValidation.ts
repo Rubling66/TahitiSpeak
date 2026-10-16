@@ -6,6 +6,8 @@ export interface EnvValidationResult {
   invalidKeys: string[];
   warnings: string[];
   errors: string[];
+  productionReady?: boolean;
+  missing?: string[];
 }
 
 export interface ApiKeyConfig {
@@ -313,4 +315,10 @@ export function logEnvironmentStatus(): void {
       console.log(`  ${status} ${config.key} ${config.required ? '(required)' : '(optional)'}`);
     });
   });
+}
+
+// Aliases used by IntegrationService (names it was written against).
+export const validateEnvironmentVariables = validateEnvironment;
+export function getApiKeyConfig(): Record<string, ApiKeyConfig> {
+  return API_KEY_CONFIGS;
 }

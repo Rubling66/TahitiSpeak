@@ -125,7 +125,7 @@ export function LanguageSwitcher({
       onLanguageChange?.(newLocale);
 
       // Navigate to the same page with new locale
-      const newPath = pathname.replace(/^\/[a-z]{2}/, `/${newLocale}`);
+      const newPath = (pathname ?? '/').replace(/^\/[a-z]{2}/, `/${newLocale}`);
       router.push(newPath);
       
       setIsOpen(false);

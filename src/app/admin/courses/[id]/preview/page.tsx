@@ -1,13 +1,15 @@
 'use client';
 
+import { loc } from '@/types/localized';
+
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAdminService } from '@/lib/hooks/useAdminService';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/AlertDialog';
 import { toast } from 'sonner';
 import { ArrowLeft, Eye, Play, Volume2, Image, FileText, Globe, Clock, Users, Tag, CheckCircle, AlertTriangle, Edit } from 'lucide-react';
@@ -23,7 +25,7 @@ export default function CoursePreviewPage() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [previewMode, setPreviewMode] = useState<'student' | 'admin'>('student');
 
-  const courseId = parseInt(params.id as string);
+  const courseId = parseInt((params?.id ?? '') as string);
 
   useEffect(() => {
     loadCourse();
@@ -81,11 +83,11 @@ export default function CoursePreviewPage() {
     
     const issues: string[] = [];
     
-    if (!course.title.en || !course.title.fr) {
+    if (!loc(course.title, 'en') || !loc(course.title, 'fr')) {
       issues.push('Missing title in English or French');
     }
     
-    if (!course.description.en || !course.description.fr) {
+    if (!loc(course.description, 'en') || !loc(course.description, 'fr')) {
       issues.push('Missing description in English or French');
     }
     
@@ -151,7 +153,7 @@ export default function CoursePreviewPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center">
                 <Eye className="h-6 w-6 mr-2" />
-                Preview: {course.title.en}
+                Preview: {loc(course.title, 'en')}
               </h1>
               <p className="text-gray-600">
                 Review course content before publishing
@@ -275,10 +277,10 @@ export default function CoursePreviewPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h3 className="font-semibold text-lg mb-2">{course.title.en}</h3>
-                      <h4 className="font-medium text-gray-700 mb-2">{course.title.fr}</h4>
-                      <p className="text-gray-600">{course.description.en}</p>
-                      <p className="text-gray-600 text-sm mt-2 italic">{course.description.fr}</p>
+                      <h3 className="font-semibold text-lg mb-2">{loc(course.title, 'en')}</h3>
+                      <h4 className="font-medium text-gray-700 mb-2">{loc(course.title, 'fr')}</h4>
+                      <p className="text-gray-600">{loc(course.description, 'en')}</p>
+                      <p className="text-gray-600 text-sm mt-2 italic">{loc(course.description, 'fr')}</p>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t">
@@ -377,7 +379,7 @@ export default function CoursePreviewPage() {
                               </Badge>
                             </div>
                             <p className="text-sm text-gray-600 truncate">
-                              {lesson.title.en}
+                              {loc(lesson.title, 'en')}
                             </p>
                           </button>
                         ))}
@@ -394,14 +396,14 @@ export default function CoursePreviewPage() {
                 {selectedLesson ? (
                   <Card>
                     <CardHeader>
-                      <CardTitle>{selectedLesson.title.en}</CardTitle>
-                      <CardDescription>{selectedLesson.title.fr}</CardDescription>
+                      <CardTitle>{loc(selectedLesson.title, 'en')}</CardTitle>
+                      <CardDescription>{loc(selectedLesson.title, 'fr')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
                         <h4 className="font-medium mb-2">Description:</h4>
-                        <p className="text-gray-700 text-sm">{selectedLesson.description.en}</p>
-                        <p className="text-gray-600 text-sm italic mt-1">{selectedLesson.description.fr}</p>
+                        <p className="text-gray-700 text-sm">{loc(selectedLesson.description, 'en')}</p>
+                        <p className="text-gray-600 text-sm italic mt-1">{loc(selectedLesson.description, 'fr')}</p>
                       </div>
                       
                       <div className="grid grid-cols-3 gap-4 pt-4 border-t">
@@ -468,7 +470,7 @@ export default function CoursePreviewPage() {
                       <div key={index} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
-                            {getMediaIcon(asset.type)}
+                            {getMediaIcon(asset.type as string)}
                             <span className="ml-2 font-medium text-sm">{asset.type}</span>
                           </div>
                           <Badge variant="outline" className="text-xs">

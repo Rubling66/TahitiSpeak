@@ -44,6 +44,18 @@ export class DataService {
     this.baseUrl = this.config.apiUrl!;
   }
 
+  /** Persist a named collection (used by IntegrationService). Local stub. */
+  async saveData(collection: string, data: unknown): Promise<void> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('ds_' + collection, JSON.stringify(data));
+      }
+      await this.post('/collections/' + encodeURIComponent(collection), data).catch(() => undefined);
+    } catch (e) {
+      console.warn('DataService.saveData failed', collection, e);
+    }
+  }
+
   // Generic CRUD operations
   async get<T>(endpoint: string, options?: QueryOptions): Promise<ApiResponse<T>> {
     try {

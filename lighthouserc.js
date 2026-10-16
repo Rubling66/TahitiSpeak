@@ -18,3 +18,6 @@ module.exports = {
     },
     upload: {
       target: 'temporary-public-storage',
+    },
+  },
+};

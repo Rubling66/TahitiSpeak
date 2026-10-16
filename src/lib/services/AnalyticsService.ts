@@ -17,7 +17,7 @@ export class AnalyticsService implements AnalyticsAPI {
   private events: AnalyticsEvent[] = [];
   private sessionId: string;
 
-  constructor(dataService: DataService) {
+  constructor(dataService: any) {
     this.dataService = dataService;
     this.sessionId = this.generateSessionId();
     this.initializeTracking();
@@ -95,7 +95,7 @@ export class AnalyticsService implements AnalyticsAPI {
   async getCourseAnalytics(courseId?: string, dateRange?: DateRange): Promise<CourseAnalytics[]> {
     try {
       const courses = courseId ? 
-        [await this.dataService.getCourse(courseId)] : 
+        [await this.dataService.getCourse(courseId as any)] : 
         await this.dataService.getAllCourses();
       
       const analytics: CourseAnalytics[] = [];
@@ -103,16 +103,16 @@ export class AnalyticsService implements AnalyticsAPI {
       for (const course of courses) {
         if (!course) continue;
         
-        const enrollments = await this.getCourseEnrollments(course.id);
-        const completions = await this.getCourseCompletions(course.id, dateRange);
-        const scores = await this.getCourseScores(course.id, dateRange);
-        const timeData = await this.getCourseTimeData(course.id, dateRange);
-        const dropoffPoints = await this.getDropoffPoints(course.id, dateRange);
-        const engagementMetrics = await this.getCourseEngagement(course.id, dateRange);
+        const enrollments = await this.getCourseEnrollments(course.id as any);
+        const completions = await this.getCourseCompletions(course.id as any, dateRange);
+        const scores = await this.getCourseScores(course.id as any, dateRange);
+        const timeData = await this.getCourseTimeData(course.id as any, dateRange);
+        const dropoffPoints = await this.getDropoffPoints(course.id as any, dateRange);
+        const engagementMetrics = await this.getCourseEngagement(course.id as any, dateRange);
         
         analytics.push({
-          courseId: course.id,
-          courseName: course.title,
+          courseId: course.id as any,
+          courseName: (typeof course.title === "string" ? course.title : course.title?.en || course.title?.fr || "") as any,
           enrollments: enrollments.length,
           completions: completions.length,
           completionRate: enrollments.length > 0 ? 

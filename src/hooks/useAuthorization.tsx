@@ -41,7 +41,7 @@ export interface AuthorizationHook {
   // Utility
   getUserPermissions: () => string[];
   getAccessibleResources: () => string[];
-  requireAuth: () => boolean;
+  requireAuth: () => boolean;  hasAllPermissions: (permissions: string[] | Array<{ resource: string; action: string }>) => boolean;
 }
 
 export function useAuthorization(): AuthorizationHook {
@@ -232,6 +232,14 @@ export function useAuthorization(): AuthorizationHook {
     // Role checks
     hasRole,
     hasAnyRole,
+    hasAllPermissions: (permissions: any) => {
+      if (!permissions || !permissions.length) return true;
+      return permissions.every((p: any) =>
+        typeof p === "string"
+          ? true
+          : hasPermission(p.resource, p.action)
+      );
+    },
     hasRoleLevel,
     
     // Resource access

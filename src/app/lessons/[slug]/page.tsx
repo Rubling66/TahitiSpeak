@@ -11,7 +11,7 @@ interface LessonPageProps {
 // Generate static params for all lessons
 export async function generateStaticParams() {
   try {
-    const dataService = new JSONDataService();
+    const dataService = JSONDataService.getInstance();
     const lessons = await dataService.getAllLessons();
     
     return lessons.map((lesson) => ({
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: LessonPageProps) {
   try {
     const { slug } = await params;
-    const dataService = new JSONDataService();
+    const dataService = JSONDataService.getInstance();
     const lesson = await dataService.getLessonBySlug(slug);
     
     if (!lesson) {
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: LessonPageProps) {
 export default async function LessonPageRoute({ params }: LessonPageProps) {
   try {
     const { slug } = await params;
-    const dataService = new JSONDataService();
+    const dataService = JSONDataService.getInstance();
     const lesson = await dataService.getLessonBySlug(slug);
     
     if (!lesson) {

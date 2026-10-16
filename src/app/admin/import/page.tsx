@@ -514,7 +514,7 @@ export default function BulkImportPage() {
                     <h3 className="text-sm font-medium text-red-800 mb-2">Validation Errors</h3>
                     <div className="bg-red-50 border border-red-200 rounded-md p-3 max-h-40 overflow-y-auto">
                       <ul className="text-sm text-red-700 space-y-1">
-                        {previewData.errors.map((error, index) => (
+                        {previewData.errors.map((error: any, index: number) => (
                           <li key={index} className="flex items-start">
                             <AlertCircle className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                             {error}
@@ -532,7 +532,7 @@ export default function BulkImportPage() {
                       Valid Courses ({previewData.courses.length})
                     </h3>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {previewData.courses.slice(0, 5).map((course, index) => (
+                      {previewData.courses.slice(0, 5).map((course: any, index: number) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
                           <div>
                             <p className="text-sm font-medium text-green-900">
@@ -582,7 +582,7 @@ export default function BulkImportPage() {
                 {importResult.errors && importResult.errors.length > 0 && (
                   <div className="bg-red-50 border border-red-200 rounded-md p-4">
                     <ul className="text-sm text-red-700 space-y-1">
-                      {importResult.errors.map((error, index) => (
+                      {importResult.errors.map((error: any, index: number) => (
                         <li key={index}>• {error}</li>
                       ))}
                     </ul>

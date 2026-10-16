@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg';
@@ -17,7 +17,8 @@ const Card: React.FC<CardProps> = ({
   padding = 'md',
   shadow = 'sm',
   border = true,
-  hover = false
+  hover = false,
+  ...rest
 }) => {
   const baseClasses = 'bg-white rounded-lg';
   
@@ -41,7 +42,7 @@ const Card: React.FC<CardProps> = ({
   const classes = `${baseClasses} ${paddingClasses[padding]} ${shadowClasses[shadow]} ${borderClass} ${hoverClass} ${className}`;
   
   return (
-    <div className={classes}>
+    <div className={classes} {...rest}>
       {children}
     </div>
   );
@@ -100,5 +101,18 @@ const CardFooter: React.FC<CardFooterProps> = ({ children, className = '' }) => 
   );
 };
 
+interface CardDescriptionProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const CardDescription: React.FC<CardDescriptionProps> = ({ children, className = '' }) => {
+  return (
+    <p className={`text-sm text-gray-500 ${className}`}>
+      {children}
+    </p>
+  );
+};
+
 export default Card;
-export { CardHeader, CardTitle, CardContent, CardFooter };
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };

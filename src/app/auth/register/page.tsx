@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { RegisterForm } from '../../../components/auth/RegisterForm';
 import { AuthLayout } from '@/components/layout/AppLayout';
-import { Card, CardContent } from '../../../components/ui/card';
-import { Button } from '../../../components/ui/button';
+import { Card, CardContent } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
 import { ArrowLeft, Users, BookOpen, Trophy } from 'lucide-react';
 
 export const metadata: Metadata = {

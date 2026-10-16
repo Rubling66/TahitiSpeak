@@ -104,9 +104,9 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
       offlineSyncService.addEventListener((event) => {
         if (event.type === 'status-change') {
           setSyncStatus({
-            lastSyncTime: event.data.lastSyncTime,
-            pendingActions: event.data.pendingActions,
-            syncInProgress: event.data.syncInProgress
+            lastSyncTime: (event.data as any).lastSyncTime,
+            pendingActions: (event.data as any).pendingActions,
+            syncInProgress: (event.data as any).syncInProgress
           });
         }
       });

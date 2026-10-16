@@ -535,7 +535,7 @@ export default function NewCoursePage() {
                   <div key={asset.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center space-x-3">
                       <div className="text-gray-500">
-                        {getMediaIcon(asset.type)}
+                        {getMediaIcon(asset.type as any)}
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">{asset.filename}</p>

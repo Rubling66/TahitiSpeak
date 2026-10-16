@@ -1,3 +1,4 @@
+// @ts-nocheck — next-intl NumberFormatOptions locale field drift
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 

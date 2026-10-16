@@ -33,6 +33,8 @@ class LocalizationService implements LocalizationAPI {
   }
 
   private initializeSampleData(): void {
+    // SSR/prerender guard: sample data lives in localStorage (browser only)
+    if (typeof window === 'undefined') return;
     // Sample languages
     this.languages = [
       {

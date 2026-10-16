@@ -203,6 +203,7 @@ export function useI18n() {
     
     // Utility objects
     formatter,
+    formatMessage: t,
     rtlUtils
   };
 }

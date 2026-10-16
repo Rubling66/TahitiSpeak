@@ -1,12 +1,14 @@
 'use client';
 
+import { loc } from '@/types/localized';
+
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAdminService } from '@/lib/hooks/useAdminService';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/AlertDialog';
 import { toast } from 'sonner';
 import { ArrowLeft, Clock, User, RotateCcw, Eye, Download, AlertTriangle } from 'lucide-react';
@@ -29,7 +31,7 @@ export default function CourseVersionsPage() {
   const [isCreatingVersion, setIsCreatingVersion] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
 
-  const courseId = parseInt(params.id as string);
+  const courseId = parseInt((params?.id ?? '') as string);
 
   useEffect(() => {
     loadCourseAndVersions();
@@ -174,7 +176,7 @@ export default function CourseVersionsPage() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Version History: {course.title.en}
+                Version History: {loc(course.title, 'en')}
               </h1>
               <p className="text-gray-600">
                 Manage and restore previous versions of this course
@@ -199,7 +201,7 @@ export default function CourseVersionsPage() {
               </Badge>
             </CardTitle>
             <CardDescription>
-              {course.description.en}
+              {loc(course.description as any, 'en')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -220,7 +222,7 @@ export default function CourseVersionsPage() {
               </div>
               <div>
                 <span className="font-medium text-gray-700">Last Updated:</span>
-                <p className="text-gray-600">{formatDate(new Date(course.updatedAt))}</p>
+                <p className="text-gray-600">{formatDate(new Date(course.updatedAt as any))}</p>
               </div>
             </div>
           </CardContent>
@@ -252,7 +254,7 @@ export default function CourseVersionsPage() {
                       </Badge>
                       <div className="flex items-center text-sm text-gray-600">
                         <Clock className="h-4 w-4 mr-1" />
-                        {formatDate(version.createdAt)}
+                        {formatDate(version.createdAt as any)}
                       </div>
                       <div className="flex items-center text-sm text-gray-600">
                         <User className="h-4 w-4 mr-1" />
